@@ -1,6 +1,6 @@
 import { moment } from "obsidian";
 
-// Textes de l'interface. La langue suit celle d'Obsidian : français si Obsidian est en français, anglais sinon.
+// Textes de l'interface. La langue suit celle d'Obsidian ; l'anglais sert de langue par défaut.
 
 const en = {
   cmdComment: "Comment on selection or cursor",
@@ -101,7 +101,16 @@ const fr: Record<Key, string> = {
   "error.not-found": "Commentaire introuvable.",
 };
 
+// Langues disponibles, indexées par le code de langue d'Obsidian (« fr », « de », « pt-br »…).
+// Pour ajouter une langue : un dictionnaire typé Record<Key, string> ci-dessus, puis une ligne ici.
+const locales: Record<string, Record<Key, string>> = { en, fr };
+
+function dictionary(): Record<Key, string> {
+  const code = moment.locale().toLowerCase();
+  return locales[code] ?? locales[code.split("-")[0]] ?? en;
+}
+
 export function t(key: Key, vars: Record<string, string | number> = {}): string {
-  const dict = moment.locale().startsWith("fr") ? fr : en;
+  const dict = dictionary();
   return dict[key].replace(/\{(\w+)\}/g, (_, k: string) => String(vars[k] ?? ""));
 }

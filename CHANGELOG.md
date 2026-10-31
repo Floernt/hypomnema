@@ -6,6 +6,14 @@ Les commentaires sont stockés en texte brut dans les notes des utilisateurs. To
 
 ## [Non publié]
 
+### Ajouté
+
+- Section « Contribuer » dans le README, avec les règles de contribution et la liste des traductions disponibles et à faire.
+
+### Modifié
+
+- Le choix de la langue de l'interface passe par une table des langues disponibles : ajouter une traduction revient à ajouter un dictionnaire et une ligne. Une variante régionale (`pt-br`) se replie sur sa langue de base (`pt`), puis sur l'anglais.
+
 ## [0.4.0] — 2026-10-31
 
 ### Ajouté

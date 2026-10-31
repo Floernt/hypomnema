@@ -171,6 +171,67 @@ The version history, including every change to the storage format, is kept in [C
 3. Run `npm test`, then `npm run build`.
 4. Create a GitHub release whose tag is exactly that number (no `v`), with `main.js`, `manifest.json` and `styles.css` attached.
 
+## Contributing / Contribuer
+
+### English
+
+Hypomnema is a young tool, shaped so far by one person's way of reading. Other ways of reading will make it better, and contributions are welcome:
+
+- **Report a bug or suggest an idea** in the [issues](https://github.com/Floernt/hypomnema/issues). For a bug, say which Obsidian version you use, desktop or mobile, and the steps to reproduce it. A short excerpt of the note (with its `%% annotations` block) helps a lot.
+- **Propose a change** through a pull request. For anything beyond a small fix, open an issue first so we can agree on the direction before you spend time on it.
+- **Translate the interface** into your language (see below). It is the easiest way to start.
+- **Fork it.** The licence is MIT: if you want to take the plugin somewhere else, you are free to do so.
+
+A few rules keep the plugin trustworthy, since it writes into people's notes:
+
+- **The storage format is a promise.** Notes written with an older version must keep working. Any change to the format must be backward compatible, covered by a test in `tests/syntax.test.ts`, and described under a **Format** heading in the [CHANGELOG](CHANGELOG.md).
+- **Each change adds an entry** to the `[Non publié]` (unreleased) section of the CHANGELOG. Entries are written in French for now; English is fine, it will be translated.
+- **Before submitting**, run `npm test` and `npm run build`, and try the change in `test-vault/`, ideally on mobile too.
+- **Follow Obsidian's [plugin guidelines](https://docs.obsidian.md/Plugins/Releasing/Plugin+guidelines)**: no default hotkeys, no hard-coded inline styles, public API only.
+
+### Français
+
+Hypomnema est un outil jeune, façonné jusqu'ici par une seule manière de lire. D'autres manières de lire le rendront meilleur, et les contributions sont les bienvenues :
+
+- **Signaler un défaut ou proposer une idée** dans les [issues](https://github.com/Floernt/hypomnema/issues). Pour un défaut, précisez la version d'Obsidian, ordinateur ou mobile, et les étapes pour le reproduire. Un court extrait de la note (avec son bloc `%% annotations`) aide beaucoup.
+- **Proposer une modification** par une pull request. Au-delà d'une petite correction, ouvrez d'abord une issue, pour convenir de la direction avant d'y consacrer du temps.
+- **Traduire l'interface** dans votre langue (voir ci-dessous). C'est la manière la plus simple de commencer.
+- **Forker le projet.** La licence est MIT : si vous voulez emmener le plugin ailleurs, vous en êtes libre.
+
+Quelques règles garantissent la fiabilité du plugin, puisqu'il écrit dans les notes de ses utilisateurs :
+
+- **Le format de stockage est un engagement.** Les notes écrites avec une version antérieure doivent continuer à fonctionner. Toute évolution du format doit être rétrocompatible, couverte par un test dans `tests/syntax.test.ts`, et décrite sous une rubrique **Format** du [CHANGELOG](CHANGELOG.md).
+- **Chaque modification ajoute une entrée** à la section `[Non publié]` du CHANGELOG.
+- **Avant de soumettre**, lancez `npm test` et `npm run build`, et essayez la modification dans `test-vault/`, idéalement aussi sur mobile.
+- **Respectez les [règles des plugins Obsidian](https://docs.obsidian.md/Plugins/Releasing/Plugin+guidelines)** : pas de raccourci par défaut, pas de style en ligne codé en dur, uniquement l'API publique.
+
+### Translations / Traductions
+
+The interface follows Obsidian's language and falls back to English. / L'interface suit la langue d'Obsidian et revient à l'anglais par défaut.
+
+To add a language / Pour ajouter une langue :
+
+1. In [`src/i18n.ts`](src/i18n.ts), copy the `en` dictionary into a new one typed `Record<Key, string>` (TypeScript flags any missing key). / Dans [`src/i18n.ts`](src/i18n.ts), copiez le dictionnaire `en` dans un nouveau dictionnaire typé `Record<Key, string>` (TypeScript signale toute clé manquante).
+2. Register it in `locales` under Obsidian's language code. / Déclarez-le dans `locales` sous le code de langue d'Obsidian.
+3. Translate `defaultCategoryName` and `defaultCategoryTag` too: they name the sample category created on first install. / Traduisez aussi `defaultCategoryName` et `defaultCategoryTag`, qui nomment la catégorie d'exemple créée à la première installation.
+4. Open a pull request, and add yourself below. / Ouvrez une pull request et ajoutez votre nom ci-dessous.
+
+- [x] English (`en`)
+- [x] Français (`fr`)
+- [ ] Nederlands (`nl`)
+- [ ] Deutsch (`de`)
+- [ ] Español (`es`)
+- [ ] Italiano (`it`)
+- [ ] Português (`pt`, `pt-br`)
+- [ ] Polski (`pl`)
+- [ ] Русский (`ru`)
+- [ ] Українська (`uk`)
+- [ ] 日本語 (`ja`)
+- [ ] 한국어 (`ko`)
+- [ ] 简体中文 / 繁體中文 (`zh-cn`, `zh-tw`)
+
+Missing your language? Add it to the list. / Votre langue manque ? Ajoutez-la à la liste.
+
 ## License / Licence
 
 MIT. See [LICENSE](LICENSE).
