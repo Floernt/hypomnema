@@ -55,6 +55,14 @@ export default class Hypomnema extends Plugin {
         if (leaf?.view instanceof MarkdownView) this.panels().forEach((p) => p.setTarget(leaf.view as MarkdownView));
       }),
     );
+    // Ouvrir une autre note dans le même onglet ne change pas la feuille active. Si le panneau a le focus
+    // (rédaction en cours), seul « layout-change » est émis : chaque panneau revérifie alors la note qu'il suit.
+    const follow = () => {
+      const view = this.app.workspace.getActiveViewOfType(MarkdownView);
+      this.panels().forEach((p) => p.follow(view));
+    };
+    this.registerEvent(this.app.workspace.on("file-open", follow));
+    this.registerEvent(this.app.workspace.on("layout-change", follow));
     this.registerEvent(this.app.workspace.on("editor-change", refresh));
     this.registerEvent(
       this.app.vault.on("rename", (file, oldPath) => {

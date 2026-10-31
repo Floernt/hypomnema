@@ -1,7 +1,7 @@
 {
   "id": "hypomnema",
   "name": "Hypomnema",
-  "version": "0.3.0",
+  "version": "0.3.1",
   "minAppVersion": "1.4.4",
   "description": "Augmented reading: comment on passages or points of a note, write and reply in a side panel, and sort comments into coloured categories linked to tags.",
   "author": "Florian Ernotte",

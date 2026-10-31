@@ -10,6 +10,34 @@ Comments are stored as plain text inside the note itself. They are searchable, t
 
 > The plugin's interface is currently in French. An English interface is planned.
 
+### A tour in six screenshots
+
+The screenshots below come from the sample vault in [`demo-vault/`](demo-vault/), with real Obsidian and the real plugin, in Live Preview.
+
+**1. The text, and the thinking next to it.** Commented passages get a light tint and an underline in their category's colour. The *Commentaires* panel on the right lists every comment in text order, with the quoted passage, the date, the category and the replies. The note itself stays readable: no inline clutter, no footnotes to scroll to.
+
+![Overview: a clipped article with coloured commented passages and the comments panel](docs/screenshots/01-overview-en.png)
+
+**2. Writing without hiding the text.** Select a sentence and run the command. The draft opens in the panel, beside the passage, not in a pop-up that covers it. Pick a category, write, then press Ctrl+Enter.
+
+![Writing a comment in the side panel, with category chips](docs/screenshots/02-compose-en.png)
+
+**3. Metadata that follows your reading.** Saving a comment in the *Quote* category added the `quote` tag to the note's properties. Your reading now shows up in tag searches, the tags pane and Dataview queries, with no manual tagging. Remove the last *Quote* comment and the tag goes away, unless you had set it yourself.
+
+![The quote tag added automatically to the note's properties](docs/screenshots/03-auto-tags-en.png)
+
+**4. Commenting on a point, not just a passage.** With no selection, the comment is attached to the cursor position and shows as a small bubble in the text. Click it, and the panel brings up its thread, along with a few words of context around the point.
+
+![A comment placed at the cursor, shown as a bubble, with its thread highlighted](docs/screenshots/04-point-comment-en.png)
+
+**5. Comments are searchable across the vault.** *Diophantus* appears only in a comment, never in the article. Obsidian's ordinary search still finds the note, because comments are plain text inside it.
+
+![Vault-wide search finding a word that only appears in a comment](docs/screenshots/05-search-en.png)
+
+**6. Your own categories.** Each category is a name, a colour and a tag: *Idea*, *Question*, *To verify*, *Quote*, or whatever suits your way of reading.
+
+![Category settings: name, colour and tag](docs/screenshots/06-settings-en.png)
+
 ### Usage
 
 - **Comment**: select a passage, or just place the cursor, then right-click (*Commenter la sélection* / *Commenter ici*) or use the command palette. For speed, assign a hotkey to the command *Commenter la sélection ou le curseur* in *Settings → Hotkeys*; Ctrl+Alt+M, the Word shortcut, works well. You write in the right-hand panel, so the text stays visible. Ctrl+Enter saves and Esc cancels.
@@ -65,6 +93,34 @@ Until the plugin is listed in the community directory, download `main.js`, `mani
 Hypomnema est un outil de lecture augmentée, de réflexion et d'organisation de la connaissance. Il permet de commenter un passage ou un point précis d'une note. On rédige, on répond et on navigue dans un panneau latéral, comme le volet des commentaires de Word. Les commentaires se classent par catégories de couleur reliées à des tags. Il convient particulièrement aux articles capturés avec le Web Clipper : le texte source et vos remarques ne se mélangent jamais.
 
 Les commentaires restent du texte brut dans la note : ils sont cherchables, synchronisables et lisibles sans le plugin.
+
+### Visite en six captures
+
+Les captures ci-dessous proviennent du coffre d'exemple [`demo-vault/`](demo-vault/), dans le vrai Obsidian, avec le vrai plugin, en Aperçu en direct.
+
+**1. Le texte, et la réflexion à côté.** Les passages commentés reçoivent une teinte légère et un soulignement de la couleur de leur catégorie. Le panneau « Commentaires », à droite, liste tous les commentaires dans l'ordre du texte, avec le passage cité, la date, la catégorie et les réponses. La note reste lisible : rien n'encombre les lignes, aucune note de bas de page à aller chercher.
+
+![Vue d'ensemble : un article capturé, ses passages commentés en couleur et le panneau des commentaires](docs/screenshots/01-overview-fr.png)
+
+**2. Rédiger sans masquer le texte.** On sélectionne une phrase et on lance la commande. La rédaction s'ouvre dans le panneau, à côté du passage, et non dans une fenêtre qui le recouvre. On choisit une catégorie, on écrit, puis Ctrl+Entrée.
+
+![Rédaction d'un commentaire dans le panneau latéral, avec les pastilles de catégorie](docs/screenshots/02-compose-fr.png)
+
+**3. Des métadonnées qui suivent la lecture.** Enregistrer un commentaire de la catégorie « Citation » a ajouté le tag `citation` aux propriétés de la note. La lecture apparaît désormais dans les recherches par tag, le volet des tags et les requêtes Dataview, sans étiquetage manuel. Si l'on supprime le dernier commentaire « Citation », le tag disparaît, sauf si on l'avait posé soi-même.
+
+![Le tag citation ajouté automatiquement aux propriétés de la note](docs/screenshots/03-auto-tags-fr.png)
+
+**4. Commenter un point, pas seulement un passage.** Sans sélection, le commentaire s'attache à la position du curseur et apparaît comme une petite bulle dans le texte. Un clic sur la bulle met son fil en avant dans le panneau, avec quelques mots de contexte autour.
+
+![Un commentaire posé au curseur, affiché comme une bulle, et son fil mis en avant](docs/screenshots/04-point-comment-fr.png)
+
+**5. Des commentaires cherchables dans tout le coffre.** « Diophante » ne figure que dans un commentaire, jamais dans l'article. La recherche ordinaire d'Obsidian retrouve pourtant la note, puisque les commentaires sont du texte brut qu'elle contient.
+
+![Recherche dans le coffre retrouvant un mot présent uniquement dans un commentaire](docs/screenshots/05-search-fr.png)
+
+**6. Vos propres catégories.** Chaque catégorie associe un nom, une couleur et un tag : « Idée », « Question », « À vérifier », « Citation », ou ce qui convient à votre manière de lire.
+
+![Réglages des catégories : nom, couleur et tag](docs/screenshots/06-settings-fr.png)
 
 ### Utilisation
 

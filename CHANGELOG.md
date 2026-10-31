@@ -6,6 +6,22 @@ Les commentaires sont stockés en texte brut dans les notes des utilisateurs. To
 
 ## [Non publié]
 
+## [0.3.1] — 2026-10-31
+
+### Corrigé
+
+- Un passage commenté sur une seule ligne s'affichait comme un lien (texte violet), parce qu'Obsidian lisait les marqueurs `%%[aN%% … %%aN]%%` comme un texte entre crochets. Il garde désormais l'apparence du texte courant.
+- Quand on ouvrait une autre note dans le même onglet pendant la rédaction d'un nouveau commentaire, le brouillon n'était pas annulé. L'annulation aurait pu ensuite s'appliquer à la mauvaise note. Le brouillon est désormais retiré de sa propre note, et le panneau suit le changement de note.
+- Le fil mis en avant dans le panneau restait sélectionné après un changement de note.
+
+### Modifié
+
+- Les passages commentés reçoivent, en plus du soulignement, une teinte légère de la couleur de leur catégorie. Ils se repèrent mieux à la lecture.
+
+### Ajouté
+
+- Coffre d'exemple `demo-vault/` (un article en anglais, un en français) et visite guidée en captures d'écran dans le README.
+
 ## [0.3.0] — 2026-10-31
 
 ### Modifié
@@ -93,5 +109,6 @@ Les commentaires sont stockés en texte brut dans les notes des utilisateurs. To
 - Passage commenté : `%%[aN%%texte%%aN]%%`.
 - Bloc en fin de note : `%% annotations` … `%%`, une entrée par ligne (`[aN] AAAA-MM-JJ texte`), les réponses étant notées `[aN.k]` et indentées.
 
-[Non publié]: https://github.com/Floernt/hypomnema/compare/0.3.0...HEAD
+[Non publié]: https://github.com/Floernt/hypomnema/compare/0.3.1...HEAD
+[0.3.1]: https://github.com/Floernt/hypomnema/compare/0.3.0...0.3.1
 [0.3.0]: https://github.com/Floernt/hypomnema/releases/tag/0.3.0

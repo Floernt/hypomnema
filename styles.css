@@ -10,12 +10,21 @@ body {
   --ma-c: var(--ma-color, var(--ma-accent));
 }
 
-/* Passage commenté : soulignement discret, distinct du surlignage ==…== */
+/* Passage commenté : soulignement et fond léger de la couleur de la catégorie, distincts du surlignage ==…== */
 .ma-anchor {
+  background-color: color-mix(in srgb, var(--ma-c) 12%, transparent);
+  border-radius: 2px;
   text-decoration: underline dotted var(--ma-c);
   text-decoration-thickness: 2px;
   text-underline-offset: 3px;
   cursor: pointer;
+}
+
+/* Les marqueurs « %%[aN%% … %%aN]%% » font lire le passage comme un texte entre crochets :
+   Obsidian le styliserait en lien. On lui rend l'apparence du texte courant. */
+.cm-s-obsidian span.cm-hmd-barelink:has(.ma-anchor) {
+  color: var(--text-normal);
+  text-decoration: none;
 }
 
 .ma-flash {

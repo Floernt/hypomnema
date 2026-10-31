@@ -6,3 +6,6 @@ data.json
 # Coffre de test : seules les notes d'exemple sont versionnées
 test-vault/.obsidian/
 !test-vault/.obsidian/community-plugins.json
+
+# Coffre de démonstration : seules les notes sont versionnées
+demo-vault/.obsidian/

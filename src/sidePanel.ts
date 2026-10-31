@@ -8,6 +8,7 @@ export const PANEL_VIEW = "hypomnema-panel";
 /** Liste des commentaires de la note active, dans l'ordre du texte ; on y lit, rédige, répond et navigue. */
 export class CommentsPanel extends ItemView {
   private target: MarkdownView | null = null;
+  private targetPath: string | null = null;
   private active: string | null = null;
   private editing: ComposeRequest | null = null;
   private draft: { text: string; tag?: string } = { text: "" };
@@ -37,19 +38,30 @@ export class CommentsPanel extends ItemView {
     this.abandonDraft();
   }
 
+  /** Ne se met à jour que si la vue ou la note suivie a changé (appelé à chaque changement de disposition). */
+  follow(view: MarkdownView | null) {
+    const v = view ?? this.target;
+    if (v && (v !== this.target || v.file?.path !== this.targetPath)) this.setTarget(v);
+  }
+
   /** Le panneau suit la dernière note Markdown active (cliquer dans le panneau ne la lui fait pas perdre). */
   setTarget(view: MarkdownView | null) {
-    if (view && view !== this.target) {
+    // Obsidian réutilise la même vue quand on ouvre une autre note dans l'onglet : on suit donc aussi le fichier.
+    const path = view?.file?.path ?? null;
+    if (view && (view !== this.target || path !== this.targetPath)) {
       this.abandonDraft();
       this.target = view;
+      this.targetPath = path;
+      this.active = null;
     }
     this.render();
   }
 
   /** Met en avant un fil (après un clic sur son passage dans la note) et le fait défiler jusqu'à lui. */
   focusThread(view: MarkdownView, id: string) {
-    this.active = id;
     this.setTarget(view);
+    this.active = id;
+    this.render();
     this.scrollTo(id);
   }
 
@@ -71,9 +83,13 @@ export class CommentsPanel extends ItemView {
     this.contentEl.querySelector<HTMLElement>(`[data-ma-thread="${id}"]`)?.scrollIntoView({ block: "nearest", behavior: "smooth" });
   }
 
+  /** Annule le brouillon en cours, dans la note où il a été ouvert (même si l'onglet affiche désormais une autre note). */
   private abandonDraft() {
-    if (this.editing && this.target) this.plugin.actions.cancel(this.target, this.editing);
+    const req = this.editing;
     this.editing = null;
+    if (!req || !this.target || !this.targetPath) return;
+    if (this.target.file?.path === this.targetPath) this.plugin.actions.cancel(this.target, req);
+    else void this.plugin.actions.cancelInFile(this.targetPath, req);
   }
 
   private async saveDraft() {

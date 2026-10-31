@@ -1,6 +1,6 @@
 import { Editor, MarkdownView, Notice, TFile } from "obsidian";
 import type { EditorView } from "@codemirror/view";
-import { addAnchor, addReply, AnnotationError, Change, deleteEntry, editEntry, parse, Thread } from "./syntax";
+import { addAnchor, addReply, AnnotationError, applyChanges, Change, deleteEntry, editEntry, parse, Thread } from "./syntax";
 import { ComposeRequest, ConfirmModal } from "./ui";
 import { flashEffect } from "./editorExtension";
 import type Hypomnema from "./main";
@@ -79,6 +79,17 @@ export class Actions {
     if (t && !t.root.date && !t.replies.length) {
       this.run(() => this.apply(view.editor, deleteEntry(view.editor.getValue(), req.id)));
     }
+  }
+
+  /** Même chose que `cancel`, pour une note qui n'est plus affichée dans l'éditeur. */
+  async cancelInFile(path: string, req: ComposeRequest) {
+    const file = this.plugin.app.vault.getAbstractFileByPath(path);
+    if (req.mode !== "new" || !(file instanceof TFile)) return;
+    await this.plugin.app.vault.process(file, (doc) => {
+      const t = parse(doc).threads.find((x) => x.id === req.id);
+      if (!t || t.root.date || t.replies.length) return doc;
+      return applyChanges(doc, deleteEntry(doc, req.id));
+    });
   }
 
   delete(view: MarkdownView, id: string) {
