@@ -1,0 +1,231 @@
+/* Hypomnema. Couleur par défaut tirée du thème ; --ma-color est fixé par catégorie. */
+
+body {
+  --ma-accent: var(--color-orange);
+}
+
+.ma-anchor,
+.ma-panel-item,
+.ma-chip {
+  --ma-c: var(--ma-color, var(--ma-accent));
+}
+
+/* Passage commenté : soulignement discret, distinct du surlignage ==…== */
+.ma-anchor {
+  text-decoration: underline dotted var(--ma-c);
+  text-decoration-thickness: 2px;
+  text-underline-offset: 3px;
+  cursor: pointer;
+}
+
+.ma-flash {
+  background-color: color-mix(in srgb, var(--ma-accent) 25%, transparent);
+  transition: background-color 0.3s;
+}
+
+/* Commentaire posé au curseur */
+.ma-point {
+  display: inline-flex;
+  vertical-align: middle;
+  margin: 0 2px;
+  color: var(--ma-c);
+  text-decoration: none;
+}
+
+.ma-point svg {
+  width: 0.9em;
+  height: 0.9em;
+}
+
+.ma-block-widget {
+  color: var(--text-faint);
+  font-size: var(--font-ui-smaller);
+  border-top: 1px dashed var(--background-modifier-border);
+  padding: 6px 0;
+  cursor: pointer;
+}
+
+/* Fil de commentaires (panneau) */
+.ma-entry + .ma-entry {
+  margin-top: 6px;
+}
+
+.ma-reply {
+  margin-left: 10px;
+  padding-left: 8px;
+  border-left: 1px solid var(--background-modifier-border);
+}
+
+.ma-entry-head {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 4px;
+}
+
+.ma-date {
+  color: var(--text-faint);
+  font-size: 0.9em;
+}
+
+.ma-actions {
+  display: flex;
+  opacity: 0;
+  transition: opacity 0.15s;
+}
+
+.ma-panel-item:hover .ma-actions,
+.ma-panel-item.is-active .ma-actions,
+.is-mobile .ma-actions {
+  opacity: 1;
+}
+
+.ma-btn {
+  padding: 2px;
+  height: auto;
+}
+
+.ma-btn svg {
+  width: 14px;
+  height: 14px;
+}
+
+.ma-text {
+  white-space: pre-wrap;
+  word-break: break-word;
+}
+
+.ma-reply-btn {
+  margin-top: 6px;
+  font-size: var(--font-ui-smaller);
+  padding: 2px 8px;
+  height: auto;
+  display: none;
+}
+
+.ma-panel-item:hover .ma-reply-btn,
+.ma-panel-item.is-active .ma-reply-btn,
+.is-mobile .ma-reply-btn {
+  display: inline-block;
+}
+
+.ma-quote {
+  margin: 0 0 6px 0;
+  padding: 2px 8px;
+  border-left: 2px solid var(--background-modifier-border);
+  color: var(--text-muted);
+  font-style: italic;
+}
+
+/* Panneau latéral */
+.ma-panel {
+  font-size: var(--font-ui-small);
+}
+
+.ma-panel-title {
+  font-weight: var(--font-semibold);
+  margin-bottom: 8px;
+}
+
+.ma-panel-item {
+  padding: 8px;
+  margin-bottom: 8px;
+  border-radius: var(--radius-s);
+  border-left: 3px solid color-mix(in srgb, var(--ma-c) 60%, transparent);
+  background: var(--background-secondary);
+  cursor: pointer;
+}
+
+.ma-panel-item.is-active {
+  border-left-color: var(--ma-c);
+  box-shadow: var(--shadow-s);
+}
+
+.ma-panel-item:hover {
+  background: var(--background-modifier-hover);
+}
+
+.ma-panel-item.is-orphan {
+  border-left-color: var(--text-error);
+  cursor: default;
+}
+
+.ma-orphans-title {
+  margin: 12px 0 8px;
+  color: var(--text-error);
+  font-size: var(--font-ui-smaller);
+}
+
+.ma-empty {
+  color: var(--text-faint);
+}
+
+/* Fenêtres modales */
+.ma-textarea {
+  width: 100%;
+  resize: vertical;
+}
+
+/* Catégorie affichée sur une entrée */
+.ma-meta {
+  display: flex;
+  gap: 6px;
+  align-items: center;
+}
+
+.ma-tag {
+  font-size: 0.85em;
+  padding: 0 6px;
+  border-radius: var(--radius-s);
+  color: var(--ma-c);
+  border: 1px solid color-mix(in srgb, var(--ma-c) 50%, transparent);
+}
+
+.ma-panel-item .ma-tag {
+  --ma-c: var(--ma-color, var(--ma-accent));
+}
+
+/* Rédaction dans le panneau */
+.ma-composer {
+  margin: 6px 0;
+  cursor: default;
+}
+
+.ma-chips {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 4px;
+  margin-bottom: 6px;
+}
+
+.ma-chip {
+  height: auto;
+  padding: 2px 8px;
+  font-size: var(--font-ui-smaller);
+  border: 1px solid color-mix(in srgb, var(--ma-c) 50%, transparent);
+  background: transparent;
+  box-shadow: none;
+}
+
+.ma-chip::before {
+  content: "";
+  display: inline-block;
+  width: 8px;
+  height: 8px;
+  margin-right: 5px;
+  border-radius: 50%;
+  background: var(--ma-color, transparent);
+}
+
+.ma-chip.is-selected {
+  background: color-mix(in srgb, var(--ma-c) 20%, transparent);
+  border-color: var(--ma-c);
+  font-weight: var(--font-semibold);
+}
+
+.ma-composer-bar {
+  display: flex;
+  justify-content: flex-end;
+  gap: 6px;
+  margin-top: 6px;
+}

@@ -1,0 +1,9 @@
+{
+  "id": "hypomnema",
+  "name": "Hypomnema",
+  "version": "0.2.0",
+  "minAppVersion": "1.4.4",
+  "description": "Lecture augmentée : commentez un passage ou un point d'une note, rédigez et répondez dans un panneau latéral, classez vos commentaires par catégories liées à des tags.",
+  "author": "Florian Ernotte",
+  "isDesktopOnly": false
+}
