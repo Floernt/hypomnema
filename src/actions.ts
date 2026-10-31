@@ -1,8 +1,8 @@
 import { Editor, MarkdownView, Notice, TFile } from "obsidian";
-import type { EditorView } from "@codemirror/view";
 import { addAnchor, addReply, AnnotationError, applyChanges, Change, deleteEntry, editEntry, parse, Thread } from "./syntax";
 import { ComposeRequest, ConfirmModal } from "./ui";
-import { flashEffect } from "./editorExtension";
+import { editorViewOf, flashEffect } from "./editorExtension";
+import { t } from "./i18n";
 import type Hypomnema from "./main";
 
 export function today(): string {
@@ -34,7 +34,7 @@ export class Actions {
     try {
       return fn();
     } catch (e) {
-      if (e instanceof AnnotationError) new Notice(e.message);
+      if (e instanceof AnnotationError) new Notice(t(`error.${e.code}`));
       else throw e;
     }
   }
@@ -57,7 +57,7 @@ export class Actions {
 
   async save(view: MarkdownView, req: ComposeRequest, text: string, tag?: string): Promise<boolean> {
     if (!text.trim()) {
-      new Notice("Le commentaire est vide.");
+      new Notice(t("emptyComment"));
       return false;
     }
     const editor = view.editor;
@@ -99,9 +99,7 @@ export class Actions {
     };
     if (id.includes(".")) return void doIt();
     const n = this.thread(view, id)?.replies.length ?? 0;
-    const msg = n
-      ? `Supprimer ce commentaire et ses ${n} réponse(s) ? Le texte source est conservé.`
-      : "Supprimer ce commentaire ? Le texte source est conservé.";
+    const msg = n ? t("confirmDeleteWithReplies", { n }) : t("confirmDelete");
     new ConfirmModal(this.plugin.app, msg, () => void doIt()).open();
   }
 
@@ -150,17 +148,18 @@ export class Actions {
   }
 
   /** Amène l'éditeur sur le passage commenté, le sélectionne et le met brièvement en évidence. */
-  reveal(editor: Editor, t: Thread) {
-    if (!t.anchor) return;
-    const point = t.anchor.closeFrom === t.anchor.openTo;
-    const fromOff = point ? t.anchor.openFrom : t.anchor.openTo;
-    const toOff = point ? t.anchor.closeTo : t.anchor.closeFrom;
+  reveal(view: MarkdownView, th: Thread) {
+    if (!th.anchor) return;
+    const editor = view.editor;
+    const point = th.anchor.closeFrom === th.anchor.openTo;
+    const fromOff = point ? th.anchor.openFrom : th.anchor.openTo;
+    const toOff = point ? th.anchor.closeTo : th.anchor.closeFrom;
     const from = editor.offsetToPos(fromOff);
     const to = editor.offsetToPos(toOff);
-    if (point) editor.setCursor(editor.offsetToPos(t.anchor.closeTo));
+    if (point) editor.setCursor(editor.offsetToPos(th.anchor.closeTo));
     else editor.setSelection(from, to);
     editor.scrollIntoView({ from, to }, true);
-    const cm = (editor as unknown as { cm?: EditorView }).cm;
+    const cm = editorViewOf(view);
     if (cm) {
       cm.dispatch({ effects: flashEffect.of({ from: fromOff, to: toOff }) });
       window.setTimeout(() => cm.dispatch({ effects: flashEffect.of(null) }), 1500);

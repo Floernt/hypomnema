@@ -2,6 +2,8 @@ import { ItemView, MarkdownView, WorkspaceLeaf } from "obsidian";
 import { parse } from "./syntax";
 import { ComposeRequest, renderComposer, renderThread, ThreadHandlers } from "./ui";
 import type Hypomnema from "./main";
+import { categoryClass } from "./settings";
+import { t } from "./i18n";
 
 export const PANEL_VIEW = "hypomnema-panel";
 
@@ -22,7 +24,7 @@ export class CommentsPanel extends ItemView {
     return PANEL_VIEW;
   }
   getDisplayText() {
-    return "Commentaires";
+    return t("panelTitle");
   }
   getIcon() {
     return "message-square";
@@ -115,7 +117,7 @@ export class CommentsPanel extends ItemView {
     el.addClass("ma-panel");
     const view = this.target;
     if (!view || !view.file) {
-      el.createDiv({ cls: "ma-empty", text: "Ouvrez une note pour voir ses commentaires." });
+      el.createDiv({ cls: "ma-empty", text: t("panelNoNote") });
       return;
     }
     const editor = view.editor;
@@ -124,7 +126,7 @@ export class CommentsPanel extends ItemView {
     if (!threads.length) {
       el.createDiv({
         cls: "ma-empty",
-        text: "Aucun commentaire. Placez le curseur ou sélectionnez un passage, puis clic droit → « Commenter », ou le raccourci que vous lui avez attribué.",
+        text: t("panelEmpty"),
       });
       return;
     }
@@ -147,29 +149,29 @@ export class CommentsPanel extends ItemView {
       });
     };
 
-    const anchored = threads.filter((t) => t.anchor);
-    const orphans = threads.filter((t) => !t.anchor);
-    for (const t of anchored) {
-      const item = el.createDiv({ cls: "ma-panel-item", attr: { "data-ma-thread": t.id } });
-      const color = this.plugin.colorOf(t.root.tag);
-      if (color) item.style.setProperty("--ma-color", color);
-      item.toggleClass("is-active", t.id === this.active);
-      renderThread(item, t, handlers, { quote: true, categories, composer, editing: this.editing });
+    const anchored = threads.filter((th) => th.anchor);
+    const orphans = threads.filter((th) => !th.anchor);
+    for (const th of anchored) {
+      const item = el.createDiv({ cls: "ma-panel-item", attr: { "data-ma-thread": th.id } });
+      const cls = categoryClass(categories, th.root.tag);
+      if (cls) item.addClass(cls);
+      item.toggleClass("is-active", th.id === this.active);
+      renderThread(item, th, handlers, { quote: true, categories, composer, editing: this.editing });
       item.addEventListener("click", () => {
-        this.active = t.id;
+        this.active = th.id;
         el.querySelectorAll(".ma-panel-item").forEach((x) => x.toggleClass("is-active", x === item));
         this.app.workspace.setActiveLeaf(view.leaf, { focus: true });
-        this.plugin.actions.reveal(editor, t);
+        this.plugin.actions.reveal(view, th);
       });
     }
     if (orphans.length) {
       el.createDiv({
         cls: "ma-orphans-title",
-        text: `⚠ ${orphans.length} commentaire(s) dont le passage a disparu (marqueurs supprimés)`,
+        text: t("orphans", { n: orphans.length }),
       });
-      for (const t of orphans) {
-        const item = el.createDiv({ cls: "ma-panel-item is-orphan", attr: { "data-ma-thread": t.id } });
-        renderThread(item, t, handlers, { quote: true, categories, composer, editing: this.editing });
+      for (const th of orphans) {
+        const item = el.createDiv({ cls: "ma-panel-item is-orphan", attr: { "data-ma-thread": th.id } });
+        renderThread(item, th, handlers, { quote: true, categories, composer, editing: this.editing });
       }
     }
     const toFocus = area as HTMLTextAreaElement | null;

@@ -1,27 +1,32 @@
 import { debounce, MarkdownView, Plugin, TFile, WorkspaceLeaf, WorkspaceSplit } from "obsidian";
-import type { EditorView } from "@codemirror/view";
 import { Actions } from "./actions";
-import { annotationExtension, refreshEffect } from "./editorExtension";
-import { DEFAULT_SETTINGS, Settings, SettingsTab } from "./settings";
+import { allEditorViews, annotationExtension, refreshEffect } from "./editorExtension";
+import { categoryClass, categoryCss, defaultSettings, Settings, SettingsTab } from "./settings";
+import { t } from "./i18n";
 import { CommentsPanel, PANEL_VIEW } from "./sidePanel";
 import type { ComposeRequest } from "./ui";
 
 export default class Hypomnema extends Plugin {
   settings!: Settings;
   actions!: Actions;
+  private categoryStyle!: HTMLStyleElement;
 
   async onload() {
     await this.loadSettings();
+    // Couleurs des catégories : une feuille de style gérée par le plugin plutôt que des styles en ligne.
+    this.categoryStyle = document.head.createEl("style", { attr: { id: "hypomnema-categories" } });
+    this.register(() => this.categoryStyle.remove());
+    this.categoryStyle.textContent = categoryCss(this.settings.categories);
     this.actions = new Actions(this);
     this.actions.compose = (view, req) => void this.compose(view, req);
 
     this.registerView(PANEL_VIEW, (leaf) => new CommentsPanel(leaf, this));
-    this.registerEditorExtension(annotationExtension((id) => this.showThread(id), (tag) => this.colorOf(tag)));
+    this.registerEditorExtension(annotationExtension((id) => this.showThread(id), (tag) => categoryClass(this.settings.categories, tag)));
     this.addSettingTab(new SettingsTab(this.app, this));
 
     this.addCommand({
       id: "comment-selection",
-      name: "Commenter la sélection ou le curseur",
+      name: t("cmdComment"),
       icon: "message-square-plus",
       editorCheckCallback: (checking, _editor, ctx) => {
         if (!(ctx instanceof MarkdownView)) return false;
@@ -31,17 +36,17 @@ export default class Hypomnema extends Plugin {
     });
     this.addCommand({
       id: "open-panel",
-      name: "Afficher le panneau des commentaires",
+      name: t("cmdOpenPanel"),
       callback: () => this.openPanel(),
     });
-    this.addRibbonIcon("message-square", "Panneau des commentaires", () => this.openPanel());
+    this.addRibbonIcon("message-square", t("ribbon"), () => this.openPanel());
 
     this.registerEvent(
       this.app.workspace.on("editor-menu", (menu, editor, ctx) => {
         if (!(ctx instanceof MarkdownView)) return;
         menu.addItem((item) =>
           item
-            .setTitle(editor.somethingSelected() ? "Commenter la sélection" : "Commenter ici")
+            .setTitle(editor.somethingSelected() ? t("menuSelection") : t("menuHere"))
             .setIcon("message-square-plus")
             .setSection("selection")
             .onClick(() => this.actions.startDraft(ctx)),
@@ -80,7 +85,7 @@ export default class Hypomnema extends Plugin {
   async loadSettings() {
     const data = (await this.loadData()) as Partial<Settings> | null;
     this.settings = {
-      categories: data?.categories ?? DEFAULT_SETTINGS.categories.map((c) => ({ ...c })),
+      categories: data?.categories ?? defaultSettings().categories,
       addedTags: data?.addedTags ?? {},
     };
   }
@@ -88,17 +93,9 @@ export default class Hypomnema extends Plugin {
   /** Enregistre les réglages et rafraîchit couleurs et panneau dans les notes ouvertes. */
   async saveSettings() {
     await this.saveData(this.settings);
-    this.app.workspace.iterateAllLeaves((leaf) => {
-      if (!(leaf.view instanceof MarkdownView)) return;
-      const cm = (leaf.view.editor as unknown as { cm?: EditorView }).cm;
-      cm?.dispatch({ effects: refreshEffect.of(null) });
-    });
+    this.categoryStyle.textContent = categoryCss(this.settings.categories);
+    for (const view of allEditorViews()) view.dispatch({ effects: refreshEffect.of(null) });
     this.panels().forEach((p) => p.render());
-  }
-
-  colorOf(tag?: string): string | undefined {
-    if (!tag) return undefined;
-    return this.settings.categories.find((c) => c.tag === tag)?.color;
   }
 
   private panels(): CommentsPanel[] {

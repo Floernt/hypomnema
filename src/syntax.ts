@@ -223,7 +223,14 @@ export function nextId(parsed: Parsed): string {
   return `a${max + 1}`;
 }
 
-export class AnnotationError extends Error {}
+export type AnnotationErrorCode = "in-block" | "cuts-marker" | "not-found";
+
+/** Erreur prévisible ; `code` permet à l'interface d'afficher un message traduit. */
+export class AnnotationError extends Error {
+  constructor(readonly code: AnnotationErrorCode, message: string) {
+    super(message);
+  }
+}
 
 /** Pose les marqueurs d'un nouveau commentaire, sans texte (brouillon à compléter par editEntry). */
 export function addAnchor(doc: string, from: number, to: number): { id: string; changes: Change[] } {
@@ -234,12 +241,12 @@ export function addAnchor(doc: string, from: number, to: number): { id: string; 
 
   const parsed = parse(doc);
   if (parsed.block && to > parsed.block.from) {
-    throw new AnnotationError("Impossible de commenter le bloc d'annotations lui-même.");
+    throw new AnnotationError("in-block", "Impossible de commenter le bloc d'annotations lui-même.");
   }
   for (const a of parsed.anchors) {
     for (const [s, e] of [[a.openFrom, a.openTo], [a.closeFrom, a.closeTo]]) {
       if ((from > s && from < e) || (to > s && to < e)) {
-        throw new AnnotationError("La sélection coupe un marqueur de commentaire existant.");
+        throw new AnnotationError("cuts-marker", "La sélection coupe un marqueur de commentaire existant.");
       }
     }
   }
@@ -277,7 +284,7 @@ function threadOrder(a: Thread, b: Thread): number {
 
 function findThread(parsed: Parsed, id: string): Thread {
   const t = parsed.threads.find((x) => x.id === rootOf(id));
-  if (!t) throw new AnnotationError(`Commentaire ${id} introuvable.`);
+  if (!t) throw new AnnotationError("not-found", `Commentaire ${id} introuvable.`);
   return t;
 }
 
@@ -294,7 +301,7 @@ export function editEntry(doc: string, id: string, text: string, date: string, t
   const parsed = parse(doc);
   const t = findThread(parsed, id);
   const entry = id.includes(".") ? t.replies.find((r) => r.id === id) : t.root;
-  if (!entry) throw new AnnotationError(`Commentaire ${id} introuvable.`);
+  if (!entry) throw new AnnotationError("not-found", `Commentaire ${id} introuvable.`);
   entry.text = sanitize(text);
   if (!id.includes(".")) {
     if (tag) entry.tag = tag;

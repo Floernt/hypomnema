@@ -6,6 +6,16 @@ Les commentaires sont stockés en texte brut dans les notes des utilisateurs. To
 
 ## [Non publié]
 
+### Ajouté
+
+- Interface en anglais. Le plugin suit la langue d'Obsidian : français quand Obsidian est en français, anglais sinon. Cela couvre les commandes, le menu contextuel, le panneau, la rédaction, les messages et les réglages. La catégorie d'exemple créée à la première installation suit la même règle (« Idée » / « Idea »).
+- Lien vers l'[Obsidian Web Clipper](https://obsidian.md/clipper) dans le README.
+
+### Modifié
+
+- Les couleurs des catégories passent par des classes CSS, générées dans une feuille de style propre au plugin, et non plus par des styles en ligne, conformément aux règles des plugins Obsidian.
+- La mise en évidence d'un passage et le rafraîchissement des éditeurs passent par l'API publique de CodeMirror, et non plus par l'accès interne `editor.cm`.
+
 ## [0.3.1] — 2026-10-31
 
 ### Corrigé

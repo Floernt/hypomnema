@@ -1,11 +1,33 @@
 import { EditorState, Extension, Range, StateEffect, StateField } from "@codemirror/state";
-import { Decoration, DecorationSet, EditorView, WidgetType } from "@codemirror/view";
-import { editorLivePreviewField, setIcon } from "obsidian";
+import { Decoration, DecorationSet, EditorView, ViewPlugin, WidgetType } from "@codemirror/view";
+import { editorInfoField, editorLivePreviewField, MarkdownView, setIcon } from "obsidian";
 import { parse, Parsed } from "./syntax";
+import { t } from "./i18n";
 
-/** Couleur d'une catégorie à partir de son tag (fournie par le plugin, selon les réglages). */
-export type ColorOf = (tag?: string) => string | undefined;
-let colorOf: ColorOf = () => undefined;
+/** Classe CSS de la catégorie d'un tag (fournie par le plugin, selon les réglages) ; chaîne vide si aucune. */
+export type ClassOf = (tag?: string) => string;
+let classOf: ClassOf = () => "";
+
+/** Éditeurs ouverts, pour leur envoyer des effets sans passer par l'accès interne `editor.cm`. */
+const liveViews = new Set<EditorView>();
+const registry = ViewPlugin.fromClass(
+  class {
+    constructor(readonly view: EditorView) {
+      liveViews.add(view);
+    }
+    destroy() {
+      liveViews.delete(this.view);
+    }
+  },
+);
+
+export function allEditorViews(): EditorView[] {
+  return [...liveViews];
+}
+
+export function editorViewOf(view: MarkdownView): EditorView | undefined {
+  return allEditorViews().find((v) => v.state.field(editorInfoField, false) === view);
+}
 
 /** Force le recalcul des décorations (après un changement de réglages). */
 export const refreshEffect = StateEffect.define<null>();
@@ -37,7 +59,7 @@ class BlockWidget extends WidgetType {
   toDOM(view: EditorView) {
     const el = document.createElement("div");
     el.className = "ma-block-widget";
-    el.textContent = `💬 ${this.count} commentaire${this.count > 1 ? "s" : ""} — bloc d'annotations (cliquer pour l'afficher)`;
+    el.textContent = this.count === 1 ? t("blockOne") : t("blockMany", { n: this.count });
     el.addEventListener("mousedown", (e) => {
       e.preventDefault();
       view.dispatch({ selection: { anchor: this.from + 3 } });
@@ -52,17 +74,16 @@ class BlockWidget extends WidgetType {
 
 /** Commentaire posé au curseur : une petite bulle à la place des deux marqueurs. */
 class PointWidget extends WidgetType {
-  constructor(private id: string, private color: string | undefined) {
+  constructor(private id: string, private cls: string) {
     super();
   }
   eq(o: PointWidget) {
-    return o.id === this.id && o.color === this.color;
+    return o.id === this.id && o.cls === this.cls;
   }
   toDOM() {
     const el = document.createElement("span");
-    el.className = "ma-anchor ma-point";
+    el.className = `ma-anchor ma-point ${this.cls}`.trim();
     el.dataset.maId = this.id;
-    if (this.color) el.style.setProperty("--ma-color", this.color);
     setIcon(el, "message-square");
     return el;
   }
@@ -85,18 +106,18 @@ function buildDecorations(state: EditorState): { decos: DecorationSet; atomic: D
 
   const tags = new Map(parsed.threads.map((t) => [t.id, t.root.tag]));
   for (const a of parsed.anchors) {
-    const color = colorOf(tags.get(a.id));
+    const cls = classOf(tags.get(a.id));
     if (a.closeFrom === a.openTo) {
       // Point : bulle cliquable, sauf si le curseur est à l'intérieur des marqueurs (édition à la main).
       if (live && !overlaps(state, a.openFrom, a.closeTo)) {
-        decos.push(Decoration.replace({ widget: new PointWidget(a.id, color) }).range(a.openFrom, a.closeTo));
+        decos.push(Decoration.replace({ widget: new PointWidget(a.id, cls) }).range(a.openFrom, a.closeTo));
       }
       if (live) atomic.push(hidden.range(a.openFrom, a.closeTo));
       continue;
     }
-    const attributes: Record<string, string> = { "data-ma-id": a.id };
-    if (color) attributes.style = `--ma-color: ${color}`;
-    decos.push(Decoration.mark({ class: "ma-anchor", attributes }).range(a.openTo, a.closeFrom));
+    decos.push(
+      Decoration.mark({ class: `ma-anchor ${cls}`.trim(), attributes: { "data-ma-id": a.id } }).range(a.openTo, a.closeFrom),
+    );
     if (!live) continue;
     for (const [s, e] of [[a.openFrom, a.openTo], [a.closeFrom, a.closeTo]]) {
       atomic.push(hidden.range(s, e));
@@ -131,9 +152,10 @@ const decorationField = StateField.define<{ decos: DecorationSet; atomic: Decora
 });
 
 /** Un clic sur un passage commenté ouvre son fil dans le panneau latéral. */
-export function annotationExtension(onAnchorClick: (id: string) => void, resolveColor: ColorOf): Extension {
-  colorOf = resolveColor;
+export function annotationExtension(onAnchorClick: (id: string) => void, resolveClass: ClassOf): Extension {
+  classOf = resolveClass;
   return [
+    registry,
     parsedField,
     flashField,
     decorationField,

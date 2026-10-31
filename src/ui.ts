@@ -1,6 +1,7 @@
 import { App, Modal, setIcon } from "obsidian";
 import type { Entry, Thread } from "./syntax";
-import type { Category } from "./settings";
+import { categoryClass, Category } from "./settings";
+import { t } from "./i18n";
 
 export interface ThreadHandlers {
   onReply(rootId: string): void;
@@ -43,14 +44,14 @@ function renderEntry(parent: HTMLElement, e: Entry, isReply: boolean, h: ThreadH
   const el = parent.createDiv({ cls: isReply ? "ma-entry ma-reply" : "ma-entry" });
   const head = el.createDiv({ cls: "ma-entry-head" });
   const meta = head.createDiv({ cls: "ma-meta" });
-  meta.createSpan({ cls: "ma-date", text: e.date || "sans commentaire" });
+  meta.createSpan({ cls: "ma-date", text: e.date || t("noComment") });
   if (e.tag) {
     const cat = categories.find((c) => c.tag === e.tag);
     meta.createSpan({ cls: "ma-tag", text: cat?.name || `#${e.tag}` });
   }
   const actions = head.createDiv({ cls: "ma-actions" });
-  iconButton(actions, "pencil", "Modifier", () => h.onEdit(e.id));
-  iconButton(actions, "trash-2", isReply ? "Supprimer la réponse" : "Supprimer le fil", () => h.onDelete(e.id));
+  iconButton(actions, "pencil", t("edit"), () => h.onEdit(e.id));
+  iconButton(actions, "trash-2", isReply ? t("deleteReply") : t("deleteThread"), () => h.onDelete(e.id));
   if (e.text) el.createDiv({ cls: "ma-text", text: e.text });
 }
 
@@ -61,14 +62,15 @@ export function renderComposer(parent: HTMLElement, o: ComposerOptions): HTMLTex
 
   if (o.withCategory) {
     const chips = el.createDiv({ cls: "ma-chips" });
-    const options: { label: string; tag?: string; color?: string }[] = [
-      { label: "Aucune" },
-      ...o.categories.filter((c) => c.tag).map((c) => ({ label: c.name || `#${c.tag}`, tag: c.tag, color: c.color })),
+    const options: { label: string; tag?: string }[] = [
+      { label: t("none") },
+      ...o.categories.filter((c) => c.tag).map((c) => ({ label: c.name || `#${c.tag}`, tag: c.tag })),
     ];
     if (o.draft.tag && !o.categories.some((c) => c.tag === o.draft.tag)) options.push({ label: `#${o.draft.tag}`, tag: o.draft.tag });
     for (const opt of options) {
       const chip = chips.createEl("button", { cls: "ma-chip", text: opt.label });
-      if (opt.color) chip.style.setProperty("--ma-color", opt.color);
+      const cls = categoryClass(o.categories, opt.tag);
+      if (cls) chip.addClass(cls);
       chip.toggleClass("is-selected", opt.tag === o.draft.tag);
       chip.addEventListener("click", () => {
         o.draft.tag = opt.tag;
@@ -80,7 +82,7 @@ export function renderComposer(parent: HTMLElement, o: ComposerOptions): HTMLTex
 
   const area = el.createEl("textarea", {
     cls: "ma-textarea",
-    attr: { placeholder: o.request.mode === "reply" ? "Votre réponse…" : "Votre commentaire…", rows: "4" },
+    attr: { placeholder: o.request.mode === "reply" ? t("placeholderReply") : t("placeholderComment"), rows: "4" },
   });
   area.value = o.draft.text;
   area.addEventListener("input", () => (o.draft.text = area.value));
@@ -95,8 +97,8 @@ export function renderComposer(parent: HTMLElement, o: ComposerOptions): HTMLTex
   });
 
   const bar = el.createDiv({ cls: "ma-composer-bar" });
-  bar.createEl("button", { text: "Annuler" }).addEventListener("click", () => o.onCancel());
-  bar.createEl("button", { cls: "mod-cta", text: "Enregistrer" }).addEventListener("click", () => o.onSave());
+  bar.createEl("button", { text: t("cancel") }).addEventListener("click", () => o.onCancel());
+  bar.createEl("button", { cls: "mod-cta", text: t("save") }).addEventListener("click", () => o.onSave());
   return area;
 }
 
@@ -109,30 +111,30 @@ export interface RenderThreadOptions {
 }
 
 /** Affiche un fil (commentaire + réponses), avec le compositeur à la place de l'entrée en cours d'édition. */
-export function renderThread(parent: HTMLElement, t: Thread, h: ThreadHandlers, o: RenderThreadOptions) {
+export function renderThread(parent: HTMLElement, th: Thread, h: ThreadHandlers, o: RenderThreadOptions) {
   if (o.quote) {
     parent.createEl("blockquote", {
       cls: "ma-quote",
-      text: t.anchor ? truncate(t.quote) || "(point)" : "Passage introuvable (marqueurs supprimés)",
+      text: th.anchor ? truncate(th.quote) || t("point") : t("passageMissing"),
     });
   }
   const ed = o.editing;
-  const editingRoot = ed && ((ed.mode === "new" && ed.id === t.id) || (ed.mode === "edit" && ed.id === t.id));
+  const editingRoot = ed && ((ed.mode === "new" && ed.id === th.id) || (ed.mode === "edit" && ed.id === th.id));
   if (editingRoot && o.composer) o.composer(parent, true);
-  else renderEntry(parent, t.root, false, h, o.categories);
+  else renderEntry(parent, th.root, false, h, o.categories);
 
-  for (const r of t.replies) {
+  for (const r of th.replies) {
     if (ed?.mode === "edit" && ed.id === r.id && o.composer) o.composer(parent, false);
     else renderEntry(parent, r, true, h, o.categories);
   }
 
-  if (ed?.mode === "reply" && ed.id === t.id && o.composer) {
+  if (ed?.mode === "reply" && ed.id === th.id && o.composer) {
     o.composer(parent, false);
   } else if (!editingRoot) {
-    const reply = parent.createEl("button", { cls: "ma-reply-btn", text: "Répondre" });
+    const reply = parent.createEl("button", { cls: "ma-reply-btn", text: t("reply") });
     reply.addEventListener("click", (e) => {
       e.stopPropagation();
-      h.onReply(t.id);
+      h.onReply(th.id);
     });
   }
 }
@@ -143,11 +145,11 @@ export class ConfirmModal extends Modal {
   }
 
   onOpen() {
-    this.titleEl.setText("Confirmer la suppression");
+    this.titleEl.setText(t("confirmTitle"));
     this.contentEl.createEl("p", { text: this.message });
     const bar = this.contentEl.createDiv({ cls: "modal-button-container" });
-    bar.createEl("button", { text: "Annuler" }).addEventListener("click", () => this.close());
-    bar.createEl("button", { cls: "mod-warning", text: "Supprimer" }).addEventListener("click", () => {
+    bar.createEl("button", { text: t("cancel") }).addEventListener("click", () => this.close());
+    bar.createEl("button", { cls: "mod-warning", text: t("delete") }).addEventListener("click", () => {
       this.close();
       this.onConfirm();
     });

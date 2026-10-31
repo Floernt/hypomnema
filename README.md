@@ -4,17 +4,17 @@
 
 ## English
 
-Hypomnema is an Obsidian plugin for augmented reading, reflection and knowledge organisation. Comment on a passage, or on a precise point, of any note. Write, reply and navigate in a side panel, much like the comments pane in Word. Classify your comments into coloured categories linked to tags. It works especially well with articles saved through the Web Clipper: the source text and your remarks never get mixed up.
+Hypomnema is an Obsidian plugin for augmented reading, reflection and knowledge organisation. Comment on a passage, or on a precise point, of any note. Write, reply and navigate in a side panel, much like the comments pane in Word. Classify your comments into coloured categories linked to tags. It works especially well with web articles saved through the [Obsidian Web Clipper](https://obsidian.md/clipper), the official browser extension that turns a web page into a Markdown note: the source text and your remarks never get mixed up.
 
 Comments are stored as plain text inside the note itself. They are searchable, they sync with the rest of your vault, and they remain readable without the plugin.
 
-> The plugin's interface is currently in French. An English interface is planned.
+> The plugin's interface follows Obsidian's language: French when Obsidian is set to French, English otherwise.
 
 ### A tour in six screenshots
 
 The screenshots below come from the sample vault in [`demo-vault/`](demo-vault/), with real Obsidian and the real plugin, in Live Preview.
 
-**1. The text, and the thinking next to it.** Commented passages get a light tint and an underline in their category's colour. The *Commentaires* panel on the right lists every comment in text order, with the quoted passage, the date, the category and the replies. The note itself stays readable: no inline clutter, no footnotes to scroll to.
+**1. The text, and the thinking next to it.** Commented passages get a light tint and an underline in their category's colour. The *Comments* panel on the right lists every comment in text order, with the quoted passage, the date, the category and the replies. The note itself stays readable: no inline clutter, no footnotes to scroll to.
 
 ![Overview: a clipped article with coloured commented passages and the comments panel](docs/screenshots/01-overview-en.png)
 
@@ -40,10 +40,10 @@ The screenshots below come from the sample vault in [`demo-vault/`](demo-vault/)
 
 ### Usage
 
-- **Comment**: select a passage, or just place the cursor, then right-click (*Commenter la sélection* / *Commenter ici*) or use the command palette. For speed, assign a hotkey to the command *Commenter la sélection ou le curseur* in *Settings → Hotkeys*; Ctrl+Alt+M, the Word shortcut, works well. You write in the right-hand panel, so the text stays visible. Ctrl+Enter saves and Esc cancels.
+- **Comment**: select a passage, or just place the cursor, then right-click (*Comment on selection* / *Comment here*) or use the command palette. For speed, assign a hotkey to the command *Comment on selection or cursor* in *Settings → Hotkeys*; Ctrl+Alt+M, the Word shortcut, works well. You write in the right-hand panel, so the text stays visible. Ctrl+Enter saves and Esc cancels.
 - **Categories**: while writing, pick a category (a coloured chip). It colours the passage and adds its tag to the note's properties. Categories (name, colour, tag) are set in *Settings → Hypomnema*.
 - **In the note**: a commented passage is underlined, and a comment placed at the cursor shows as a small bubble. Click either one to open its thread in the panel.
-- **Panel**: a *Commentaires* tab sits in the right sidebar, next to backlinks, outgoing links and the outline. It lists the note's comments in text order; click one to jump to its passage.
+- **Panel**: a *Comments* tab sits in the right sidebar, next to backlinks, outgoing links and the outline. It lists the note's comments in text order; click one to jump to its passage.
 - **Reply / edit / delete**: each thread offers these actions. Deleting a comment removes its markers and leaves the source text untouched. Ctrl+Z undoes.
 - **Search**: comments are text in the note, so Obsidian's search finds them across the vault. Category tags live in the note's properties and work with `tag:#…`, the tags pane and Dataview.
 
@@ -90,7 +90,9 @@ Until the plugin is listed in the community directory, download `main.js`, `mani
 
 ## Français
 
-Hypomnema est un outil de lecture augmentée, de réflexion et d'organisation de la connaissance. Il permet de commenter un passage ou un point précis d'une note. On rédige, on répond et on navigue dans un panneau latéral, comme le volet des commentaires de Word. Les commentaires se classent par catégories de couleur reliées à des tags. Il convient particulièrement aux articles capturés avec le Web Clipper : le texte source et vos remarques ne se mélangent jamais.
+Hypomnema est un outil de lecture augmentée, de réflexion et d'organisation de la connaissance. Il permet de commenter un passage ou un point précis d'une note. On rédige, on répond et on navigue dans un panneau latéral, comme le volet des commentaires de Word. Les commentaires se classent par catégories de couleur reliées à des tags. Il convient particulièrement aux articles du web capturés avec l'[Obsidian Web Clipper](https://obsidian.md/clipper), l'extension officielle qui transforme une page web en note Markdown : le texte source et vos remarques ne se mélangent jamais.
+
+L'interface du plugin suit la langue d'Obsidian : en français quand Obsidian est en français, en anglais sinon.
 
 Les commentaires restent du texte brut dans la note : ils sont cherchables, synchronisables et lisibles sans le plugin.
 
