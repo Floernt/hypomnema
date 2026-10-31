@@ -6,10 +6,13 @@ Les commentaires sont stockés en texte brut dans les notes des utilisateurs. To
 
 ## [Non publié]
 
+## [0.3.0] — 2026-10-31
+
 ### Modifié
 
 - Le plugin s'appelle désormais **Hypomnema** (identifiant `hypomnema`, auparavant « Marge — annotations », `marge-annotations`). Le nom précédent était trop proche d'un plugin existant du catalogue (« Margin Annotations »). Le nouveau nom reflète sa vocation : un outil de lecture augmentée, de réflexion et d'organisation de la connaissance, sans lien avec un domaine particulier.
 - La catégorie d'exemple devient « Idée » (`idee`) au lieu de « Droit privé ».
+- README bilingue (anglais et français) ; description du manifeste en anglais pour le catalogue communautaire.
 
 ### Migration depuis « Marge — annotations »
 
@@ -90,8 +93,5 @@ Les commentaires sont stockés en texte brut dans les notes des utilisateurs. To
 - Passage commenté : `%%[aN%%texte%%aN]%%`.
 - Bloc en fin de note : `%% annotations` … `%%`, une entrée par ligne (`[aN] AAAA-MM-JJ texte`), les réponses étant notées `[aN.k]` et indentées.
 
-[Non publié]: https://github.com/Floernt/hypomnema/compare/0.2.0...HEAD
-[0.2.0]: https://github.com/Floernt/hypomnema/compare/0.1.2...0.2.0
-[0.1.2]: https://github.com/Floernt/hypomnema/compare/0.1.1...0.1.2
-[0.1.1]: https://github.com/Floernt/hypomnema/compare/0.1.0...0.1.1
-[0.1.0]: https://github.com/Floernt/hypomnema/releases/tag/0.1.0
+[Non publié]: https://github.com/Floernt/hypomnema/compare/0.3.0...HEAD
+[0.3.0]: https://github.com/Floernt/hypomnema/releases/tag/0.3.0
