@@ -63,6 +63,7 @@ export default class Hypomnema extends Plugin {
     // Ouvrir une autre note dans le même onglet ne change pas la feuille active. Si le panneau a le focus
     // (rédaction en cours), seul « layout-change » est émis : chaque panneau revérifie alors la note qu'il suit.
     const follow = () => {
+      this.dedupePanels();
       const view = this.app.workspace.getActiveViewOfType(MarkdownView);
       this.panels().forEach((p) => p.follow(view));
     };
@@ -102,10 +103,21 @@ export default class Hypomnema extends Plugin {
     return this.app.workspace.getLeavesOfType(PANEL_VIEW).map((l) => l.view).filter((v): v is CommentsPanel => v instanceof CommentsPanel);
   }
 
+  /**
+   * Chaque rechargement du plugin (mise à jour, désactivation puis réactivation) peut laisser un onglet de plus,
+   * qui n'apparaît parfois qu'après le chargement : on n'en garde qu'un, de préférence celui déjà affiché.
+   */
+  private dedupePanels(): WorkspaceLeaf | undefined {
+    const leaves = this.app.workspace.getLeavesOfType(PANEL_VIEW);
+    const keep = leaves.find((l) => l.view instanceof CommentsPanel) ?? leaves[0];
+    for (const leaf of leaves) if (leaf !== keep) leaf.detach();
+    return keep;
+  }
+
   /** Crée l'onglet du panneau dans la barre de droite, à côté des rétroliens, liens sortants et plan. */
   private async ensurePanel(): Promise<WorkspaceLeaf | null> {
     const ws = this.app.workspace;
-    const existing = ws.getLeavesOfType(PANEL_VIEW)[0];
+    const existing = this.dedupePanels();
     if (existing) return existing;
     const sibling = ["backlink", "outgoing-link", "outline"]
       .map((type) => ws.getLeavesOfType(type)[0])

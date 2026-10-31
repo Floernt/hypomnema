@@ -1,6 +1,6 @@
 {
   "name": "hypomnema",
-  "version": "0.3.1",
+  "version": "0.4.0",
   "description": "Lecture augmentée pour Obsidian : commentaires sur des passages, fils de réponse et catégories liées à des tags.",
   "main": "main.js",
   "private": true,

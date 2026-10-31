@@ -6,6 +6,8 @@ Les commentaires sont stockés en texte brut dans les notes des utilisateurs. To
 
 ## [Non publié]
 
+## [0.4.0] — 2026-10-31
+
 ### Ajouté
 
 - Interface en anglais. Le plugin suit la langue d'Obsidian : français quand Obsidian est en français, anglais sinon. Cela couvre les commandes, le menu contextuel, le panneau, la rédaction, les messages et les réglages. La catégorie d'exemple créée à la première installation suit la même règle (« Idée » / « Idea »).
@@ -15,6 +17,11 @@ Les commentaires sont stockés en texte brut dans les notes des utilisateurs. To
 
 - Les couleurs des catégories passent par des classes CSS, générées dans une feuille de style propre au plugin, et non plus par des styles en ligne, conformément aux règles des plugins Obsidian.
 - La mise en évidence d'un passage et le rafraîchissement des éditeurs passent par l'API publique de CodeMirror, et non plus par l'accès interne `editor.cm`.
+- Captures d'écran anglaises refaites avec l'interface en anglais.
+
+### Corrigé
+
+- Chaque rechargement du plugin (mise à jour, désactivation puis réactivation) ajoutait un onglet « Commentaires » de plus dans la barre latérale. Les doublons sont désormais fermés et un seul onglet est conservé.
 
 ## [0.3.1] — 2026-10-31
 
@@ -119,6 +126,7 @@ Les commentaires sont stockés en texte brut dans les notes des utilisateurs. To
 - Passage commenté : `%%[aN%%texte%%aN]%%`.
 - Bloc en fin de note : `%% annotations` … `%%`, une entrée par ligne (`[aN] AAAA-MM-JJ texte`), les réponses étant notées `[aN.k]` et indentées.
 
-[Non publié]: https://github.com/Floernt/hypomnema/compare/0.3.1...HEAD
+[Non publié]: https://github.com/Floernt/hypomnema/compare/0.4.0...HEAD
+[0.4.0]: https://github.com/Floernt/hypomnema/compare/0.3.1...0.4.0
 [0.3.1]: https://github.com/Floernt/hypomnema/compare/0.3.0...0.3.1
 [0.3.0]: https://github.com/Floernt/hypomnema/releases/tag/0.3.0
