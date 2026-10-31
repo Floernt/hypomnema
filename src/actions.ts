@@ -122,7 +122,7 @@ export class Actions {
 
     // Enregistre d'abord la note, pour que la modification des propriétés parte du texte à jour.
     await view.save();
-    await this.plugin.app.fileManager.processFrontMatter(file, (fm) => {
+    await this.plugin.app.fileManager.processFrontMatter(file, (fm: { tags?: unknown }) => {
       const tags = frontmatterTags(fm.tags).filter((t) => !toRemove.includes(t));
       for (const t of toAdd) {
         if (tags.includes(t)) continue; // déjà posé à la main : le plugin ne s'en attribue pas la paternité

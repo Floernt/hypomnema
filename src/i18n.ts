@@ -37,6 +37,8 @@ const en = {
   settingsIntro:
     "Each category links a colour to a tag. A comment filed under a category colours its passage and adds the tag to the " +
     "note's properties; the tag is removed when no comment of that category remains, unless it was already there before.",
+  settingsCategories: "Comment categories",
+  settingsNoCategory: "No category.",
   settingsName: "Name",
   settingsTag: "tag",
   deleteCategory: "Delete category",
@@ -88,6 +90,8 @@ const fr: Record<Key, string> = {
   settingsIntro:
     "Chaque catégorie associe une couleur à un tag. Un commentaire classé dans une catégorie colore son passage et ajoute le " +
     "tag aux propriétés de la note ; le tag est retiré quand plus aucun commentaire de cette catégorie n'y figure, sauf s'il était déjà présent avant.",
+  settingsCategories: "Catégories de commentaires",
+  settingsNoCategory: "Aucune catégorie.",
   settingsName: "Nom",
   settingsTag: "tag",
   deleteCategory: "Supprimer la catégorie",

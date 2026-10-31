@@ -68,7 +68,7 @@ export function parse(doc: string): Parsed {
 
 function parseBlock(doc: string): Block | null {
   let header: RegExpExecArray | null = null;
-  for (const m of doc.matchAll(HEADER_RE)) header = m as RegExpExecArray;
+  for (const m of doc.matchAll(HEADER_RE)) header = m;
   if (!header) return null;
 
   const from = header.index;
@@ -100,21 +100,21 @@ function parseBlock(doc: string): Block | null {
 
 function parseAnchors(doc: string, block: Block | null): Anchor[] {
   const outside = (i: number) => !block || i < block.from || i >= block.to;
-  const opens = new Map<string, RegExpMatchArray>();
+  const opens = new Map<string, RegExpExecArray>();
   for (const m of doc.matchAll(OPEN_RE)) {
-    if (outside(m.index!) && !opens.has(m[1])) opens.set(m[1], m);
+    if (outside(m.index) && !opens.has(m[1])) opens.set(m[1], m);
   }
   const anchors: Anchor[] = [];
   for (const m of doc.matchAll(CLOSE_RE)) {
     const open = opens.get(m[1]);
-    if (!open || !outside(m.index!) || m.index! < open.index! + open[0].length) continue;
+    if (!open || !outside(m.index) || m.index < open.index + open[0].length) continue;
     opens.delete(m[1]);
     anchors.push({
       id: m[1],
-      openFrom: open.index!,
-      openTo: open.index! + open[0].length,
-      closeFrom: m.index!,
-      closeTo: m.index! + m[0].length,
+      openFrom: open.index,
+      openTo: open.index + open[0].length,
+      closeFrom: m.index,
+      closeTo: m.index + m[0].length,
     });
   }
   return anchors.sort((a, b) => a.openFrom - b.openFrom);
@@ -273,13 +273,6 @@ export function addComment(doc: string, from: number, to: number, text: string, 
 function shiftToOrigin(doc: string, modified: string, changes: Change[]): Change[] {
   const delta = modified.length - doc.length;
   return changes.map((c) => ({ from: Math.max(c.from - delta, 0), to: c.to - delta, insert: c.insert }));
-}
-
-function threadOrder(a: Thread, b: Thread): number {
-  if (a.anchor && b.anchor) return a.anchor.openFrom - b.anchor.openFrom || num(a.id) - num(b.id);
-  if (a.anchor) return -1;
-  if (b.anchor) return 1;
-  return num(a.id) - num(b.id);
 }
 
 function findThread(parsed: Parsed, id: string): Thread {

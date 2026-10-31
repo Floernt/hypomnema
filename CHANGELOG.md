@@ -6,13 +6,23 @@ Les commentaires sont stockés en texte brut dans les notes des utilisateurs. To
 
 ## [Non publié]
 
+## [0.4.1] — 2026-10-31
+
+Corrections demandées par la relecture du catalogue communautaire d'Obsidian.
+
 ### Ajouté
 
+- Les réglages apparaissent dans la recherche des paramètres d'Obsidian (versions 1.13 et suivantes), grâce à l'API déclarative des réglages. Les versions antérieures gardent l'affichage précédent.
+- Les fichiers des releases sont construits par GitHub Actions et accompagnés d'une attestation de provenance : `gh attestation verify main.js -R Floernt/hypomnema` confirme qu'ils proviennent du dépôt.
 - Section « Contribuer » dans le README, avec les règles de contribution et la liste des traductions disponibles et à faire.
 
 ### Modifié
 
+- `minAppVersion` passe à 1.7.2 : le plugin attend le chargement des onglets différés, que seule cette version garantit.
+- Les couleurs des catégories ne passent plus par une feuille de style créée par le plugin, mais par des variables CSS posées sur la page et lues par `styles.css`. Au-delà de vingt catégories, les suivantes prennent la couleur par défaut.
+- Le passage commenté garde l'apparence du texte courant sans recourir au sélecteur CSS `:has`, coûteux en performances.
 - Le choix de la langue de l'interface passe par une table des langues disponibles : ajouter une traduction revient à ajouter un dictionnaire et une ligne. Une variante régionale (`pt-br`) se replie sur sa langue de base (`pt`), puis sur l'anglais.
+- Nettoyage signalé par la relecture : éléments créés avec les utilitaires d'Obsidian, typage des propriétés de la note, assertions et fonction inutiles retirées, dépendance `builtin-modules` remplacée par le module natif de Node.
 
 ## [0.4.0] — 2026-10-31
 
@@ -134,7 +144,8 @@ Les commentaires sont stockés en texte brut dans les notes des utilisateurs. To
 - Passage commenté : `%%[aN%%texte%%aN]%%`.
 - Bloc en fin de note : `%% annotations` … `%%`, une entrée par ligne (`[aN] AAAA-MM-JJ texte`), les réponses étant notées `[aN.k]` et indentées.
 
-[Non publié]: https://github.com/Floernt/hypomnema/compare/0.4.0...HEAD
+[Non publié]: https://github.com/Floernt/hypomnema/compare/0.4.1...HEAD
+[0.4.1]: https://github.com/Floernt/hypomnema/compare/0.4.0...0.4.1
 [0.4.0]: https://github.com/Floernt/hypomnema/compare/0.3.1...0.4.0
 [0.3.1]: https://github.com/Floernt/hypomnema/compare/0.3.0...0.3.1
 [0.3.0]: https://github.com/Floernt/hypomnema/releases/tag/0.3.0

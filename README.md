@@ -168,8 +168,8 @@ The version history, including every change to the storage format, is kept in [C
 
 1. Move the `[Non publié]` entries under a new, dated version number.
 2. Set that number in `manifest.json` and `package.json`, and add it to `versions.json` with its `minAppVersion`.
-3. Run `npm test`, then `npm run build`.
-4. Create a GitHub release whose tag is exactly that number (no `v`), with `main.js`, `manifest.json` and `styles.css` attached.
+3. Run `npm test`, then `npm run build`, and commit.
+4. Push a tag that is exactly that number (no `v`), for example `git tag 0.4.1 && git push origin 0.4.1`. The [release workflow](.github/workflows/release.yml) builds `main.js`, `manifest.json` and `styles.css` from the repository, attests their provenance and publishes the GitHub release with the matching CHANGELOG section. Anyone can check a downloaded file with `gh attestation verify main.js -R Floernt/hypomnema`.
 
 ## Contributing / Contribuer
 

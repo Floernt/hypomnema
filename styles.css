@@ -10,11 +10,35 @@ body {
   --ma-c: var(--ma-color, var(--ma-accent));
 }
 
+/* Couleur de chaque catégorie : le plugin pose --ma-cat-i-color sur <body> (20 catégories au plus). */
+.ma-cat-0 { --ma-color: var(--ma-cat-0-color); }
+.ma-cat-1 { --ma-color: var(--ma-cat-1-color); }
+.ma-cat-2 { --ma-color: var(--ma-cat-2-color); }
+.ma-cat-3 { --ma-color: var(--ma-cat-3-color); }
+.ma-cat-4 { --ma-color: var(--ma-cat-4-color); }
+.ma-cat-5 { --ma-color: var(--ma-cat-5-color); }
+.ma-cat-6 { --ma-color: var(--ma-cat-6-color); }
+.ma-cat-7 { --ma-color: var(--ma-cat-7-color); }
+.ma-cat-8 { --ma-color: var(--ma-cat-8-color); }
+.ma-cat-9 { --ma-color: var(--ma-cat-9-color); }
+.ma-cat-10 { --ma-color: var(--ma-cat-10-color); }
+.ma-cat-11 { --ma-color: var(--ma-cat-11-color); }
+.ma-cat-12 { --ma-color: var(--ma-cat-12-color); }
+.ma-cat-13 { --ma-color: var(--ma-cat-13-color); }
+.ma-cat-14 { --ma-color: var(--ma-cat-14-color); }
+.ma-cat-15 { --ma-color: var(--ma-cat-15-color); }
+.ma-cat-16 { --ma-color: var(--ma-cat-16-color); }
+.ma-cat-17 { --ma-color: var(--ma-cat-17-color); }
+.ma-cat-18 { --ma-color: var(--ma-cat-18-color); }
+.ma-cat-19 { --ma-color: var(--ma-cat-19-color); }
+
 /* Passage commenté : soulignement et fond léger de la couleur de la catégorie, distincts du surlignage ==…== */
 .ma-anchor {
   background-color: color-mix(in srgb, var(--ma-c) 12%, transparent);
   border-radius: 2px;
-  text-decoration: underline dotted var(--ma-c);
+  text-decoration-line: underline;
+  text-decoration-style: dotted;
+  text-decoration-color: var(--ma-c);
   text-decoration-thickness: 2px;
   text-underline-offset: 3px;
   cursor: pointer;
@@ -22,9 +46,8 @@ body {
 
 /* Les marqueurs « %%[aN%% … %%aN]%% » font lire le passage comme un texte entre crochets :
    Obsidian le styliserait en lien. On lui rend l'apparence du texte courant. */
-.cm-s-obsidian span.cm-hmd-barelink:has(.ma-anchor) {
+.cm-s-obsidian span.cm-hmd-barelink .ma-anchor {
   color: var(--text-normal);
-  text-decoration: none;
 }
 
 .ma-flash {

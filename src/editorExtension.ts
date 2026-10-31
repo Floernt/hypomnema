@@ -57,8 +57,7 @@ class BlockWidget extends WidgetType {
     return o.count === this.count && o.from === this.from;
   }
   toDOM(view: EditorView) {
-    const el = document.createElement("div");
-    el.className = "ma-block-widget";
+    const el = createDiv({ cls: "ma-block-widget" });
     el.textContent = this.count === 1 ? t("blockOne") : t("blockMany", { n: this.count });
     el.addEventListener("mousedown", (e) => {
       e.preventDefault();
@@ -81,8 +80,7 @@ class PointWidget extends WidgetType {
     return o.id === this.id && o.cls === this.cls;
   }
   toDOM() {
-    const el = document.createElement("span");
-    el.className = `ma-anchor ma-point ${this.cls}`.trim();
+    const el = createSpan({ cls: `ma-anchor ma-point ${this.cls}`.trim() });
     el.dataset.maId = this.id;
     setIcon(el, "message-square");
     return el;
