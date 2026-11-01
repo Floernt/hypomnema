@@ -1,0 +1,129 @@
+/* Charte Hypomnema appliquée à Starlight. Jetons et polices : brand/design-system/, copiés dans ./brand/ par
+   scripts/sync-assets.mjs. Les jetons basculent d'eux-mêmes avec data-theme (dark / light), posé par Starlight. */
+@import "./brand/tokens.css";
+
+@font-face { font-family: "Newsreader"; src: url("./brand/fonts/Newsreader-Variable.woff2") format("woff2"); font-weight: 200 800; font-style: normal; font-display: swap; }
+@font-face { font-family: "Newsreader"; src: url("./brand/fonts/Newsreader-Variable-Italic.woff2") format("woff2"); font-weight: 200 800; font-style: italic; font-display: swap; }
+@font-face { font-family: "IBM Plex Sans"; src: url("./brand/fonts/IBMPlexSans-400.woff2") format("woff2"); font-weight: 400; font-style: normal; font-display: swap; }
+@font-face { font-family: "IBM Plex Sans"; src: url("./brand/fonts/IBMPlexSans-500.woff2") format("woff2"); font-weight: 500; font-style: normal; font-display: swap; }
+@font-face { font-family: "IBM Plex Sans"; src: url("./brand/fonts/IBMPlexSans-600.woff2") format("woff2"); font-weight: 600; font-style: normal; font-display: swap; }
+@font-face { font-family: "IBM Plex Mono"; src: url("./brand/fonts/IBMPlexMono-400.woff2") format("woff2"); font-weight: 400; font-style: normal; font-display: swap; }
+@font-face { font-family: "IBM Plex Mono"; src: url("./brand/fonts/IBMPlexMono-500.woff2") format("woff2"); font-weight: 500; font-style: normal; font-display: swap; }
+
+/* Échelle de gris de Starlight : du texte le plus fort (white) au fond (black), dans les deux thèmes. */
+:root,
+:root[data-theme="light"] {
+  --sl-color-white: var(--ink);
+  --sl-color-gray-1: color-mix(in srgb, var(--ink) 85%, var(--ink-muted));
+  --sl-color-gray-2: color-mix(in srgb, var(--ink) 55%, var(--ink-muted));
+  --sl-color-gray-3: var(--ink-muted);
+  --sl-color-gray-4: var(--line-strong);
+  --sl-color-gray-5: var(--line);
+  --sl-color-gray-6: var(--paper-sunk);
+  --sl-color-gray-7: var(--paper-raised);
+  --sl-color-black: var(--paper);
+  --sl-color-bg-nav: var(--paper);
+  --sl-color-bg-sidebar: var(--paper);
+  --sl-color-hairline: var(--line);
+  --sl-color-hairline-light: var(--line);
+  --sl-color-hairline-shade: var(--line);
+  --sl-color-accent-low: var(--rubric-soft);
+  --sl-color-accent: var(--rubric);
+  --sl-color-accent-high: color-mix(in srgb, var(--rubric) 75%, var(--ink));
+  --sl-color-text-accent: var(--rubric);
+  --sl-color-text-invert: var(--on-rubric);
+
+  --sl-font: var(--font-sans);
+  --sl-font-mono: var(--font-mono);
+}
+:root {
+  --sl-color-gray-6: var(--paper-raised);
+  --sl-color-gray-7: var(--paper-sunk);
+  --sl-color-accent-high: color-mix(in srgb, var(--rubric) 70%, var(--ink));
+}
+
+/* Lecture en Newsreader, interface (navigation, barre latérale, boutons) en IBM Plex Sans. */
+.sl-markdown-content {
+  font-family: var(--font-serif);
+  font-size: 1.125rem;
+  line-height: 1.65;
+  font-variation-settings: "opsz" 16;
+}
+.sl-markdown-content :is(table, .starlight-aside, .expressive-code, .sl-link-card, .card, button) {
+  font-family: var(--font-sans);
+  font-size: var(--sl-text-sm);
+  line-height: 1.55;
+}
+.sl-markdown-content :is(h2, h3, h4),
+h1#_top,
+.hero h1 {
+  font-family: var(--font-serif);
+  font-weight: 500;
+  letter-spacing: -0.005em;
+  color: var(--ink);
+}
+h1#_top { font-variation-settings: "opsz" 48; }
+.sl-markdown-content :is(h2, h3) { font-variation-settings: "opsz" 32; }
+.sl-markdown-content code:not(pre code) {
+  background: var(--paper-sunk);
+  border: 1px solid var(--line);
+  border-radius: var(--radius-sm);
+}
+.sl-markdown-content a { text-underline-offset: 0.18em; }
+
+/* Les captures : un cadre sobre, comme une planche glissée dans le texte. */
+.sl-markdown-content img[src^="/screenshots/"],
+.sl-markdown-content .hy-shot {
+  border: 1px solid var(--line);
+  border-radius: var(--radius-md);
+  box-shadow: var(--shadow-raised);
+}
+
+/* Captures doublées par thème (plugin rehype de astro.config.mjs, composant ThemedImage) : une seule est visible. */
+:root[data-theme="light"] .hy-only-dark,
+:root:not([data-theme="light"]) .hy-only-light {
+  display: none !important;
+}
+
+.sl-markdown-content kbd {
+  font-family: var(--font-mono);
+  font-size: 0.8em;
+  padding: 0.1em 0.4em;
+  border: 1px solid var(--line-strong);
+  border-bottom-width: 2px;
+  border-radius: var(--radius-sm);
+  background: var(--paper-raised);
+}
+
+/* Page d'accueil : le symbole en grand à côté du titre, puis la démonstration en pleine largeur. */
+.hero {
+  padding-block-end: var(--space-8);
+}
+.hero > img,
+.hero > .hero-html {
+  max-width: 11rem;
+  justify-self: center;
+}
+.hero h1 {
+  font-size: clamp(2.75rem, 6vw, 4rem);
+  line-height: 1;
+  font-variation-settings: "opsz" 72;
+}
+.hero .tagline {
+  font-family: var(--font-serif);
+  font-size: 1.25rem;
+  line-height: 1.5;
+  color: var(--ink-muted);
+  max-width: 34rem;
+}
+.hy-shot {
+  max-width: 100%;
+  height: auto;
+}
+[data-has-hero] .sl-markdown-content starlight-tabs .hy-shot {
+  display: block;
+  width: 100%;
+  margin-block: var(--space-4) var(--space-6);
+}
+
+:focus-visible { outline: 2px solid var(--focus); outline-offset: 2px; }

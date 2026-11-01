@@ -22,7 +22,7 @@ The folder menu also offers *Extract comments from this folder*, which is not a 
 
 | Command | Id |
 |---|---|
-| Run a gesture | `hypomnema:run-geste` |
-| One command per gesture with the *Command* toggle on, named after the gesture | `hypomnema:geste-<id>` |
+| Run an action | `hypomnema:run-action` |
+| One command per action with the *Command* toggle on, named after the action | `hypomnema:action-<id>` |
 
-*Run a gesture* opens a searchable list of every gesture; it is available only when at least one gesture exists. *Extract comments from this note* keeps running the default extraction.
+*Run an action* opens a searchable list of every action; it is available only when at least one action exists. *Extract comments from this note* keeps running the default extraction.

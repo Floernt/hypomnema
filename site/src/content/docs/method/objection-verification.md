@@ -1,6 +1,6 @@
 ---
 title: Objection and verification
-description: Two annotation gestures for reading against the text.
+description: Two ways of annotating a text.
 sidebar:
   order: 2
 ---
@@ -15,7 +15,7 @@ Available from version 0.5.0.
 
 ## The idea
 
-Two reactions come back in almost every critical reading: "I disagree" and "I need to check this". Each deserves its own gesture, because each calls for a different follow-up. An objection is an argument to develop; a verification is a task to close. Giving them a hotkey makes the reaction cheap enough to be written down on the spot instead of postponed.
+Two reactions often come back in a critical reading: "I disagree" and "I think that…, but I need to check". We suggest keeping them apart, because each calls for a different follow-up. An objection is an argument to develop; a verification is a task to do. Giving them a hotkey makes the reaction cheap enough to be written down on the spot instead of postponed.
 
 ## An example from a real reading
 
@@ -23,7 +23,7 @@ In *Why we forget what we read*, the article claims that most of what we read is
 
 ## The setting
 
-Create two [Annotation](/concepts/annotation/) gestures in *Settings → Hypomnema → Gestures*, and turn on *Command* for both.
+Create two [Annotation](/concepts/annotation/) actions in *Settings → Hypomnema → Actions*, and turn on *Command* for both.
 
 | Name | Category | Starting text |
 |---|---|---|
@@ -36,6 +36,6 @@ The `objection` and `to-verify` categories must exist in the *Categories* sectio
 
 **A verification list.** An [Extraction](/concepts/extraction/) with scope *Whole vault*, the category filter `to-verify` and the Kanban format gives a single board of everything left to check.
 
-**Ask for the category.** A single gesture with category *Ask each time* (`"ask"`) and an empty *Starting text* replaces several gestures when you prefer to choose at each comment.
+**Ask for the category.** A single action with category *Ask each time* (`"ask"`) and an empty *Starting text* replaces several actions when you prefer to choose at each comment.
 
 **Answering the objection.** Reply to the objection in its thread when you have the answer, instead of editing the comment: the thread keeps the trace of both moments of the reading.

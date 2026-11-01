@@ -35,7 +35,7 @@ Les notions derrière cette table sont expliquées sur la page [Variables](/fr/c
 | `{{cursor}}` | Annotation | Position du curseur dans le texte de départ |
 | `{{sources}}` | Gabarit | Liens vers les notes sources |
 | `{{comments}}` | Gabarit | Corps de l'extraction |
-| `{{VALUE:libellé}}` | Partout | Valeur saisie dans une invite intitulée *libellé* ; même libellé, même valeur dans un geste ou un enchaînement |
+| `{{VALUE:libellé}}` | Partout | Valeur saisie dans une invite intitulée *libellé* ; même libellé, même valeur dans une action ou un enchaînement |
 | `{{GLOBAL:nom}}` | Partout | Valeur de la [variable globale](/fr/concepts/variables/#variables-globales) *nom* |
 
 Les décalages de date sont toujours calculés depuis aujourd'hui, y compris dans le gabarit de ligne.

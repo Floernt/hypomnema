@@ -1,0 +1,13 @@
+Hypomnema - kit logo / logo kit
+
+svg/lockup    logo complet horizontal : principal (papier), dark (fond nuit), on-rubric (fond rubric inclus), mono-ink, mono-paper
+svg/stacked   logo empile (vertical) : principal, dark, mono-ink
+svg/mark      symbole seul : principal, dark, mono-ink, mono-paper
+svg/icon      icones d'application (tuile 64, rayon 14) : paper, night, rubric, ink
+svg/wordmark  logotype seul : principal, dark
+png/          exports PNG (logos 1600 px de large ; symboles et icones 512 et 32 px)
+
+Couleurs : encre #231d17 / papier #f6f1e7 / rubric #a5341d (fond nuit : encre #efe7da, rubric #e8785e, fond #1c1915)
+Zone de protection : un diametre de disque de chaque cote. Minimum : symbole 16 px, logo complet 96 px de large.
+Ne pas recolorer le disque avec une couleur de categorie, ne pas recomposer le nom dans une autre police.
+Logotype vectorise a partir de Newsreader (SIL Open Font License). Marque non deposee.

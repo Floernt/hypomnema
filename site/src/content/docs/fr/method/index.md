@@ -21,7 +21,7 @@ Toutes les notes suivent le même plan.
 | Note | Fonction |
 |---|---|
 | [Annoter par catégories](/fr/method/categories/) | Catégories |
-| [L'objection et la vérification](/fr/method/objection-verification/) | Gestes d'annotation |
+| [L'objection et la vérification](/fr/method/objection-verification/) | Actions d'annotation |
 | [La marge](/fr/method/margin/) | Marge |
 | [La revue périodique](/fr/method/periodic-review/) | Extraction filtrée vers un Kanban |
 | [De la lecture à l'écriture](/fr/method/reading-to-writing/) | Extraction avec gabarit |

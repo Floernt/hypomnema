@@ -74,8 +74,8 @@ export class HypomnemaApi {
     this.plugin.actions.trigger("comment-added", { file, id: replyId, text });
   }
 
-  /** Lance un geste ; `vars` répond à ses {{VALUE:…}}. */
-  async runGeste(id: string, vars: Record<string, string> = {}): Promise<void> {
+  /** Lance une action ; `vars` répond à ses {{VALUE:…}}. */
+  async runAction(id: string, vars: Record<string, string> = {}): Promise<void> {
     await this.plugin.runner.run(id, { values: vars });
   }
 

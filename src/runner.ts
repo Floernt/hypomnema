@@ -42,27 +42,27 @@ export class GesteRunner {
   }
 
   find(id: string): Geste | undefined {
-    return this.plugin.settings.gestes.find((g) => g.id === id);
+    return this.plugin.settings.actions.find((g) => g.id === id);
   }
 
-  /** Aligne les commandes « hypomnema:geste-<id> » sur la liste des gestes, sans recharger le plugin. */
+  /** Aligne les commandes « hypomnema:action-<id> » sur la liste des gestes, sans recharger le plugin. */
   syncCommands() {
-    const want = new Map(this.plugin.settings.gestes.filter((g) => g.command).map((g) => [g.id, g.name || g.id]));
+    const want = new Map(this.plugin.settings.actions.filter((g) => g.command).map((g) => [g.id, g.name || g.id]));
     for (const [id, name] of this.registered) {
       if (want.get(id) === name) continue;
-      this.plugin.removeCommand(`geste-${id}`);
+      this.plugin.removeCommand(`action-${id}`);
       this.registered.delete(id);
     }
     for (const [id, name] of want) {
       if (this.registered.has(id)) continue;
-      this.plugin.addCommand({ id: `geste-${id}`, name, callback: () => void this.run(id) });
+      this.plugin.addCommand({ id: `action-${id}`, name, callback: () => void this.run(id) });
       this.registered.set(id, name);
     }
   }
 
   /** Commande « Lancer un geste » : choisir parmi tous les gestes. */
   async choose() {
-    const g = await pick(this.app, this.plugin.settings.gestes, (x) => `${x.name} · ${t(`kind.${x.kind}`)}`, t("pickGeste"));
+    const g = await pick(this.app, this.plugin.settings.actions, (x) => `${x.name} · ${t(`kind.${x.kind}`)}`, t("pickGeste"));
     if (g) await this.run(g.id);
   }
 
@@ -145,7 +145,7 @@ export class GesteRunner {
   }
 
   private async step(step: Step, state: RunState) {
-    if (step.type === "geste") {
+    if (step.type === "action") {
       const child = this.find(step.id);
       if (!child) throw new Error(t("gesteNotFound", { id: step.id }));
       await this.exec(child, state);

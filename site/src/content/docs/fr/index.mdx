@@ -1,0 +1,97 @@
+---
+title: Hypomnema
+description: Un plugin Obsidian de lecture augmentée. Commenter des passages, classer ses commentaires par catégories et y revenir.
+template: splash
+hero:
+  tagline: Un plugin pour Obsidian. Commenter un passage ou un point de n'importe quelle note, rédiger et répondre dans un panneau latéral, puis retrouver ses commentaires en marge ou dans une note d'extraction.
+  image:
+    dark: ../../../assets/brand/hypomnema-mark-dark.svg
+    light: ../../../assets/brand/hypomnema-mark.svg
+    alt: ""
+  actions:
+    - text: Prendre en main
+      link: /fr/getting-started/installation/
+      icon: right-arrow
+    - text: Voir dans le catalogue d'Obsidian
+      link: https://obsidian.md/plugins?id=hypomnema
+      icon: external
+      variant: minimal
+---
+
+import { LinkButton, Steps, TabItem, Tabs } from "@astrojs/starlight/components";
+import Marginalia from "../../../components/Marginalia.astro";
+import ThemedImage from "../../../components/ThemedImage.astro";
+
+<Tabs syncKey="demo">
+  <TabItem label="Commenter un passage">
+    <ThemedImage src="/screenshots/00-hero-fr.gif" alt="Un passage est sélectionné, commenté dans la catégorie Citation depuis le panneau latéral, puis enregistré avec Ctrl+Entrée." />
+    <Steps>
+    1. Sélectionnez un passage, faites un clic droit, puis *Commenter la sélection*. Sur téléphone, un appui long ouvre le même menu.
+    2. Choisissez une catégorie, écrivez votre commentaire et appuyez sur <kbd>Ctrl</kbd>+<kbd>Entrée</kbd>.
+    3. Le passage prend la couleur de sa catégorie, et le tag de la catégorie rejoint les propriétés de la note.
+    </Steps>
+  </TabItem>
+  <TabItem label="Extraire ses commentaires">
+    <ThemedImage src="/screenshots/10-extract-fr.gif" alt="La palette de commandes extrait les commentaires de la note dans un tableau Kanban ; le lien ↩ ramène au passage." />
+    <Steps>
+    1. Lancez *Extraire les commentaires de cette note* depuis la palette de commandes.
+    2. Les commentaires arrivent dans une note à part : une liste, un tableau ou un tableau Kanban.
+    3. Chaque commentaire renvoie à son passage, prêt pour Dataview ou votre propre relecture.
+    </Steps>
+  </TabItem>
+</Tabs>
+
+## Un commentaire reste du texte dans la note
+
+Hypomnema est un plugin Obsidian de lecture augmentée, de réflexion et d'organisation de la connaissance. Il permet de commenter un passage, ou un point précis, de n'importe quelle note. On rédige, on répond et on navigue dans un panneau latéral, comme dans le volet des commentaires de Word. Les commentaires se classent par catégories de couleur reliées à des tags. Ils restent du texte brut dans la note : cherchables, synchronisés avec le reste du coffre, lisibles sans le plugin.
+
+Le nom vient du grec *hypomnêmata*, ces carnets où le lecteur recopiait des passages et consignait ses propres remarques pour pouvoir y revenir.
+
+## Léger par défaut, profond à la demande
+
+Le plugin s'organise en trois niveaux. Chacun n'apparaît que si on va le chercher. Sans action définie, le plugin se comporte comme il l'a toujours fait.
+
+<Marginalia
+  items={[
+    { title: "1. Usage", href: "/fr/getting-started/tour/", tone: "idee", text: "Commenter, les catégories, la marge, l'extraction par défaut. Rien à configurer." },
+    { title: "2. Actions", href: "/fr/concepts/actions/", tone: "question", text: "Annotations et extractions nommées, variables globales. Pour qui a une méthode de lecture à outiller." },
+    { title: "3. Avancé", href: "/fr/advanced/api/", tone: "verifier", text: "Enchaînements, groupes, scripts, API, URI, export et import. Pour qui veut programmer son flux." },
+  ]}
+/>
+
+### Les quatre types d'action
+
+<Marginalia
+  items={[
+    { title: "Annotation", href: "/fr/concepts/annotation/", tone: "idee", text: "Ouvre un commentaire avec une catégorie et un texte de départ préréglés." },
+    { title: "Extraction", href: "/fr/concepts/extraction/", tone: "question", text: "Recopie ses commentaires dans une note à part, en liste, en tableau ou en tableau Kanban." },
+    { title: "Enchaînement", href: "/fr/concepts/chain/", tone: "verifier", text: "Exécute une suite d'étapes : actions, commandes, scripts et pauses." },
+    { title: "Groupe", href: "/fr/concepts/group/", tone: "citation", text: "Ouvre un menu d'autres actions." },
+  ]}
+/>
+
+## Partir d'une méthode
+
+Chaque fonction s'accompagne d'une note sur la pratique de lecture qui la fonde.
+
+<Marginalia
+  items={[
+    { title: "L'objection et la vérification", href: "/fr/method/objection-verification/", tone: "question", text: "Deux manières d'annoter un texte." },
+    { title: "La marge", href: "/fr/method/margin/", tone: "idee", text: "Lire avec ses commentaires sous les yeux." },
+    { title: "La revue périodique", href: "/fr/method/periodic-review/", tone: "verifier", text: "Une extraction filtrée sur les sept derniers jours, vers un tableau Kanban." },
+    { title: "De la lecture à l'écriture", href: "/fr/method/reading-to-writing/", tone: "citation", text: "Un gabarit d'extraction qui sert de premier jet de note." },
+  ]}
+/>
+
+Les autres notes sont dans [Méthode](/fr/method/). Hypomnema fonctionne aussi avec [Dataview, QuickAdd, Kanban, Templater et Tasks](/fr/integrations/dataview/).
+
+## En route en trois étapes
+
+<Steps>
+1. **Installez** Hypomnema depuis *Paramètres → Modules complémentaires → Parcourir*.
+2. **Commentez** un passage de n'importe quelle note : [premier commentaire](/fr/getting-started/first-comment/).
+3. **Extrayez** vos commentaires en fin de lecture : [l'extraction](/fr/concepts/extraction/).
+</Steps>
+
+<LinkButton href="/fr/getting-started/installation/" icon="right-arrow">Prendre en main</LinkButton>
+<LinkButton href="/fr/getting-started/tour/" variant="secondary">Faire la visite</LinkButton>

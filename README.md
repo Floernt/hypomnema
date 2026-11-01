@@ -116,7 +116,7 @@ Margin comments appear in Live Preview and source mode, not in reading view. The
 
 ### Installation
 
-Until the plugin is listed in the community directory, download `main.js`, `manifest.json` and `styles.css` from the [latest release](https://github.com/Floernt/hypomnema/releases/latest). Put them in `<vault>/.obsidian/plugins/hypomnema/`, then enable the plugin under *Community plugins*.
+Hypomnema is in Obsidian's community directory: open *Settings → Community plugins → Browse*, search for "Hypomnema", then *Install* and *Enable*. To try a version before it reaches the directory, download `main.js`, `manifest.json` and `styles.css` from the [latest release](https://github.com/Floernt/hypomnema/releases/latest) into `<vault>/.obsidian/plugins/hypomnema/`.
 
 ---
 
@@ -209,7 +209,7 @@ Les commentaires en marge s'affichent en Aperçu en direct et en mode source, pa
 
 ### Installer le plugin
 
-En attendant la publication dans le catalogue communautaire, téléchargez `main.js`, `manifest.json` et `styles.css` depuis la [dernière release](https://github.com/Floernt/hypomnema/releases/latest). Copiez-les dans `<coffre>/.obsidian/plugins/hypomnema/`, puis activez le plugin dans *Modules complémentaires*.
+Hypomnema figure dans le catalogue communautaire d'Obsidian : ouvrez *Paramètres → Modules complémentaires → Parcourir*, cherchez « Hypomnema », puis *Installer* et *Activer*. Pour essayer une version avant sa publication dans le catalogue, téléchargez `main.js`, `manifest.json` et `styles.css` depuis la [dernière release](https://github.com/Floernt/hypomnema/releases/latest) dans `<coffre>/.obsidian/plugins/hypomnema/`.
 
 ---
 

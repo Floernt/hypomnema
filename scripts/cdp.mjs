@@ -57,7 +57,40 @@ export async function connect(port = 9333) {
     close: () => ws.close(),
   };
   await send("Page.enable");
+  // Une fenêtre d'Obsidian en arrière-plan voit ses minuteries freinées par Chromium, au point de bloquer les scripts :
+  // on la fait passer pour active et on coupe ce freinage dans toutes ses fenêtres.
+  await send("Emulation.setFocusEmulationEnabled", { enabled: true });
+  await cdp.eval(`for (const w of require("electron").remote.BrowserWindow.getAllWindows()) w.webContents.setBackgroundThrottling(false);`);
   return cdp;
 }
 
 export const sleep = (ms) => new Promise((r) => setTimeout(r, ms));
+
+// --- Apparence commune des captures ---
+// Le site affiche chaque capture dans le thème qui suit le sien : Obsidian sombre (fichier « nom-lang.png ») ou
+// clair (« nom-lang-light.png »). Le zoom grossit l'interface pour que le texte reste lisible une fois l'image
+// réduite à la largeur d'une page.
+
+export const ZOOM = 1.2;
+
+/** Arguments « en fr --light --dark » : langues et thèmes à produire (par défaut : tous). */
+export function parseArgs(argv = process.argv.slice(2)) {
+  const langs = argv.filter((a) => !a.startsWith("--"));
+  const themes = ["dark", "light"].filter((t) => argv.includes(`--${t}`));
+  return { langs: langs.length ? langs : ["en", "fr"], themes: themes.length ? themes : ["dark", "light"] };
+}
+
+/** Nom de fichier d'une capture : « 07-margin-fr.gif » en sombre, « 07-margin-fr-light.gif » en clair. */
+export const shotName = (base, lang, theme, ext = "png") => `${base}-${lang}${theme === "light" ? "-light" : ""}.${ext}`;
+
+/** Taille de fenêtre, zoom et thème d'Obsidian (« obsidian » sombre, « moonstone » clair). */
+export async function look(c, theme) {
+  await c.eval(`
+    require("electron").remote.getCurrentWindow().setContentSize(1280, 800);
+    require("electron").webFrame.setZoomFactor(${ZOOM});
+    app.changeTheme(${JSON.stringify(theme === "light" ? "moonstone" : "obsidian")});
+    // Menus d'Obsidian plutôt que menus du système : ceux-ci n'apparaissent pas sur les captures et bloquent la suite.
+    app.vault.setConfig("nativeMenus", false);
+    return true;`);
+  await sleep(400);
+}

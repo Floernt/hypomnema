@@ -40,7 +40,7 @@ module.exports = async (params, settings) => {
 };
 ```
 
-Then a [Chain](/concepts/chain/) gesture named *End of reading*, with *Command* on:
+Then a [Chain](/concepts/chain/) action named *End of reading*, with *Command* on:
 
 | Step | Type | Value |
 |---|---|---|

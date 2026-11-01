@@ -5,7 +5,7 @@ sidebar:
   order: 3
 ---
 
-[QuickAdd](https://quickadd.obsidian.guide/) n'est pas nécessaire. Les [enchaînements](/fr/concepts/chain/) d'Hypomnema couvrent ce qui touche l'annotation ; QuickAdd sert quand on a déjà des macros et qu'on veut faire d'Hypomnema l'une de leurs étapes.
+[QuickAdd](https://quickadd.obsidian.guide/) n'est pas nécessaire. Il sert quand on a déjà des macros et qu'on veut faire d'Hypomnema l'une de leurs étapes.
 
 ## Ce qu'il apporte
 
@@ -20,15 +20,15 @@ Les macros QuickAdd enchaînent des commandes, des captures et des scripts de n'
 
 La même commande est accessible à tout plugin ou script : `app.commands.executeCommandById("hypomnema:extract-note")`.
 
-## Variante : gestes et API dans une macro
+## Variante : actions et API dans une macro
 
 :::note
 Disponible à partir de la version 0.5.0.
 :::
 
-Chaque [geste](/fr/concepts/gestures/) dont l'option *Commande* est activée devient la commande `hypomnema:geste-<id>` : il apparaît dans l'étape *Obsidian command* de QuickAdd comme n'importe quelle autre commande.
+Chaque [action](/fr/concepts/actions/) dont l'option *Commande* est activée devient la commande `hypomnema:action-<id>` : elle apparaît dans l'étape *Obsidian command* de QuickAdd comme n'importe quelle autre commande.
 
-Un script utilisateur QuickAdd peut aussi appeler l'[API publique](/fr/advanced/api/). Les scripts écrits pour Hypomnema reprennent la signature de ceux de QuickAdd : le même fichier fonctionne dans les deux.
+Un [script](/fr/advanced/scripts/) écrit pour un enchaînement d'Hypomnema fonctionne aussi comme script utilisateur QuickAdd. Un script utilisateur QuickAdd peut aussi appeler l'[API publique](/fr/advanced/api/).
 
 ```js
 module.exports = async (params) => {

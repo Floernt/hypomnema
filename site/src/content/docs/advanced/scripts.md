@@ -13,7 +13,7 @@ Available from version 0.5.0. Scripts belong to level 3: they only appear when *
 A script can read, change and delete any file of your vault, and reach the network. Only run scripts you wrote yourself or have read and understood.
 :::
 
-A script is a `.js` file of your vault, run as a *Script* step of a [chain](/concepts/chain/). It follows QuickAdd's convention, so a script written for one works in the other.
+A script is a `.js` file of your vault, run as a *Script* step of a [chain](/concepts/chain/).
 
 ## Signature
 
@@ -28,7 +28,9 @@ module.exports = async (params, settings) => {
 
 `settings` holds the key → value pairs set on the script step, so the same file can serve several chains with different settings.
 
-The export can also be an object with an `entry` function, as in QuickAdd:
+The signature is compatible with QuickAdd's user scripts: the same file can also be used there.
+
+The export can also be an object with an `entry` function:
 
 ```js
 module.exports = { entry: async (params, settings) => { /* … */ } };
@@ -55,4 +57,4 @@ A later step can use `{{VALUE:count}}` without being asked. A fuller example is 
 
 ## Sharing
 
-[Export](/advanced/export-import/) copies the path of a script, never its code. Whoever imports the gesture must add the file to their own vault.
+[Export](/advanced/export-import/) copies the path of a script, never its code. Whoever imports the action must add the file to their own vault.

@@ -1,0 +1,60 @@
+---
+// Liste de renvois présentée comme des annotations : un titre, une ligne, et dans la marge le filet de couleur
+// d'une catégorie, comme un passage commenté dans le plugin.
+interface Item {
+  title: string;
+  href: string;
+  text: string;
+  /** Couleur de catégorie de la charte : idee, question, verifier, citation. */
+  tone?: "idee" | "question" | "verifier" | "citation";
+}
+
+const { items } = Astro.props as { items: Item[] };
+---
+
+<ul class="hy-marginalia not-content">
+  {
+    items.map((item) => (
+      <li style={`--tone: var(--cat-${item.tone ?? "idee"})`}>
+        <a href={item.href}>{item.title}</a>
+        <p>{item.text}</p>
+      </li>
+    ))
+  }
+</ul>
+
+<style>
+  .hy-marginalia {
+    list-style: none;
+    padding: 0;
+    margin: var(--space-6) 0 0;
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(15rem, 1fr));
+    gap: var(--space-6) var(--space-8);
+  }
+  li {
+    border-inline-start: 3px solid var(--tone);
+    padding: var(--space-1) 0 var(--space-1) var(--space-4);
+  }
+  a {
+    font-family: var(--font-serif);
+    font-size: 1.25rem;
+    font-weight: 500;
+    font-variation-settings: "opsz" 24;
+    color: var(--ink);
+    text-decoration: none;
+  }
+  a:hover,
+  a:focus-visible {
+    color: var(--rubric);
+    text-decoration: underline;
+    text-underline-offset: 0.18em;
+  }
+  p {
+    margin: var(--space-1) 0 0;
+    font-family: var(--font-sans);
+    font-size: var(--sl-text-sm);
+    line-height: 1.5;
+    color: var(--ink-muted);
+  }
+</style>

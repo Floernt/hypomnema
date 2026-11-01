@@ -1,6 +1,6 @@
 import { App, Notice, PluginSettingTab, requireApiVersion, Setting, SettingDefinitionItem } from "obsidian";
 import type Hypomnema from "./main";
-import { exportGestes, ExtractionFields, Geste, GesteKind, newId } from "./gestes";
+import { exportGestes, ExtractionFields, Geste, GesteKind, newId, upgradeGestes } from "./gestes";
 import { blankGeste, DefaultExtractionModal, GesteModal, ImportModal } from "./gesteModal";
 import { t } from "./i18n";
 import { DATAVIEW, pluginEnabled, QUICKADD } from "./integrations";
@@ -44,7 +44,7 @@ export interface Settings {
   categories: Category[];
   display: DisplaySettings;
   extract: ExtractSettings;
-  gestes: Geste[];
+  actions: Geste[];
   globals: GlobalVariable[];
   /** Affiche enchaînements, groupes, scripts, export et import. */
   advanced: boolean;
@@ -71,7 +71,7 @@ export function defaultSettings(): Settings {
       template: "",
       templater: false,
     },
-    gestes: [],
+    actions: [],
     globals: [],
     advanced: false,
     trustedScripts: {},
@@ -80,13 +80,14 @@ export function defaultSettings(): Settings {
 }
 
 /** Réglages enregistrés, complétés par les valeurs par défaut des champs apparus dans une version ultérieure. */
-export function mergeSettings(data: Partial<Settings> | null): Settings {
+export function mergeSettings(data: (Partial<Settings> & { gestes?: Geste[] }) | null): Settings {
   const d = defaultSettings();
   return {
     categories: data?.categories ?? d.categories,
     display: { ...d.display, ...data?.display },
     extract: { ...d.extract, ...data?.extract },
-    gestes: data?.gestes ?? [],
+    // « gestes » : nom de la clé pendant le développement des actions.
+    actions: upgradeGestes(data?.actions ?? data?.gestes ?? []),
     globals: data?.globals ?? [],
     advanced: data?.advanced ?? false,
     trustedScripts: data?.trustedScripts ?? {},
@@ -215,13 +216,13 @@ export class SettingsTab extends PluginSettingTab {
         type: "group",
         heading: t("settingsGestes"),
         items: [
-          { name: t("settingsGestes"), desc: withLink(t("settingsGestesDesc"), t("docMethod"), "concepts/gestures") },
+          { name: t("settingsGestes"), desc: withLink(t("settingsGestesDesc"), t("docMethod"), "concepts/actions") },
           ...(pluginEnabled(this.app, QUICKADD) ? [{ name: "QuickAdd", desc: withLink(t("hintQuickAdd"), t("hintLink"), "integrations/quickadd") }] : []),
         ],
       },
       {
         type: "list",
-        items: s.gestes.map((g, i) => ({
+        items: s.actions.map((g, i) => ({
           name: g.name,
           desc: t(`kind.${g.kind}`),
           render: (setting: Setting) => this.gesteRow(setting, g, i, false),
@@ -258,7 +259,7 @@ export class SettingsTab extends PluginSettingTab {
 
   /** Ligne d'un geste : modifier, monter, descendre (et supprimer, dans le rendu hérité). */
   private gesteRow(setting: Setting, g: Geste, i: number, legacy: boolean) {
-    const n = this.plugin.settings.gestes.length;
+    const n = this.plugin.settings.actions.length;
     setting.setName(g.name).setDesc(t(`kind.${g.kind}`) + (g.command ? "" : " · " + t("gesteCommand").toLowerCase() + " ✗"));
     setting.addExtraButton((b) => b.setIcon("pencil").setTooltip(t("editGeste")).onClick(() => this.editGeste(i)));
     if (!legacy) return;
@@ -268,10 +269,10 @@ export class SettingsTab extends PluginSettingTab {
   }
 
   private editGeste(i: number) {
-    const g = this.plugin.settings.gestes[i];
+    const g = this.plugin.settings.actions[i];
     if (!g) return;
     new GesteModal(this.app, this.plugin, g, async (edited) => {
-      this.plugin.settings.gestes[i] = edited;
+      this.plugin.settings.actions[i] = edited;
       await this.save();
       this.refresh();
     }).open();
@@ -281,16 +282,16 @@ export class SettingsTab extends PluginSettingTab {
     const kinds: GesteKind[] = this.plugin.settings.advanced ? ["annotation", "extraction", "chain", "group"] : ["annotation", "extraction"];
     const kind = await pick(this.app, kinds, (k) => t(`kind.${k}`), t("addGeste"));
     if (!kind) return;
-    const g = blankGeste(kind, newId(this.plugin.settings.gestes.map((x) => x.id)), this.plugin.actions.defaultExtraction());
+    const g = blankGeste(kind, newId(this.plugin.settings.actions.map((x) => x.id)), this.plugin.actions.defaultExtraction());
     new GesteModal(this.app, this.plugin, g, async (created) => {
-      this.plugin.settings.gestes.push(created);
+      this.plugin.settings.actions.push(created);
       await this.save();
       this.refresh();
     }).open();
   }
 
   private async moveGeste(from: number, to: number) {
-    const list = this.plugin.settings.gestes;
+    const list = this.plugin.settings.actions;
     if (from < 0 || to < 0 || from >= list.length || to >= list.length) return this.refresh();
     const [g] = list.splice(from, 1);
     list.splice(to, 0, g);
@@ -300,7 +301,7 @@ export class SettingsTab extends PluginSettingTab {
 
   private async deleteGeste(i: number) {
     if (i < 0) return this.refresh();
-    this.plugin.settings.gestes.splice(i, 1);
+    this.plugin.settings.actions.splice(i, 1);
     await this.save();
     this.refresh();
   }
@@ -325,7 +326,7 @@ export class SettingsTab extends PluginSettingTab {
   }
 
   private async exportAll() {
-    const gestes = this.plugin.settings.gestes;
+    const gestes = this.plugin.settings.actions;
     await navigator.clipboard.writeText(exportGestes(gestes));
     new Notice(t("exportDone", { n: gestes.length }));
   }
@@ -443,9 +444,9 @@ export class SettingsTab extends PluginSettingTab {
 
     const s = this.plugin.settings;
     new Setting(containerEl).setName(t("settingsGestes")).setHeading();
-    containerEl.createEl("p", { cls: "setting-item-description" }).append(withLink(t("settingsGestesDesc"), t("docMethod"), "concepts/gestures"));
-    if (!s.gestes.length) containerEl.createEl("p", { cls: "setting-item-description", text: t("settingsNoGeste") });
-    s.gestes.forEach((g, i) => this.gesteRow(new Setting(containerEl), g, i, true));
+    containerEl.createEl("p", { cls: "setting-item-description" }).append(withLink(t("settingsGestesDesc"), t("docMethod"), "concepts/actions"));
+    if (!s.actions.length) containerEl.createEl("p", { cls: "setting-item-description", text: t("settingsNoGeste") });
+    s.actions.forEach((g, i) => this.gesteRow(new Setting(containerEl), g, i, true));
     new Setting(containerEl).addButton((b) => b.setButtonText(t("addGeste")).onClick(() => void this.addGeste()));
     if (pluginEnabled(this.app, QUICKADD)) new Setting(containerEl).setDesc(withLink(t("hintQuickAdd"), t("hintLink"), "integrations/quickadd"));
 

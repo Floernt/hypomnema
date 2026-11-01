@@ -79,7 +79,7 @@ describe("filterSources", () => {
 
 describe("gestes", () => {
   const gestes: Geste[] = [
-    { id: "c1", name: "Fin", kind: "chain", command: true, steps: [{ type: "geste", id: "g1" }] },
+    { id: "c1", name: "Fin", kind: "chain", command: true, steps: [{ type: "action", id: "g1" }] },
     { id: "g1", name: "Menu", kind: "group", command: true, children: ["c1"] },
     { id: "a", name: "Obj", kind: "annotation", command: true, category: "objection", initialText: "" },
   ];
@@ -94,8 +94,15 @@ describe("gestes", () => {
     const ids = r.gestes.map((g) => g.id);
     expect(ids.some((id) => ["c1", "g1", "a"].includes(id))).toBe(false);
     const chain = r.gestes[0] as Extract<Geste, { kind: "chain" }>;
-    expect(chain.steps[0]).toEqual({ type: "geste", id: ids[1] });
+    expect(chain.steps[0]).toEqual({ type: "action", id: ids[1] });
     expect(r.missingCategories).toEqual(["objection"]);
+  });
+
+  it("lit un export de l'époque des « gestes »", () => {
+    const old = JSON.stringify({ hypomnema: 1, gestes: [{ id: "c", name: "Fin", kind: "chain", command: true, steps: [{ type: "geste", id: "x" }] }] });
+    const chain = importGestes(old, [], []).gestes[0] as Extract<Geste, { kind: "chain" }>;
+    expect(chain.steps[0]).toEqual({ type: "action", id: "x" });
+    expect(JSON.parse(exportGestes([chain]))).toHaveProperty("actions");
   });
 
   it("refuse un texte qui n'est pas un export", () => {

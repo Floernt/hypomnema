@@ -1,6 +1,6 @@
 ---
 title: Annotation
-description: A gesture that opens a comment with a preset category and starting text.
+description: An action that opens a comment with a preset category and starting text.
 sidebar:
   order: 3
 ---
@@ -10,12 +10,12 @@ Available from version 0.5.0.
 :::
 
 
-![The Objection gesture: the draft opens with the Question category chosen and the text prefilled.](/screenshots/14-geste-annotation-en.png)
+![The Objection action: the draft opens with the Question category chosen and the text prefilled.](/screenshots/14-action-annotation-en.png)
 
-An Annotation gesture behaves like the command *Comment on selection or cursor*, with two differences: the draft opens with the category you chose, and the text field is prefilled with a starting text. It is QuickAdd's *Capture*, applied to a comment.
+An Annotation action behaves like the command *Comment on selection or cursor*, with two differences: the draft opens with the category you chose, and the text field is prefilled with a starting text.
 
 ```ts
-interface AnnotationGeste extends GesteBase {
+interface AnnotationAction extends ActionBase {
   kind: "annotation";
   category: string | "ask" | "";
   initialText: string;
@@ -28,7 +28,7 @@ The *Category* field takes one of your categories, or one of two special values.
 
 ## Starting text
 
-The *Starting text* can contain [variables](/concepts/variables/), which are resolved when the gesture runs. The cursor is placed at `{{cursor}}` if the text contains it, at the end otherwise. A `{{VALUE:label}}` variable asks you for a value before the draft opens.
+The *Starting text* can contain [variables](/concepts/variables/), which are resolved when the action runs. The cursor is placed at `{{cursor}}` if the text contains it, at the end otherwise. A `{{VALUE:label}}` variable asks you for a value before the draft opens.
 
 ## Two examples
 
@@ -41,4 +41,4 @@ These are given as examples; the plugin does not create them.
 
 The first opens a draft in the *Objection* category, ready for your argument. The second asks what needs checking, then writes "Verify …" with your answer, so the item reads well once [extracted](/concepts/extraction/).
 
-The method note [Objection and verification](/method/objection-verification/) shows these two gestures at work.
+The method note [Objection and verification](/method/objection-verification/) shows these two actions at work.

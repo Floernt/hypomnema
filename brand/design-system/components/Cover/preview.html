@@ -1,0 +1,51 @@
+<!doctype html>
+<html lang="fr">
+<head><link rel="stylesheet" href="../../tokens.css"><link rel="stylesheet" href="../bundle.css">
+<meta charset="utf-8">
+<title>Hypomnema</title>
+<style>
+  html, body { margin:0; height:100%; }
+  body { background:var(--paper); color:var(--ink); font-family:var(--font-serif); overflow:hidden; }
+  .cover { position:relative; width:960px; height:288px; overflow:hidden; }
+  .art { position:absolute; top:0; left:480px; width:480px; height:288px; overflow:hidden; }
+  .art svg { display:block; width:480px; height:288px; }
+  .rub { fill:var(--rubric); }
+  .soft { fill:var(--rubric-soft); }
+  .deep { fill:var(--ink); }
+  .idee { fill:var(--cat-idee); }
+  .blk { rx:var(--radius-sm); }
+  .rule { stroke:var(--line-strong); stroke-width:1; }
+  .margin { stroke:var(--rubric); stroke-width:2; }
+  .words { position:absolute; left:var(--space-6); bottom:var(--space-6); max-width:440px; }
+  .name { margin:0; font-size:72px; line-height:.92; font-weight:500; font-variation-settings:'opsz' 72; letter-spacing:-.01em; color:var(--ink); }
+  .tag { margin:var(--space-2) 0 0 3px; font-family:var(--font-sans); font-size:14px; line-height:20px; color:var(--ink-muted); }
+</style>
+</head>
+<body>
+<div class="cover">
+<div class="art" aria-hidden="true">
+<svg viewBox="0 0 480 288" width="480" height="288">
+<!--
+  blocks      rubric-soft 192x208 (the tinted passage) · rubric 96x240 bled off the top (the accent, the dot of the mark) · ink 160x160 bleeding off the right edge (the bracket) · cat-idee 48x16 once (the plugin's real default category) · about 30% of 960x288
+  arrangement one tall rubric slab with a tint to its left and an ink block to its right, bottoms staggered on space-8 steps, space-4 gutters
+  pattern     hairline rules, from "hairlines first, editorial serif": four ruled lines at a space-12 pitch in line-strong, plus one rubric margin rule at the left, like a ruled notebook page with its margin
+  scales      sides in space-4 / space-8 multiples; gutters space-4; rule pitch space-12; corners radius-sm
+-->
+<rect class="soft blk" x="48" y="48" width="192" height="208" rx="4"/>
+<rect class="rub blk" x="256" y="-16" width="96" height="240" rx="4"/>
+<rect class="deep blk" x="368" y="96" width="160" height="160" rx="4"/>
+<rect class="idee blk" x="256" y="240" width="48" height="16" rx="4"/>
+<line class="rule" x1="0" y1="72.5" x2="480" y2="72.5"/>
+<line class="rule" x1="0" y1="120.5" x2="480" y2="120.5"/>
+<line class="rule" x1="0" y1="168.5" x2="480" y2="168.5"/>
+<line class="rule" x1="0" y1="216.5" x2="480" y2="216.5"/>
+<line class="margin" x1="24" y1="0" x2="24" y2="288"/>
+</svg>
+</div>
+<div class="words">
+<h1 class="name">Hypomnema</h1>
+<p class="tag">Les marges de vos notes · The margins of your notes</p>
+</div>
+</div>
+</body>
+</html>

@@ -195,7 +195,7 @@ export class GesteModal extends Modal {
 
   /** Autres gestes, qu'un enchaînement ou un groupe peut appeler. */
   private others(): Geste[] {
-    return this.plugin.settings.gestes.filter((x) => x.id !== this.g.id);
+    return this.plugin.settings.actions.filter((x) => x.id !== this.g.id);
   }
 
   private chain(el: HTMLElement, g: Extract<Geste, { kind: "chain" }>) {
@@ -203,7 +203,7 @@ export class GesteModal extends Modal {
     if (!g.steps.length) el.createDiv({ cls: "setting-item-description", text: t("chainNoStep") });
     const others = this.others();
     const types: Record<Step["type"], string> = {
-      geste: t("step.geste"),
+      action: t("step.action"),
       command: t("step.command"),
       script: t("step.script"),
       wait: t("step.wait"),
@@ -217,11 +217,11 @@ export class GesteModal extends Modal {
           .onChange((v) => {
             const type = v as Step["type"];
             g.steps[i] =
-              type === "geste" ? { type, id: others[0]?.id ?? "" } : type === "wait" ? { type, ms: 500 } : type === "script" ? { type, path: "" } : { type, id: "" };
+              type === "action" ? { type, id: others[0]?.id ?? "" } : type === "wait" ? { type, ms: 500 } : type === "script" ? { type, path: "" } : { type, id: "" };
             this.render();
           }),
       );
-      if (step.type === "geste") {
+      if (step.type === "action") {
         const opts: Record<string, string> = {};
         for (const o of others) opts[o.id] = o.name;
         s.addDropdown((c) => c.addOptions(opts).setValue(step.id).onChange((v) => (step.id = v)));
@@ -255,7 +255,7 @@ export class GesteModal extends Modal {
     });
     new Setting(el).addButton((b) =>
       b.setButtonText(t("addStep")).onClick(() => {
-        g.steps.push(others.length ? { type: "geste", id: others[0].id } : { type: "command", id: "" });
+        g.steps.push(others.length ? { type: "action", id: others[0].id } : { type: "command", id: "" });
         this.render();
       }),
     );
@@ -289,7 +289,7 @@ export class GesteModal extends Modal {
       return;
     }
     if (isAdvanced(g)) {
-      const all = this.plugin.settings.gestes.filter((x) => x.id !== g.id).concat(g);
+      const all = this.plugin.settings.actions.filter((x) => x.id !== g.id).concat(g);
       if (hasCycle(g.id, all)) {
         new Notice(t("gesteCycle"));
         return;
@@ -321,12 +321,12 @@ export class ImportModal extends Modal {
     const s = this.plugin.settings;
     let result;
     try {
-      result = importGestes(text, s.gestes, s.categories.map((c) => c.tag));
+      result = importGestes(text, s.actions, s.categories.map((c) => c.tag));
     } catch {
       new Notice(t("importInvalid"));
       return;
     }
-    s.gestes.push(...result.gestes);
+    s.actions.push(...result.gestes);
     await this.plugin.saveSettings();
     new Notice(t("importDone", { n: result.gestes.length }));
     if (result.missingCategories.length) new Notice(t("importMissing", { tags: result.missingCategories.map((x) => `#${x}`).join(", ") }));

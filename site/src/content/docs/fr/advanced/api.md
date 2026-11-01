@@ -25,7 +25,7 @@ api.threads(file: TFile): Promise<Thread[]>
 api.allThreads(opts?: { folder?: string; categories?: string[]; since?: string }): Promise<{ file: TFile; thread: Thread }[]>
 api.addComment(file, target: { quote: string; occurrence?: number } | { line: number }, text: string, tag?: string): Promise<string>
 api.reply(file, id, text): Promise<void>
-api.runGeste(id: string, vars?: Record<string, string>): Promise<void>
+api.runAction(id: string, vars?: Record<string, string>): Promise<void>
 api.format(template: string, vars?: Record<string, string>): string
 ```
 
@@ -35,7 +35,7 @@ Un `Thread` comporte un identifiant `id` (`a1`), une entrée racine `root` et se
 
 **`addComment`** ajoute un commentaire et renvoie son identifiant. La cible est soit un passage, `{ quote }`, soit une ligne, `{ line }`. Avec `{ line }`, comptée à partir de 0, le commentaire est un commentaire au curseur placé en fin de ligne. Avec `{ quote }`, si le passage est absent ou apparaît plusieurs fois, l'appel lève une erreur explicite, sauf si `occurrence: n` désigne lequel (à partir de 1). L'API ne choisit jamais en silence.
 
-**`reply`** ajoute une réponse à un fil. **`runGeste`** lance un [geste](/fr/concepts/gestures/) par son identifiant ; `vars` préremplit ses invites `{{VALUE:…}}`. **`format`** résout la [syntaxe des variables](/fr/concepts/variables/) dans une chaîne ; les entrées de `vars` répondent aussi aux invites `{{VALUE:…}}` : `api.format("Revue {{VALUE:sujet}}", { sujet: "mémoire" })` donne `Revue mémoire`.
+**`reply`** ajoute une réponse à un fil. **`runAction`** lance une [action](/fr/concepts/actions/) par son identifiant ; `vars` préremplit ses invites `{{VALUE:…}}`. **`format`** résout la [syntaxe des variables](/fr/concepts/variables/) dans une chaîne ; les entrées de `vars` répondent aussi aux invites `{{VALUE:…}}` : `api.format("Revue {{VALUE:sujet}}", { sujet: "mémoire" })` donne `Revue mémoire`.
 
 Une écriture par l'API a les mêmes effets qu'une écriture depuis l'interface : le tag de catégorie est synchronisé dans les propriétés de la note, et l'événement `hypomnema:comment-added` est déclenché, que la note soit ouverte ou non. Les écritures passent par `vault.process` et n'entrent donc pas en conflit avec l'éditeur.
 

@@ -18,23 +18,29 @@ Deux fonctions facultatives pour reprendre la main sur ses annotations. Aucune n
   - Une nouvelle extraction n'ajoute par défaut que les nouveaux commentaires et laisse en place les cartes déplacées ou cochées. Elle peut aussi remplacer la note.
   - Le dossier, le nom de la note, le gabarit de ligne et l'inclusion des réponses se règlent dans les paramètres.
 - Recettes Dataview, Kanban et QuickAdd ([docs/recipes.md](docs/recipes.md)), tableaux de bord d'exemple dans `demo-vault/`.
-- Visite du README en huit étapes, avec deux GIF. Les captures sont produites par `scripts/capture.mjs`, qui pilote une instance séparée d'Obsidian.
-- **Gestes.** On nomme ses propres manières d'annoter et d'extraire ; chaque geste devient une commande (`hypomnema:geste-<id>`), et la commande *Lancer un geste* les propose tous. Sans geste défini, rien ne change.
+- Visite du README en huit étapes, avec des GIF. Les captures sont produites par `scripts/capture.mjs` et `scripts/capture-actions.mjs`, qui pilotent une instance séparée d'Obsidian, en thème sombre et en thème clair, avec un zoom qui garde le texte lisible.
+- **Actions.** On nomme ses propres manières d'annoter et d'extraire ; chaque action devient une commande (`hypomnema:action-<id>`), et la commande *Lancer une action* (`hypomnema:run-action`) les propose toutes. Sans action définie, rien ne change.
   - *Annotation* : catégorie fixée ou demandée, texte de départ prérempli, curseur placé par `{{cursor}}`.
   - *Extraction* nommée : portée (note, dossier de la note, dossier donné, coffre), filtre par catégories et par date d'activité, note-gabarit, passage par Templater, présence facultative dans le menu des dossiers. L'extraction par défaut reçoit les mêmes options (*Plus d'options*).
-  - *Enchaînement* et *Groupe*, derrière l'interrupteur *Fonctions avancées* : suite d'étapes (geste, commande Obsidian, script, pause), menu de gestes. Un geste qui se rappellerait lui-même est arrêté.
-  - *Scripts* : un fichier `.js` du coffre, sur le modèle de QuickAdd. Confirmation au premier lancement, et de nouveau quand le script change.
-  - Export et import des gestes en JSON.
+  - *Enchaînement* et *Groupe*, derrière l'interrupteur *Fonctions avancées* : suite d'étapes (action, commande Obsidian, script, pause), menu d'actions. Une action qui se rappellerait elle-même est arrêtée.
+  - *Scripts* : un fichier `.js` du coffre, qui exporte une fonction. Confirmation au premier lancement, et de nouveau quand le script change.
+  - Export et import des actions en JSON.
 - **Syntaxe des variables** commune : `{{today}}`, `{{date:FORMAT}}`, `{{date-7d}}`, `{{VALUE:question}}` (saisie à l'exécution), `{{GLOBAL:nom}}`, `{{selection}}`. Les gabarits existants donnent le même résultat qu'avant.
-- **Variables globales**, réglables dans la section *Gestes*.
-- **API publique** (`app.plugins.plugins.hypomnema.api`) : lire les fils d'une note ou du coffre, ajouter un commentaire ou une réponse, lancer un geste, appliquer la syntaxe des variables. Événements `hypomnema:comment-added`, `hypomnema:comment-edited` et `hypomnema:extracted`.
-- Lien `obsidian://hypomnema?geste=<id>&…` pour lancer un geste depuis l'extérieur ; les paramètres répondent aux `{{VALUE:…}}`.
+- **Variables globales**, réglables dans la section *Actions*.
+- **API publique** (`app.plugins.plugins.hypomnema.api`) : lire les fils d'une note ou du coffre, ajouter un commentaire ou une réponse, lancer une action (`runAction`), appliquer la syntaxe des variables. Événements `hypomnema:comment-added`, `hypomnema:comment-edited` et `hypomnema:extracted`.
+- Lien `obsidian://hypomnema?run=<id>&…` pour lancer une action depuis l'extérieur ; les paramètres répondent aux `{{VALUE:…}}`.
 - Liens « Méthode » et « Recettes » dans les réglages, vers le site de documentation [hypomnema.tools](https://hypomnema.tools), bilingue, construit avec Starlight dans `site/` et publié par GitHub Actions. Les suggestions Dataview et QuickAdd n'apparaissent que si ces plugins sont actifs.
 
 ### Modifié
 
-- Les réglages sont répartis en sections : catégories, affichage, extraction, gestes, variables globales, fonctions avancées.
+- Les réglages sont répartis en sections : catégories, affichage, extraction, actions, variables globales, fonctions avancées.
 - La position du curseur dans la rédaction est conservée quand le panneau se redessine.
+- Installation depuis le catalogue communautaire d'Obsidian, désormais décrite en premier dans le README et la documentation, avec l'accès à la commande sur mobile (appui long, barre d'outils mobile).
+
+### Corrigé
+
+- *Ctrl/Cmd+Entrée* enregistre bien le commentaire en cours de rédaction dans le panneau : Obsidian interceptait le raccourci avant la zone de saisie.
+- La zone de saisie du panneau ne perd plus le focus quand le panneau se redessine juste après l'ouverture d'un brouillon.
 
 ### Format
 

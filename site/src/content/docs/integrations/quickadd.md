@@ -5,7 +5,7 @@ sidebar:
   order: 3
 ---
 
-[QuickAdd](https://quickadd.obsidian.guide/) is not required. Hypomnema's [chains](/concepts/chain/) cover what touches annotation; QuickAdd is useful when you already have macros and want Hypomnema to be one of their steps.
+[QuickAdd](https://quickadd.obsidian.guide/) is not required. It is useful when you already have macros and want Hypomnema to be one of their steps.
 
 ## What it brings
 
@@ -20,15 +20,15 @@ QuickAdd macros chain commands, captures and scripts from any plugin. Every Hypo
 
 The same command is available to any plugin or script: `app.commands.executeCommandById("hypomnema:extract-note")`.
 
-## Variant: gestures and the API in a macro
+## Variant: actions and the API in a macro
 
 :::note
 Available from version 0.5.0.
 :::
 
-Each [gesture](/concepts/gestures/) with the *Command* toggle on is the command `hypomnema:geste-<id>`, so it appears in QuickAdd's *Obsidian command* step like any other command.
+Each [action](/concepts/actions/) with the *Command* toggle on is the command `hypomnema:action-<id>`, so it appears in QuickAdd's *Obsidian command* step like any other command.
 
-A QuickAdd user script can also call the [public API](/advanced/api/). Scripts written for Hypomnema use the same signature as QuickAdd's, so the same file works in both:
+A [script](/advanced/scripts/) written for a Hypomnema chain also works as a QuickAdd user script. A QuickAdd user script can also call the [public API](/advanced/api/):
 
 ```js
 module.exports = async (params) => {

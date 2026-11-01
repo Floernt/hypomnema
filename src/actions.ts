@@ -343,13 +343,15 @@ export class Actions {
 
   /**
    * Lien obsidian://hypomnema?file=…&id=aN d'une note d'extraction : ouvre la note et amène au passage.
-   * Avec geste=<id>, lance ce geste ; les autres paramètres répondent aux {{VALUE:…}} de même nom.
+   * Avec run=<id>, lance cette action ; les autres paramètres répondent aux {{VALUE:…}} de même nom.
+   * « action » est réservé par Obsidian (nom du gestionnaire), d'où « run ».
    */
   async openLink(params: Record<string, string>) {
-    if (params.geste) {
+    const id = params.run;
+    if (id) {
       const values = { ...params };
-      for (const k of ["action", "vault", "geste"]) delete values[k];
-      await this.plugin.runner.run(params.geste, { values });
+      for (const k of ["action", "vault", "run"]) delete values[k];
+      await this.plugin.runner.run(id, { values });
       return;
     }
     const file = this.plugin.app.vault.getAbstractFileByPath(params.file ?? "");

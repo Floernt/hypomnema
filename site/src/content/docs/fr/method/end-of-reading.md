@@ -40,7 +40,7 @@ module.exports = async (params, settings) => {
 };
 ```
 
-Puis un geste [Enchaînement](/fr/concepts/chain/) nommé « Fin de lecture », option *Commande* activée :
+Puis une action [Enchaînement](/fr/concepts/chain/) nommée « Fin de lecture », option *Commande* activée :
 
 | Étape | Type | Valeur |
 |---|---|---|
