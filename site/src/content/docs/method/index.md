@@ -21,7 +21,7 @@ Every note follows the same outline.
 | Note | Feature |
 |---|---|
 | [Categories](/method/categories/) | Categories |
-| [Objection and verification](/method/objection-verification/) | Annotation gestures |
+| [Objection and verification](/method/objection-verification/) | Annotation actions |
 | [The margin](/method/margin/) | Margin |
 | [Periodic review](/method/periodic-review/) | Filtered extraction to a Kanban board |
 | [From reading to writing](/method/reading-to-writing/) | Extraction with a template |

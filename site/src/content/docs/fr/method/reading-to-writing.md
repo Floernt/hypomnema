@@ -19,7 +19,7 @@ Les commentaires écrits pendant la lecture sont déjà des débuts de texte. Ce
 
 ## Un exemple vécu
 
-Après *Pourquoi on oublie ce qu'on lit*, le geste « Note de lecture » crée `Notes/Pourquoi on oublie ce qu'on lit — note.md`. Les commentaires apparaissent sous « Matière », chacun avec son lien ↩ vers le passage. En dessous attendent les rubriques vides « Ce que je retiens » et « Ce que je conteste ». L'idée de l'annotation comme dialogue devient le premier paragraphe ; le commentaire à vérifier devient une phrase une fois la source contrôlée.
+Après *Pourquoi on oublie ce qu'on lit*, l'action « Note de lecture » crée `Notes/Pourquoi on oublie ce qu'on lit — note.md`. Les commentaires apparaissent sous « Matière », chacun avec son lien ↩ vers le passage. En dessous attendent les rubriques vides « Ce que je retiens » et « Ce que je conteste ». L'idée de l'annotation comme dialogue devient le premier paragraphe ; le commentaire à vérifier devient une phrase une fois la source contrôlée.
 
 ## Le réglage
 
@@ -43,7 +43,7 @@ Lu le {{today}}. Source : {{sources}}
 
 ```
 
-Puis un geste [Extraction](/fr/concepts/extraction/) nommé « Note de lecture » :
+Puis une action [Extraction](/fr/concepts/extraction/) nommée « Note de lecture » :
 
 | Champ | Valeur |
 |---|---|
@@ -55,7 +55,7 @@ Puis un geste [Extraction](/fr/concepts/extraction/) nommé « Note de lecture �
 | Gabarit de ligne | `{{text}} — « {{quote}} » {{link}}` |
 | Si la note existe déjà | N'ajouter que les nouveaux commentaires |
 
-Le gabarit ne sert qu'une fois, à la création de la note. Si l'on commente encore et qu'on relance le geste, les nouveaux commentaires s'écrivent à la fin de « Matière », entre les repères invisibles `hypomnema:start` et `hypomnema:end`, et ce que l'on a écrit en dessous reste intact. Voir [Gabarit](/fr/concepts/template/).
+Le gabarit ne sert qu'une fois, à la création de la note. Si l'on commente encore et qu'on relance l'action, les nouveaux commentaires s'écrivent à la fin de « Matière », entre les repères invisibles `hypomnema:start` et `hypomnema:end`, et ce que l'on a écrit en dessous reste intact. Voir [Gabarit](/fr/concepts/template/).
 
 ## Variantes
 

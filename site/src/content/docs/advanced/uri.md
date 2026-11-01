@@ -1,6 +1,6 @@
 ---
 title: URI
-description: Open a comment or run a gesture from a link.
+description: Open a comment or run an action from a link.
 sidebar:
   order: 3
 ---
@@ -17,20 +17,20 @@ obsidian://hypomnema?vault=<vault>&file=<path>&id=a1
 
 It opens the note `file` in the vault `vault` and selects the passage of comment `id`. Values are URL-encoded. This link also identifies the comment in an extraction note: re-extracting with *Add only new comments* skips a comment whose link is already there.
 
-## Running a gesture
+## Running an action
 
 :::note
 Available from version 0.5.0.
 :::
 
 ```text
-obsidian://hypomnema?geste=<id>&<variable>=<value>
+obsidian://hypomnema?run=<id>&<variable>=<value>
 ```
 
-This runs the [gesture](/concepts/gestures/) with id `<id>`. Any other parameter prefills the `{{VALUE:…}}` prompt of the same name, so the gesture does not ask for it:
+This runs the [action](/concepts/actions/) with id `<id>`. The parameter is `run`, not `action`, because Obsidian reserves `action` in its links. Any other parameter prefills the `{{VALUE:…}}` prompt of the same name, so the action does not ask for it:
 
 ```text
-obsidian://hypomnema?geste=k3f9&project=Thesis
+obsidian://hypomnema?run=k3f9&project=Thesis
 ```
 
-runs gesture `k3f9` with `{{VALUE:project}}` set to `Thesis`.
+runs action `k3f9` with `{{VALUE:project}}` set to `Thesis`.

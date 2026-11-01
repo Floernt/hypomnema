@@ -10,7 +10,7 @@ L'extraction par défaut est disponible dès maintenant. Ses *Plus d'options*, a
 :::
 
 
-![Formulaire d'une extraction nommée : portée, format, dossier, nom de la note, gabarit de ligne, puis Plus d'options.](/screenshots/13-geste-extraction-fr.png)
+![Formulaire d'une extraction nommée : portée, format, dossier, nom de la note, gabarit de ligne, puis Plus d'options.](/screenshots/13-action-extraction-fr.png)
 
 Une extraction recopie des commentaires dans une note à part. Chaque commentaire se termine par un lien ↩ qui rouvre la note source et sélectionne le passage. Une note d'extraction est une copie : la modifier ne change pas les commentaires de la note source.
 
@@ -31,14 +31,14 @@ En mode *N'ajouter que les nouveaux commentaires*, le lien ↩ identifie chaque 
 
 La note porte les propriétés `hypomnema-extract`, `hypomnema-source` et `hypomnema-date`, ainsi que les tags des catégories : [Dataview](/fr/integrations/dataview/) la retrouve.
 
-À partir de la version 0.5.0, l'extraction par défaut reste simplement « Extraction », dans la section de niveau 1. Elle ne peut pas être supprimée, ce qui garantit que `extract-note` fonctionne toujours, et n'apparaît pas dans la liste des gestes. Ses options supplémentaires, le filtre par catégorie, *Actifs depuis*, *Note-gabarit* et *Passer par Templater*, se trouvent derrière le bouton *Plus d'options* de la section *Extraction*. Depuis une commande, elle porte sur la note active ; depuis le menu d'un dossier, sur le dossier cliqué.
+À partir de la version 0.5.0, l'extraction par défaut reste simplement « Extraction », dans la section de niveau 1. Elle ne peut pas être supprimée, ce qui garantit que `extract-note` fonctionne toujours, et n'apparaît pas dans la liste des actions. Ses options supplémentaires, le filtre par catégorie, *Actifs depuis*, *Note-gabarit* et *Passer par Templater*, se trouvent derrière le bouton *Plus d'options* de la section *Extraction*. Depuis une commande, elle porte sur la note active ; depuis le menu d'un dossier, sur le dossier cliqué.
 
 ## Les extractions nommées
 
-Un geste de type Extraction reprend les réglages de l'extraction par défaut, et y ajoute une portée, un filtre et un [gabarit](/fr/concepts/template/) facultatif. Une nouvelle extraction nommée part de la portée *Note active*.
+Une action de type Extraction reprend les réglages de l'extraction par défaut, et y ajoute une portée, un filtre et un [gabarit](/fr/concepts/template/) facultatif. Une nouvelle extraction nommée part de la portée *Note active*.
 
 ```ts
-interface ExtractionGeste extends GesteBase {
+interface ExtractionAction extends ActionBase {
   kind: "extraction";
   scope: "context" | "note" | "folder-current" | "folder" | "vault";
   folderMenu: boolean;
@@ -63,7 +63,7 @@ interface ExtractionGeste extends GesteBase {
 | Un dossier donné | `folder` | Un dossier fixe (`folderPath`). |
 | Tout le coffre | `vault` | Toutes les notes du coffre. |
 
-Quand l'option *Dans le menu des dossiers* (`folderMenu`, sous *Plus d'options* dans le formulaire du geste) est activée, l'extraction apparaît dans le menu contextuel des dossiers, à côté de l'extraction par défaut. Lancée depuis ce menu, elle porte sur le dossier cliqué, quelle que soit sa portée.
+Quand l'option *Dans le menu des dossiers* (`folderMenu`, sous *Plus d'options* dans le formulaire de l'action) est activée, l'extraction apparaît dans le menu contextuel des dossiers, à côté de l'extraction par défaut. Lancée depuis ce menu, elle porte sur le dossier cliqué, quelle que soit sa portée.
 
 ### Filtre
 

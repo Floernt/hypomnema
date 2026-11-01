@@ -27,6 +27,6 @@ Déplacez une carte dans *Fait* quand le commentaire a été traité. Une extrac
 Disponible à partir de la version 0.5.0.
 :::
 
-Un geste [Extraction](/fr/concepts/extraction/) de portée *Tout le coffre*, avec *Actifs depuis* réglé sur `{{date-7d}}` et le format Kanban, rassemble sur un seul tableau les commentaires de la semaine, toutes notes confondues. La note de méthode [La revue périodique](/fr/method/periodic-review/) donne le réglage complet.
+Une action [Extraction](/fr/concepts/extraction/) de portée *Tout le coffre*, avec *Actifs depuis* réglé sur `{{date-7d}}` et le format Kanban, rassemble sur un seul tableau les commentaires de la semaine, toutes notes confondues. La note de méthode [La revue périodique](/fr/method/periodic-review/) donne le réglage complet.
 
 Un [gabarit](/fr/concepts/template/) ne s'applique pas au format Kanban : la structure qu'attend le plugin Kanban est trop stricte pour y mêler du texte libre.

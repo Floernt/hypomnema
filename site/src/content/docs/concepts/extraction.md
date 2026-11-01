@@ -10,7 +10,7 @@ The default extraction is available now. Its *More options*, and named extractio
 :::
 
 
-![Form of a named extraction: scope, format, folder, note name, line template, then More options.](/screenshots/13-geste-extraction-en.png)
+![Form of a named extraction: scope, format, folder, note name, line template, then More options.](/screenshots/13-action-extraction-en.png)
 
 An extraction copies comments into a separate note. Each comment ends with a ↩ link that reopens the source note and selects the passage. An extraction note is a copy: editing it does not change the comments in the source note.
 
@@ -31,14 +31,14 @@ In *Add only new comments* mode, the ↩ link identifies each comment: one whose
 
 The note carries the properties `hypomnema-extract`, `hypomnema-source` and `hypomnema-date`, plus the category tags, so [Dataview](/integrations/dataview/) finds it.
 
-From version 0.5.0, the default extraction stays simply *Extraction*, in the level-1 section. It cannot be deleted, so `extract-note` always works, and it does not appear in the gesture list. Its extra options, the category filter, *Active since*, *Template note* and *Run Templater*, sit behind the *More options* button of the *Extraction* section. From a command it works on the current note; from a folder's menu, on the clicked folder.
+From version 0.5.0, the default extraction stays simply *Extraction*, in the level-1 section. It cannot be deleted, so `extract-note` always works, and it does not appear in the list of actions. Its extra options, the category filter, *Active since*, *Template note* and *Run Templater*, sit behind the *More options* button of the *Extraction* section. From a command it works on the current note; from a folder's menu, on the clicked folder.
 
 ## Named extractions
 
-An Extraction gesture has the same settings as the default extraction, plus a scope, a filter and an optional [template](/concepts/template/). A new named extraction starts with the scope *Current note*.
+An Extraction action has the same settings as the default extraction, plus a scope, a filter and an optional [template](/concepts/template/). A new named extraction starts with the scope *Current note*.
 
 ```ts
-interface ExtractionGeste extends GesteBase {
+interface ExtractionAction extends ActionBase {
   kind: "extraction";
   scope: "context" | "note" | "folder-current" | "folder" | "vault";
   folderMenu: boolean;
@@ -63,7 +63,7 @@ interface ExtractionGeste extends GesteBase {
 | A given folder | `folder` | A fixed folder (`folderPath`). |
 | Whole vault | `vault` | Every note of the vault. |
 
-When *In the folder menu* (`folderMenu`, under *More options* in the gesture form) is on, the extraction appears in the right-click menu of folders, next to the default extraction. Run from that menu, it works on the clicked folder, whatever its scope.
+When *In the folder menu* (`folderMenu`, under *More options* in the action form) is on, the extraction appears in the right-click menu of folders, next to the default extraction. Run from that menu, it works on the clicked folder, whatever its scope.
 
 ### Filter
 

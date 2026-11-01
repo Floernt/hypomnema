@@ -35,7 +35,7 @@ The concepts behind this table are explained on the [Variables](/concepts/variab
 | `{{cursor}}` | Annotation | Where the cursor is placed in the starting text |
 | `{{sources}}` | Template | Links to the source notes |
 | `{{comments}}` | Template | Body of the extraction |
-| `{{VALUE:label}}` | Everywhere | Value typed in a prompt titled *label*; same label, same value within a gesture or chain |
+| `{{VALUE:label}}` | Everywhere | Value typed in a prompt titled *label*; same label, same value within an action or chain |
 | `{{GLOBAL:name}}` | Everywhere | Value of the [global variable](/concepts/variables/#global-variables) *name* |
 
 Date offsets are always counted from today, even in the line template.

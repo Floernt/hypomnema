@@ -19,11 +19,11 @@ Un commentaire ne vaut que si l'on y revient. Revenir sur chaque lecture sépar�
 
 ## Un exemple vécu
 
-Le vendredi, le geste « Revue hebdomadaire » rassemble les commentaires de la semaine dans tout le coffre. La colonne « À vérifier » contient la note de Fermat tirée de *Pourquoi on oublie ce qu'on lit* ; la source est vérifiée et la carte passe dans *Fait*. La « Question » sur les commentaires au curseur reste où elle est. Un fil ancien, issu d'une lecture d'il y a trois semaines, revient parce qu'une réponse y a été ajoutée mardi.
+Le vendredi, l'action « Revue hebdomadaire » rassemble les commentaires de la semaine dans tout le coffre. La colonne « À vérifier » contient la note de Fermat tirée de *Pourquoi on oublie ce qu'on lit* ; la source est vérifiée et la carte passe dans *Fait*. La « Question » sur les commentaires au curseur reste où elle est. Un fil ancien, issu d'une lecture d'il y a trois semaines, revient parce qu'une réponse y a été ajoutée mardi.
 
 ## Le réglage
 
-Créez un geste [Extraction](/fr/concepts/extraction/) nommé « Revue hebdomadaire » :
+Créez une action [Extraction](/fr/concepts/extraction/) nommée « Revue hebdomadaire » :
 
 | Champ | Valeur |
 |---|---|
@@ -36,7 +36,7 @@ Créez un geste [Extraction](/fr/concepts/extraction/) nommé « Revue hebdomada
 | Nom de la note | `Revue {{today:YYYY-[S]WW}}` |
 | Si la note existe déjà | N'ajouter que les nouveaux commentaires |
 
-*Actifs depuis* retient un fil dont la date la plus récente, racine ou réponse, tombe dans les sept derniers jours : un fil relancé par une réponse revient donc. Le nom de la note change chaque semaine, si bien que chaque semaine a son tableau ; lancer le geste deux fois dans la même semaine n'ajoute que les nouveaux commentaires.
+*Actifs depuis* retient un fil dont la date la plus récente, racine ou réponse, tombe dans les sept derniers jours : un fil relancé par une réponse revient donc. Le nom de la note change chaque semaine, si bien que chaque semaine a son tableau ; lancer l'action deux fois dans la même semaine n'ajoute que les nouveaux commentaires.
 
 ## Variantes
 

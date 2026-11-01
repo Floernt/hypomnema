@@ -27,6 +27,6 @@ Move a card to *Done* once you have dealt with the comment. Extracting again lat
 Available from version 0.5.0.
 :::
 
-An [Extraction](/concepts/extraction/) gesture with scope *Whole vault*, *Active since* set to `{{date-7d}}` and the Kanban format collects the week's comments from every note on one board. The method note [Periodic review](/method/periodic-review/) gives the full setting.
+An [Extraction](/concepts/extraction/) action with scope *Whole vault*, *Active since* set to `{{date-7d}}` and the Kanban format collects the week's comments from every note on one board. The method note [Periodic review](/method/periodic-review/) gives the full setting.
 
 A [template](/concepts/template/) does not apply to the Kanban format: the structure the Kanban plugin expects is too strict to mix with free text.

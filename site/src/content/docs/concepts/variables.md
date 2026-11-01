@@ -1,6 +1,6 @@
 ---
 title: Variables
-description: The {{…}} syntax shared by every gesture, and global variables.
+description: The {{…}} syntax shared by every action, and global variables.
 sidebar:
   order: 6
 ---
@@ -9,7 +9,7 @@ sidebar:
 The per-comment variables of the line template, and `{{note}}` and `{{date}}` in the note name, are available now. The rest of this page is available from version 0.5.0.
 :::
 
-Every gesture uses the same syntax: a name between double braces, `{{name}}`, sometimes followed by an argument, `{{name:argument}}`, or by a day offset, `{{date-7d}}`. An unknown variable is left as is. The [variables table](/reference/variables/) lists them all.
+Every action uses the same syntax: a name between double braces, `{{name}}`, sometimes followed by an argument, `{{name:argument}}`, or by a day offset, `{{date-7d}}`. An unknown variable is left as is. The [variables table](/reference/variables/) lists them all.
 
 ## Families
 
@@ -19,7 +19,7 @@ Every gesture uses the same syntax: a name between double braces, `{{name}}`, so
 
 **Dates**: `{{date}}` (YYYY-MM-DD), `{{date:FORMAT}}` with a [Moment.js format](https://momentjs.com/docs/#/displaying/format/), `{{date-7d}}`, `{{date+1d}}`, and `{{today}}`.
 
-**Input**: `{{VALUE:label}}` opens a prompt titled *label*. The same label keeps the same value throughout the gesture, and in a [chain](/concepts/chain/) it stays available to the following steps.
+**Input**: `{{VALUE:label}}` opens a prompt titled *label*. The same label keeps the same value throughout the action, and in a [chain](/concepts/chain/) it stays available to the following steps.
 
 **Global**: `{{GLOBAL:name}}`, see below.
 
@@ -35,7 +35,7 @@ In the **line template**, which describes one comment, `{{date}}` and `{{date:FO
 
 ## Global variables
 
-Global variables are named values that you reuse across gestures. You define them in the *Global variables* section of the settings, as a list of name / value rows:
+Global variables are named values that you reuse across actions. You define them in the *Global variables* section of the settings, as a list of name / value rows:
 
 | Name | Value |
 |---|---|

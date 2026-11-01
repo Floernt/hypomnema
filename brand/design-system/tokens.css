@@ -1,0 +1,74 @@
+/* Hypomnema — generated from tokens.json */
+:root, [data-theme="light"] {
+  --paper: #f6f1e7;
+  --paper-raised: #fdfaf3;
+  --paper-sunk: #ece4d4;
+  --line: #ddd2bf;
+  --line-strong: #8c7d68;
+  --ink: #231d17;
+  --ink-muted: #675b4d;
+  --rubric: #a5341d;
+  --rubric-soft: #f3ddd3;
+  --on-rubric: #fdfaf3;
+  --focus: var(--rubric);
+  --cat-idee: #2e9e5b;
+  --cat-question: #3f73c4;
+  --cat-verifier: #a8701a;
+  --cat-citation: #a85a9a;
+  --shadow-raised: 0 1px 2px rgba(35, 29, 23, 0.08), 0 4px 12px rgba(35, 29, 23, 0.06);
+}
+[data-theme="dark"] {
+  --paper: #1c1915;
+  --paper-raised: #26221d;
+  --paper-sunk: #14120f;
+  --line: #3a342c;
+  --line-strong: #7d705f;
+  --ink: #efe7da;
+  --ink-muted: #b2a593;
+  --rubric: #e8785e;
+  --rubric-soft: #4a2119;
+  --on-rubric: #1c1915;
+  --cat-idee: #2e9e5b;
+  --cat-question: #3f73c4;
+  --cat-verifier: #a8701a;
+  --cat-citation: #a85a9a;
+  --shadow-raised: 0 1px 2px rgba(0, 0, 0, 0.4), 0 4px 12px rgba(0, 0, 0, 0.3);
+}
+:root {
+  --space-1: 4px;
+  --space-2: 8px;
+  --space-3: 12px;
+  --space-4: 16px;
+  --space-6: 24px;
+  --space-8: 32px;
+  --space-12: 48px;
+  --space-16: 64px;
+  --radius-xs: 2px;
+  --radius-sm: 4px;
+  --radius-md: 8px;
+  --radius-lg: 14px;
+  --radius-full: 999px;
+  --measure-reading: 66ch;
+  --panel-width: 320px;
+  --font-serif: "Newsreader", "Iowan Old Style", Georgia, serif;
+  --font-sans: "IBM Plex Sans", system-ui, sans-serif;
+  --font-mono: "IBM Plex Mono", ui-monospace, "SF Mono", monospace;
+}
+.display { font-family: var(--font-serif); font-size: 64px; line-height: 64px; font-weight: 500; letter-spacing: -0.01em; font-variation-settings: 'opsz' 72; }
+.title { font-family: var(--font-serif); font-size: 40px; line-height: 44px; font-weight: 500; font-variation-settings: 'opsz' 48; }
+.heading { font-family: var(--font-serif); font-size: 28px; line-height: 34px; font-weight: 500; font-variation-settings: 'opsz' 32; }
+.subheading { font-family: var(--font-serif); font-size: 21px; line-height: 28px; font-weight: 600; font-variation-settings: 'opsz' 24; }
+.reading { font-family: var(--font-serif); font-size: 19px; line-height: 30px; font-weight: 400; font-variation-settings: 'opsz' 16; }
+.body { font-family: var(--font-serif); font-size: 16px; line-height: 26px; font-weight: 400; font-variation-settings: 'opsz' 14; }
+.quote { font-family: var(--font-serif); font-size: 16px; line-height: 24px; font-weight: 400; font-style: italic; font-variation-settings: 'opsz' 14; }
+.ui { font-family: var(--font-sans); font-size: 14px; line-height: 20px; font-weight: 400; }
+.ui-strong { font-family: var(--font-sans); font-size: 14px; line-height: 20px; font-weight: 600; }
+.ui-small { font-family: var(--font-sans); font-size: 12px; line-height: 16px; font-weight: 500; }
+.code { font-family: var(--font-mono); font-size: 13px; line-height: 20px; font-weight: 400; }
+@font-face { font-family: "Newsreader"; src: url("fonts/Newsreader-Variable.woff2") format("woff2"); font-weight: 200 800; font-style: normal; font-display: swap; }
+@font-face { font-family: "Newsreader"; src: url("fonts/Newsreader-Variable-Italic.woff2") format("woff2"); font-weight: 200 800; font-style: italic; font-display: swap; }
+@font-face { font-family: "IBM Plex Sans"; src: url("fonts/IBMPlexSans-400.woff2") format("woff2"); font-weight: 400; font-style: normal; font-display: swap; }
+@font-face { font-family: "IBM Plex Sans"; src: url("fonts/IBMPlexSans-500.woff2") format("woff2"); font-weight: 500; font-style: normal; font-display: swap; }
+@font-face { font-family: "IBM Plex Sans"; src: url("fonts/IBMPlexSans-600.woff2") format("woff2"); font-weight: 600; font-style: normal; font-display: swap; }
+@font-face { font-family: "IBM Plex Mono"; src: url("fonts/IBMPlexMono-400.woff2") format("woff2"); font-weight: 400; font-style: normal; font-display: swap; }
+@font-face { font-family: "IBM Plex Mono"; src: url("fonts/IBMPlexMono-500.woff2") format("woff2"); font-weight: 500; font-style: normal; font-display: swap; }

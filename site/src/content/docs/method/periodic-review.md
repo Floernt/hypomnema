@@ -19,11 +19,11 @@ A comment is worth something only if you come back to it. Coming back to each re
 
 ## An example from a real reading
 
-On Friday, the *Weekly review* gesture collects the comments of the week across the vault. The *To verify* column holds the Fermat note from *Why we forget what we read*; the source is checked and the card goes to *Done*. The *Question* about point comments stays where it is. An old thread, from a reading three weeks ago, comes back because a reply was added on Tuesday.
+On Friday, the *Weekly review* action collects the comments of the week across the vault. The *To verify* column holds the Fermat note from *Why we forget what we read*; the source is checked and the card goes to *Done*. The *Question* about point comments stays where it is. An old thread, from a reading three weeks ago, comes back because a reply was added on Tuesday.
 
 ## The setting
 
-Create an [Extraction](/concepts/extraction/) gesture named *Weekly review*:
+Create an [Extraction](/concepts/extraction/) action named *Weekly review*:
 
 | Field | Value |
 |---|---|
@@ -36,7 +36,7 @@ Create an [Extraction](/concepts/extraction/) gesture named *Weekly review*:
 | Note name | `Review {{today:YYYY-[W]WW}}` |
 | If the note already exists | Add only new comments |
 
-*Active since* keeps a thread whose latest date, root or reply, falls within the last seven days, so a thread revived by a reply comes back. The note name changes each week, so each week gets its own board; running the gesture twice in the same week only adds the new comments.
+*Active since* keeps a thread whose latest date, root or reply, falls within the last seven days, so a thread revived by a reply comes back. The note name changes each week, so each week gets its own board; running the action twice in the same week only adds the new comments.
 
 ## Variants
 

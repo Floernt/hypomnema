@@ -25,7 +25,7 @@ api.threads(file: TFile): Promise<Thread[]>
 api.allThreads(opts?: { folder?: string; categories?: string[]; since?: string }): Promise<{ file: TFile; thread: Thread }[]>
 api.addComment(file, target: { quote: string; occurrence?: number } | { line: number }, text: string, tag?: string): Promise<string>
 api.reply(file, id, text): Promise<void>
-api.runGeste(id: string, vars?: Record<string, string>): Promise<void>
+api.runAction(id: string, vars?: Record<string, string>): Promise<void>
 api.format(template: string, vars?: Record<string, string>): string
 ```
 
@@ -35,7 +35,7 @@ A `Thread` has an `id` (`a1`), a `root` entry and its `replies` (each with `id`,
 
 **`addComment`** adds a comment and returns its id. The target is either a passage, `{ quote }`, or a line, `{ line }`. With `{ line }`, counted from 0, the comment is a point comment placed at the end of that line. With `{ quote }`, if the passage is missing, or appears more than once, the call throws an explicit error unless `occurrence: n` says which one (counted from 1). The API never picks in silence.
 
-**`reply`** adds a reply to a thread. **`runGeste`** runs a [gesture](/concepts/gestures/) by its id; `vars` prefills its `{{VALUE:…}}` prompts. **`format`** resolves the [variable syntax](/concepts/variables/) in a string; the entries of `vars` also answer the `{{VALUE:…}}` prompts, so `api.format("Review {{VALUE:topic}}", { topic: "memory" })` gives `Review memory`.
+**`reply`** adds a reply to a thread. **`runAction`** runs an [action](/concepts/actions/) by its id; `vars` prefills its `{{VALUE:…}}` prompts. **`format`** resolves the [variable syntax](/concepts/variables/) in a string; the entries of `vars` also answer the `{{VALUE:…}}` prompts, so `api.format("Review {{VALUE:topic}}", { topic: "memory" })` gives `Review memory`.
 
 A write through the API has the same effects as a write through the interface: the category tag is synced in the note's properties, and the `hypomnema:comment-added` event fires, whether the note is open or not. Writes go through `vault.process`, so they do not conflict with the editor.
 

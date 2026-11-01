@@ -5,7 +5,7 @@ sidebar:
   order: 2
 ---
 
-Hypomnema ne définit aucun raccourci par défaut. Attribuez ceux que vous voulez dans *Paramètres → Raccourcis*. Un identifiant de commande s'appelle depuis un script avec `app.commands.executeCommandById("<id>")`, ou depuis une étape *Obsidian command* de QuickAdd.
+Hypomnema ne définit aucun raccourci par défaut. Attribuez ceux que vous voulez dans *Paramètres → Raccourcis*. Un identifiant de commande s'appelle depuis un script avec `app.commands.executeCommandById("<id>")`, ou depuis l'étape *Obsidian command* d'une macro [QuickAdd](/fr/integrations/quickadd/).
 
 ## Disponibles dès maintenant
 
@@ -22,7 +22,7 @@ Le menu des dossiers propose en outre *Extraire les commentaires de ce dossier*,
 
 | Commande | Identifiant |
 |---|---|
-| Lancer un geste | `hypomnema:run-geste` |
-| Une commande par geste dont l'option *Commande* est activée, au nom du geste | `hypomnema:geste-<id>` |
+| Lancer une action | `hypomnema:run-action` |
+| Une commande par action dont l'option *Commande* est activée, au nom de l'action | `hypomnema:action-<id>` |
 
-*Lancer un geste* ouvre la liste de tous les gestes, avec recherche ; elle n'est disponible que s'il existe au moins un geste. *Extraire les commentaires de cette note* continue de lancer l'extraction par défaut.
+*Lancer une action* ouvre la liste de toutes les actions, avec recherche ; elle n'est disponible que s'il existe au moins une action. *Extraire les commentaires de cette note* continue de lancer l'extraction par défaut.

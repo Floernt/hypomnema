@@ -1,6 +1,6 @@
 ---
 title: Variables
-description: La syntaxe {{…}} commune à tous les gestes, et les variables globales.
+description: La syntaxe {{…}} commune à toutes les actions, et les variables globales.
 sidebar:
   order: 6
 ---
@@ -9,7 +9,7 @@ sidebar:
 Les variables par commentaire du gabarit de ligne, ainsi que `{{note}}` et `{{date}}` dans le nom de la note, sont disponibles dès maintenant. Le reste de cette page est disponible à partir de la version 0.5.0.
 :::
 
-Tous les gestes partagent la même syntaxe : un nom entre doubles accolades, `{{nom}}`, parfois suivi d'un argument, `{{nom:argument}}`, ou d'un décalage en jours, `{{date-7d}}`. Une variable inconnue est laissée telle quelle. La [table des variables](/fr/reference/variables/) les recense toutes.
+Toutes les actions partagent la même syntaxe : un nom entre doubles accolades, `{{nom}}`, parfois suivi d'un argument, `{{nom:argument}}`, ou d'un décalage en jours, `{{date-7d}}`. Une variable inconnue est laissée telle quelle. La [table des variables](/fr/reference/variables/) les recense toutes.
 
 ## Familles
 
@@ -19,7 +19,7 @@ Tous les gestes partagent la même syntaxe : un nom entre doubles accolades, `{{
 
 **Dates** : `{{date}}` (AAAA-MM-JJ), `{{date:FORMAT}}` avec un [format Moment.js](https://momentjs.com/docs/#/displaying/format/), `{{date-7d}}`, `{{date+1d}}` et `{{today}}`.
 
-**Saisie** : `{{VALUE:libellé}}` ouvre une invite intitulée *libellé*. Un même libellé garde la même valeur dans tout le geste ; dans un [enchaînement](/fr/concepts/chain/), la valeur reste disponible pour les étapes suivantes.
+**Saisie** : `{{VALUE:libellé}}` ouvre une invite intitulée *libellé*. Un même libellé garde la même valeur dans toute l'action ; dans un [enchaînement](/fr/concepts/chain/), la valeur reste disponible pour les étapes suivantes.
 
 **Globales** : `{{GLOBAL:nom}}`, voir plus bas.
 
@@ -35,7 +35,7 @@ Dans le **gabarit de ligne**, qui décrit un commentaire, `{{date}}` et `{{date:
 
 ## Variables globales
 
-Les variables globales sont des valeurs nommées, réutilisables d'un geste à l'autre. On les définit dans la section *Variables globales* des réglages, sous forme d'une liste de lignes nom / valeur :
+Les variables globales sont des valeurs nommées, réutilisables d'une action à l'autre. On les définit dans la section *Variables globales* des réglages, sous forme d'une liste de lignes nom / valeur :
 
 | Nom | Valeur |
 |---|---|

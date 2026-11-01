@@ -1,6 +1,6 @@
 ---
 title: Enchaînement
-description: Un geste qui exécute une suite d'étapes, gestes, commandes, scripts et pauses.
+description: Une action qui exécute une suite d'étapes, actions, commandes, scripts et pauses.
 sidebar:
   order: 7
 ---
@@ -9,21 +9,21 @@ sidebar:
 Disponible à partir de la version 0.5.0. Les enchaînements relèvent du niveau 3 : activez les *Fonctions avancées* dans les réglages pour en créer un.
 :::
 
-Un enchaînement exécute une suite d'étapes, dans l'ordre. C'est la *Macro* de QuickAdd, limitée à ce qui touche la lecture et l'annotation.
+Un enchaînement exécute une suite d'étapes, dans l'ordre.
 
 ```ts
 type Step =
-  | { type: "geste"; id: string }
+  | { type: "action"; id: string }
   | { type: "command"; id: string }
   | { type: "script"; path: string; settings?: Record<string, string> }
   | { type: "wait"; ms: number };
 
-interface ChainGeste extends GesteBase { kind: "chain"; steps: Step[]; }
+interface ChainAction extends ActionBase { kind: "chain"; steps: Step[]; }
 ```
 
 ## Les étapes
 
-Une étape **Geste** lance un autre geste. Une étape **Commande Obsidian** lance n'importe quelle commande Obsidian, choisie avec *Choisir…*, par exemple *Extraire les commentaires de cette note* (`hypomnema:extract-note`) ou la commande d'un autre plugin. Une étape **Script** exécute un fichier `.js` du coffre, avec des réglages facultatifs ; voir [Scripts](/fr/advanced/scripts/). Une étape **Pause (ms)** attend un nombre de millisecondes, ce qui sert quand une commande précédente ouvre une note ou une vue qui met du temps à se charger.
+Une étape **Action** lance une autre action. Une étape **Commande Obsidian** lance n'importe quelle commande Obsidian, choisie avec *Choisir…*, par exemple *Extraire les commentaires de cette note* (`hypomnema:extract-note`) ou la commande d'un autre plugin. Une étape **Script** exécute un fichier `.js` du coffre, avec des réglages facultatifs ; voir [Scripts](/fr/advanced/scripts/). Une étape **Pause (ms)** attend un nombre de millisecondes, ce qui sert quand une commande précédente ouvre une note ou une vue qui met du temps à se charger.
 
 ## L'exécution
 

@@ -13,7 +13,7 @@ Disponible à partir de la version 0.5.0. Les scripts relèvent du niveau 3 : il
 Un script peut lire, modifier et supprimer n'importe quel fichier du coffre, et accéder au réseau. N'exécutez que des scripts que vous avez écrits vous-même, ou que vous avez lus et compris.
 :::
 
-Un script est un fichier `.js` du coffre, exécuté comme étape *Script* d'un [enchaînement](/fr/concepts/chain/). Il suit la convention de QuickAdd : un script écrit pour l'un fonctionne dans l'autre.
+Un script est un fichier `.js` du coffre, exécuté comme étape *Script* d'un [enchaînement](/fr/concepts/chain/).
 
 ## Signature
 
@@ -28,7 +28,9 @@ module.exports = async (params, settings) => {
 
 `settings` contient les paires clé → valeur réglées sur l'étape script : un même fichier peut ainsi servir à plusieurs enchaînements, avec des réglages différents.
 
-L'export peut aussi être un objet doté d'une fonction `entry`, comme dans QuickAdd :
+Cette signature est compatible avec les scripts utilisateur de QuickAdd : le même fichier peut aussi y servir.
+
+L'export peut aussi être un objet doté d'une fonction `entry` :
 
 ```js
 module.exports = { entry: async (params, settings) => { /* … */ } };
@@ -55,4 +57,4 @@ Une étape suivante peut utiliser `{{VALUE:nombre}}` sans que la question soit p
 
 ## Partage
 
-L'[export](/fr/advanced/export-import/) copie le chemin d'un script, jamais son code. Qui importe le geste doit ajouter le fichier à son propre coffre.
+L'[export](/fr/advanced/export-import/) copie le chemin d'un script, jamais son code. Qui importe l'action doit ajouter le fichier à son propre coffre.

@@ -1,5 +1,5 @@
 # Publie le site de documentation (site/) sur GitHub Pages, domaine hypomnema.tools.
-# Les captures viennent de docs/screenshots/ : le build les copie dans site/public/screenshots/.
+# Captures (docs/screenshots/) et charte (brand/) : le build les copie dans le site (site/scripts/sync-assets.mjs).
 name: Site
 
 on:
@@ -9,6 +9,7 @@ on:
     paths:
       - "site/**"
       - "docs/screenshots/**"
+      - "brand/**"
       - ".github/workflows/site.yml"
   workflow_dispatch:
 

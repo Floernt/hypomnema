@@ -1,0 +1,17 @@
+---
+// Capture d'Obsidian dans le thème du site : « nom.ext » (sombre) et, si elle existe, « nom-light.ext » (clair).
+// Même règle que le plugin themed-screenshots pour les images des pages Markdown.
+import { lightVariant } from "../plugins/themed-screenshots.mjs";
+
+interface Props {
+  /** Chemin public de la capture sombre, par exemple /screenshots/00-hero-en.gif */
+  src: string;
+  alt: string;
+}
+
+const { src, alt } = Astro.props;
+const light = lightVariant(src);
+---
+
+<img class:list={["hy-shot", { "hy-only-dark": light }]} src={src} alt={alt} loading="lazy" decoding="async" />
+{light && <img class="hy-shot hy-only-light" src={light} alt={alt} loading="lazy" decoding="async" />}

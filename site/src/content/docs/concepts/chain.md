@@ -1,6 +1,6 @@
 ---
 title: Chain
-description: A gesture that runs a sequence of steps, gestures, commands, scripts and pauses.
+description: An action that runs a sequence of steps, other actions, commands, scripts and pauses.
 sidebar:
   order: 7
 ---
@@ -9,21 +9,21 @@ sidebar:
 Available from version 0.5.0. Chains belong to level 3: turn on *Advanced features* in the settings to create one.
 :::
 
-A chain runs a sequence of steps, in order. It is QuickAdd's *Macro*, limited to what touches reading and annotation.
+A chain runs a sequence of steps, in order.
 
 ```ts
 type Step =
-  | { type: "geste"; id: string }
+  | { type: "action"; id: string }
   | { type: "command"; id: string }
   | { type: "script"; path: string; settings?: Record<string, string> }
   | { type: "wait"; ms: number };
 
-interface ChainGeste extends GesteBase { kind: "chain"; steps: Step[]; }
+interface ChainAction extends ActionBase { kind: "chain"; steps: Step[]; }
 ```
 
 ## Steps
 
-A **Gesture** step runs another gesture. An **Obsidian command** step runs any Obsidian command, picked with *Choose…*, for instance *Extract comments from this note* (`hypomnema:extract-note`) or a command from another plugin. A **Script** step runs a `.js` file of your vault, with optional settings; see [Scripts](/advanced/scripts/). A **Pause (ms)** step waits for a number of milliseconds, which helps when a previous command opens a note or a view that needs time to load.
+An **Action** step runs another action. An **Obsidian command** step runs any Obsidian command, picked with *Choose…*, for instance *Extract comments from this note* (`hypomnema:extract-note`) or a command from another plugin. A **Script** step runs a `.js` file of your vault, with optional settings; see [Scripts](/advanced/scripts/). A **Pause (ms)** step waits for a number of milliseconds, which helps when a previous command opens a note or a view that needs time to load.
 
 ## Running
 

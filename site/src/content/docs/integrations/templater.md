@@ -18,7 +18,7 @@ When an extraction note is created from a [template](/concepts/template/), Templ
 ## Minimal recipe: Templater tags in an extraction template
 
 1. Enable Templater.
-2. In an [Extraction](/concepts/extraction/) gesture with a template, open *More options* and turn on *Run Templater*. It is off by default, and only shown when Templater is enabled. The default extraction has the same option behind the *More options* button of the *Extraction* section.
+2. In an [Extraction](/concepts/extraction/) action with a template, open *More options* and turn on *Run Templater*. It is off by default, and only shown when Templater is enabled. The default extraction has the same option behind the *More options* button of the *Extraction* section.
 3. Add Templater tags to the template:
 
 ```markdown

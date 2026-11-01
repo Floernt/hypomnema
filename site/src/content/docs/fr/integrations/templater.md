@@ -18,7 +18,7 @@ Quand une note d'extraction est créée à partir d'un [gabarit](/fr/concepts/te
 ## Recette minimale : des balises Templater dans un gabarit d'extraction
 
 1. Activez Templater.
-2. Dans un geste [Extraction](/fr/concepts/extraction/) doté d'un gabarit, ouvrez *Plus d'options* et activez *Passer par Templater*. L'option est désactivée par défaut, et n'apparaît que si Templater est actif. L'extraction par défaut offre la même option derrière le bouton *Plus d'options* de la section *Extraction*.
+2. Dans une action [Extraction](/fr/concepts/extraction/) dotée d'un gabarit, ouvrez *Plus d'options* et activez *Passer par Templater*. L'option est désactivée par défaut, et n'apparaît que si Templater est actif. L'extraction par défaut offre la même option derrière le bouton *Plus d'options* de la section *Extraction*.
 3. Ajoutez des balises Templater au gabarit :
 
 ```markdown
