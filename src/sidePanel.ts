@@ -13,7 +13,7 @@ export class CommentsPanel extends ItemView {
   private targetPath: string | null = null;
   private active: string | null = null;
   private editing: ComposeRequest | null = null;
-  private draft: { text: string; tag?: string } = { text: "" };
+  private draft: { text: string; tag?: string; cursor?: number } = { text: "" };
   private focusComposer = false; // le focus ne va au compositeur qu'à son ouverture, pas à chaque rafraîchissement
 
   constructor(leaf: WorkspaceLeaf, private plugin: Hypomnema) {
@@ -75,7 +75,7 @@ export class CommentsPanel extends ItemView {
     const entry = req.mode === "edit" ? (req.id.includes(".") ? t?.replies.find((r) => r.id === req.id) : t?.root) : undefined;
     this.editing = req;
     this.active = req.id.split(".")[0];
-    this.draft = { text: entry?.text ?? "", tag: req.mode === "reply" ? undefined : t?.root.tag };
+    this.draft = { text: entry?.text ?? req.text ?? "", tag: req.mode === "reply" ? undefined : (t?.root.tag ?? req.tag), cursor: req.cursor };
     this.focusComposer = true;
     this.render();
     this.scrollTo(this.active);
@@ -179,7 +179,8 @@ export class CommentsPanel extends ItemView {
       this.focusComposer = false;
       window.setTimeout(() => {
         toFocus.focus();
-        toFocus.setSelectionRange(toFocus.value.length, toFocus.value.length);
+        const at = Math.min(this.draft.cursor ?? toFocus.value.length, toFocus.value.length);
+        toFocus.setSelectionRange(at, at);
       }, 0);
     }
   }

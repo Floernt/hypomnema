@@ -9,3 +9,9 @@ test-vault/.obsidian/
 
 # Coffre de démonstration : seules les notes sont versionnées
 demo-vault/.obsidian/
+
+# Site de documentation : dépendances, build, et captures copiées depuis docs/screenshots/
+site/node_modules/
+site/dist/
+site/.astro/
+site/public/screenshots/

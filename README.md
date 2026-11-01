@@ -2,6 +2,8 @@
 
 *[English](#english) · [Français](#français)*
 
+**Documentation: [hypomnema.tools](https://hypomnema.tools)** — concepts, method notes, integrations (Dataview, QuickAdd, Templater, Kanban, Tasks), API. · **Documentation : [hypomnema.tools/fr](https://hypomnema.tools/fr/)** — concepts, notes de méthode, intégrations, API.
+
 ## English
 
 Hypomnema is an Obsidian plugin for augmented reading, reflection and knowledge organisation. Comment on a passage, or on a precise point, of any note. Write, reply and navigate in a side panel, much like the comments pane in Word. Classify your comments into coloured categories linked to tags. It works especially well with web articles saved through the [Obsidian Web Clipper](https://obsidian.md/clipper), the official browser extension that turns a web page into a Markdown note: the source text and your remarks never get mixed up.
@@ -10,7 +12,7 @@ Comments are stored as plain text inside the note itself. They are searchable, t
 
 > The plugin's interface follows Obsidian's language: French when Obsidian is set to French, English otherwise.
 
-### A tour in six screenshots
+### A tour in eight steps
 
 The screenshots below come from the sample vault in [`demo-vault/`](demo-vault/), with real Obsidian and the real plugin, in Live Preview.
 
@@ -38,6 +40,32 @@ The screenshots below come from the sample vault in [`demo-vault/`](demo-vault/)
 
 ![Category settings: name, colour and tag](docs/screenshots/06-settings-en.png)
 
+Steps 7 and 8 are optional. Both are off until you turn them on, and neither changes how comments are stored. They exist for one reason: an annotation tool should help you take your thinking back, not keep it for you. Writing a comment hands a thought over to the machine; these two features are about getting it back, rereading it and reworking it. Florian Ernotte develops the idea, in French, under the name [*operational dispossession*](https://reflexions.florianernotte.be/post/depossession-operatoire/).
+
+**7. Comments in the margin.** Turn on *Comments in the margin* in *Settings → Hypomnema*, or run the command *Show or hide comments in the margin*. Each comment then sits beside its passage, like a note pencilled in the margin of a book, in the colour of its category. Hover a note to highlight its passage; click it to open the thread in the panel, where you still write and reply. *Margin content* shows either the comment alone or the whole thread.
+
+![Turning on the margin from the command palette, then opening a thread: the comments move below their paragraphs](docs/screenshots/07-margin-en.gif)
+
+When the pane is too narrow for a margin (with the side panel open, or on a small screen), each comment moves below its paragraph instead.
+
+![On a narrow pane, comments sit below their paragraph](docs/screenshots/08-margin-narrow-en.png)
+
+*Why it matters:* in the panel, your comments live in a tool beside the text. In the margin, you reread yourself while rereading the source, and the dialogue between the two stays in view.
+
+**8. Extract your comments into a note.** The command *Extract comments from this note*, or a right-click on a folder → *Extract comments from this folder*, copies your comments into a separate note. You choose the format: a list grouped by category, a table, or a Kanban board with one column per category and a *Done* column. Each comment ends with a ↩ link that reopens the source note and selects the passage. Running the extraction again only adds the comments written since: cards you have moved or ticked stay where they are.
+
+![Extracting from the command palette: a Kanban board opens, and its ↩ link leads back to the passage](docs/screenshots/10-extract-en.gif)
+
+The format, the destination folder, the note name and the line template (`{{text}}`, `{{quote}}`, `{{category}}`, `{{date}}`, `{{note}}`, `{{link}}`…) are set in *Settings → Hypomnema*.
+
+![Extraction settings](docs/screenshots/09-extract-settings-en.png)
+
+The extraction note carries properties (`hypomnema-extract`, `hypomnema-source`, `hypomnema-date`), so Dataview finds it, and its items are ordinary tasks. The [recipes](docs/recipes.md) and the [integration pages](https://hypomnema.tools/integrations/dataview/) give ready-made queries, a review board workflow and a QuickAdd macro.
+
+![A Dataview dashboard listing extraction notes and every comment in the vault](docs/screenshots/11-dataview-dashboard-en.png)
+
+*Why it matters:* a comment is worth something only when you come back to it. Extraction turns your comments into material you rework: you sort them, drop some, turn others into tasks or into writing. Otherwise they stay as traces stored on your behalf.
+
 ### Usage
 
 - **Comment**: select a passage, or just place the cursor, then right-click (*Comment on selection* / *Comment here*) or use the command palette. For speed, assign a hotkey to the command *Comment on selection or cursor* in *Settings → Hotkeys*; Ctrl+Alt+M, the Word shortcut, works well. You write in the right-hand panel, so the text stays visible. Ctrl+Enter saves and Esc cancels.
@@ -46,6 +74,8 @@ The screenshots below come from the sample vault in [`demo-vault/`](demo-vault/)
 - **Panel**: a *Comments* tab sits in the right sidebar, next to backlinks, outgoing links and the outline. It lists the note's comments in text order; click one to jump to its passage.
 - **Reply / edit / delete**: each thread offers these actions. Deleting a comment removes its markers and leaves the source text untouched. Ctrl+Z undoes.
 - **Search**: comments are text in the note, so Obsidian's search finds them across the vault. Category tags live in the note's properties and work with `tag:#…`, the tags pane and Dataview.
+- **Margin** (optional): *Comments in the margin* in the settings, or the command *Show or hide comments in the margin*. Comments show beside their passage, or below the paragraph when the pane is narrow.
+- **Extraction**: the command *Extract comments from this note*, or right-click a folder → *Extract comments from this folder*. It creates a list, a table or a Kanban board in a separate note. If that note already exists, it either adds only the new comments (default) or replaces the note, as set in the settings.
 
 #### Automatic tags
 
@@ -82,6 +112,8 @@ The comment texts live in a single block at the end of the note:
 
 The plugin works in Live Preview only. In reading view the markers are hidden, but passages are not underlined. Threads have a single level of replies, and each comment has a single category.
 
+Margin comments appear in Live Preview and source mode, not in reading view. The margin needs empty space to the right of the text: with *Readable line length* turned off, comments go below their paragraph. An extraction note is a copy: editing it does not change the comments in the source note.
+
 ### Installation
 
 Until the plugin is listed in the community directory, download `main.js`, `manifest.json` and `styles.css` from the [latest release](https://github.com/Floernt/hypomnema/releases/latest). Put them in `<vault>/.obsidian/plugins/hypomnema/`, then enable the plugin under *Community plugins*.
@@ -96,7 +128,7 @@ L'interface du plugin suit la langue d'Obsidian : en français quand Obsidian es
 
 Les commentaires restent du texte brut dans la note : ils sont cherchables, synchronisables et lisibles sans le plugin.
 
-### Visite en six captures
+### Visite en huit étapes
 
 Les captures ci-dessous proviennent du coffre d'exemple [`demo-vault/`](demo-vault/), dans le vrai Obsidian, avec le vrai plugin, en Aperçu en direct.
 
@@ -124,6 +156,32 @@ Les captures ci-dessous proviennent du coffre d'exemple [`demo-vault/`](demo-vau
 
 ![Réglages des catégories : nom, couleur et tag](docs/screenshots/06-settings-fr.png)
 
+Les étapes 7 et 8 sont facultatives. Ni l'une ni l'autre ne s'active tant qu'on ne la met pas en marche, et aucune ne modifie la manière dont les commentaires sont stockés. Elles répondent à une même intention : un outil d'annotation doit aider à reprendre sa pensée, pas la garder à sa place. Écrire un commentaire, c'est confier une réflexion à la machine. Ces deux fonctions servent à la récupérer, à la relire, à la retravailler. L'idée est développée sous le nom de [« dépossession opératoire »](https://reflexions.florianernotte.be/post/depossession-operatoire/).
+
+**7. Les commentaires en marge.** On active *Commentaires en marge* dans *Paramètres → Hypomnema*, ou la commande *Afficher ou masquer les commentaires en marge*. Chaque commentaire s'affiche alors à côté de son passage, comme une note au crayon dans la marge d'un livre, dans la couleur de sa catégorie. Le survol d'une note met son passage en évidence. Un clic ouvre le fil dans le panneau, où l'on continue de rédiger et de répondre. Le réglage *Contenu de la marge* affiche le commentaire seul ou le fil entier.
+
+![La marge activée depuis la palette de commandes, puis l'ouverture d'un fil : les commentaires passent sous leur paragraphe](docs/screenshots/07-margin-fr.gif)
+
+Quand la place manque pour une marge (panneau latéral ouvert, petit écran), chaque commentaire passe sous son paragraphe.
+
+![Dans un panneau étroit, les commentaires s'affichent sous leur paragraphe](docs/screenshots/08-margin-narrow-fr.png)
+
+*Pourquoi :* dans le panneau, les commentaires vivent dans un outil à côté du texte. En marge, on se relit en relisant la source, et le dialogue entre les deux reste sous les yeux.
+
+**8. Extraire ses commentaires dans une note.** La commande *Extraire les commentaires de cette note*, ou un clic droit sur un dossier → *Extraire les commentaires de ce dossier*, recopie les commentaires dans une note à part. Trois formats sont proposés : une liste par catégorie, un tableau, ou un tableau Kanban avec une colonne par catégorie et une colonne *Fait*. Chaque commentaire se termine par un lien ↩ qui rouvre la note source et sélectionne le passage. Une nouvelle extraction n'ajoute que les commentaires écrits depuis : les cartes déplacées ou cochées restent où elles sont.
+
+![Extraction depuis la palette de commandes : un tableau Kanban s'ouvre, et son lien ↩ ramène au passage](docs/screenshots/10-extract-fr.gif)
+
+Le format, le dossier de destination, le nom de la note et le gabarit de ligne (`{{text}}`, `{{quote}}`, `{{category}}`, `{{date}}`, `{{note}}`, `{{link}}`…) se règlent dans *Paramètres → Hypomnema*.
+
+![Réglages de l'extraction](docs/screenshots/09-extract-settings-fr.png)
+
+La note d'extraction porte des propriétés (`hypomnema-extract`, `hypomnema-source`, `hypomnema-date`) que Dataview sait retrouver, et ses éléments sont des tâches ordinaires. Les [recettes](docs/recipes.md#français) et les [pages d'intégration](https://hypomnema.tools/fr/integrations/dataview/) proposent des requêtes prêtes à l'emploi, une méthode de relecture en Kanban et une macro QuickAdd.
+
+![Un tableau de bord Dataview qui liste les notes d'extraction et tous les commentaires du coffre](docs/screenshots/11-dataview-dashboard-fr.png)
+
+*Pourquoi :* un commentaire ne vaut que si l'on y revient. L'extraction transforme les annotations en matière à retravailler : on les trie, on en écarte, on en fait des tâches ou un texte. Sans cela, elles restent des traces stockées pour le compte de l'utilisateur.
+
 ### Utilisation
 
 - **Commenter** : sélectionnez un passage, ou placez simplement le curseur, puis faites un clic droit (« Commenter la sélection » ou « Commenter ici ») ou passez par la palette de commandes. Pour aller plus vite, attribuez un raccourci à la commande *Commenter la sélection ou le curseur* dans *Paramètres → Raccourcis* : Ctrl+Alt+M, celui de Word, est un bon choix. La rédaction s'ouvre dans le panneau de droite, sans masquer le texte. Ctrl+Entrée enregistre, Échap annule.
@@ -132,6 +190,8 @@ Les captures ci-dessous proviennent du coffre d'exemple [`demo-vault/`](demo-vau
 - **Panneau** : un onglet « Commentaires » est ajouté dans la barre de droite, à côté des rétroliens, des liens sortants et du plan. Il liste les commentaires de la note dans l'ordre du texte. Un clic ramène au passage.
 - **Répondre / modifier / supprimer** : ces actions se trouvent sur chaque fil. Supprimer un commentaire retire ses marqueurs et laisse le texte source intact. Ctrl+Z annule.
 - **Recherche** : les commentaires étant du texte dans la note, la recherche d'Obsidian les trouve dans tout le coffre. Les tags de catégorie, eux, figurent dans les propriétés et fonctionnent avec `tag:#…`, le volet des tags et Dataview.
+- **Marge** (facultative) : *Commentaires en marge* dans les réglages, ou la commande *Afficher ou masquer les commentaires en marge*. Les commentaires s'affichent à côté de leur passage, ou sous le paragraphe quand le panneau est étroit.
+- **Extraction** : la commande *Extraire les commentaires de cette note*, ou clic droit sur un dossier → *Extraire les commentaires de ce dossier*. Elle crée une liste, un tableau ou un tableau Kanban dans une note à part. Si cette note existe déjà, elle n'y ajoute que les nouveaux commentaires (par défaut) ou la remplace, selon le réglage.
 
 #### Tags automatiques
 
@@ -144,6 +204,8 @@ Le format est décrit dans la [section anglaise](#storage-format-for-scripts) et
 ### Limites
 
 Le plugin fonctionne uniquement en Aperçu en direct : en mode lecture, les marqueurs sont masqués, mais le passage n'est pas souligné. Les fils ne comptent qu'un niveau de réponse, et chaque commentaire n'a qu'une catégorie.
+
+Les commentaires en marge s'affichent en Aperçu en direct et en mode source, pas en mode lecture. La marge a besoin d'espace libre à droite du texte : si la *longueur de ligne lisible* est désactivée, les commentaires passent sous leur paragraphe. Une note d'extraction est une copie : la modifier ne change pas les commentaires de la note source.
 
 ### Installer le plugin
 
@@ -161,6 +223,8 @@ npm run dev       # watch mode / compilation continue
 ```
 
 `test-vault/` is a sample vault for manual testing. / `test-vault/` est un coffre d'essai.
+
+The tour's screenshots and GIFs are produced by [`scripts/capture.mjs`](scripts/capture.mjs). It drives a separate Obsidian instance opened on `demo-vault/` (see the comments at the top of the script). / Les captures et GIF de la visite sont produits par [`scripts/capture.mjs`](scripts/capture.mjs), qui pilote une instance séparée d'Obsidian ouverte sur `demo-vault/` (mode d'emploi en tête du script).
 
 ### Releasing / Publier une version
 
