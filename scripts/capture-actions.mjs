@@ -1,12 +1,12 @@
-// Captures des gestes (réglages, formulaire, annotation préremplie), dans le vrai Obsidian, sur demo-vault/.
+// Captures des actions (réglages, formulaire, annotation préremplie), dans le vrai Obsidian, sur demo-vault/
 // Même préparation que scripts/capture.mjs (instance séparée d'Obsidian, port 9333), puis :
-//   node scripts/capture-gestes.mjs [en|fr ...]
+//   node scripts/capture-actions.mjs [en|fr ...] [--dark|--light]   (sans option : tout)
 // Les réglages s'ouvrent dans une fenêtre à part : elle est capturée par Electron (capturePage).
 
 import fs from "node:fs";
 import path from "node:path";
 import { fileURLToPath } from "node:url";
-import { connect, sleep } from "./cdp.mjs";
+import { connect, look, parseArgs, shotName, sleep, ZOOM } from "./cdp.mjs";
 
 const ROOT = path.resolve(path.dirname(fileURLToPath(import.meta.url)), "..");
 const OUT = path.join(ROOT, "docs", "screenshots");
@@ -31,7 +31,7 @@ const LANGS = {
         fileName: "Review {{date:YYYY-[W]WW}}", lineTemplate: "{{text}} — “{{quote}}” {{link}}", template: "", templater: false, onExisting: "append-new",
       },
     ],
-    headings: "Gestures",
+    headings: "Actions",
   },
   fr: {
     note: "Pourquoi on oublie ce qu'on lit.md",
@@ -52,7 +52,7 @@ const LANGS = {
         fileName: "Revue {{date:YYYY-[S]WW}}", lineTemplate: "{{text}} — « {{quote}} » {{link}}", template: "", templater: false, onExisting: "append-new",
       },
     ],
-    headings: "Gestes",
+    headings: "Actions",
   },
 };
 
@@ -61,6 +61,7 @@ let c = await connect();
 /** Capture de la fenêtre des réglages (fenêtre à part) ou de la fenêtre principale. */
 async function shot(name, settingsWindow = false) {
   const file = path.join(OUT, name).replace(/\\/g, "/");
+  await c.move(26, 700); // pointeur hors de tout élément survolable
   if (!settingsWindow) {
     await c.eval(`document.querySelectorAll(".notice").forEach((n) => n.remove());`);
     fs.writeFileSync(file, await c.screenshot());
@@ -68,13 +69,17 @@ async function shot(name, settingsWindow = false) {
     await c.eval(`
       const { BrowserWindow } = require("electron").remote;
       const w = BrowserWindow.getAllWindows().find((x) => x.getTitle() !== document.title);
+      w.setContentSize(1100, 760);
+      w.webContents.setZoomFactor(${ZOOM});
+      await new Promise((r) => setTimeout(r, 400));
       require("fs").writeFileSync(${JSON.stringify(file)}, (await w.webContents.capturePage()).toPNG());
       return true;`);
   }
   console.log("OK", name);
 }
 
-for (const lang of process.argv.slice(2).length ? process.argv.slice(2) : ["en", "fr"]) {
+const { langs, themes } = parseArgs();
+for (const theme of themes) for (const lang of langs) {
   const L = LANGS[lang];
   const current = await c.eval(`return localStorage.getItem("language") || "en";`);
   if (current !== lang) {
@@ -85,12 +90,13 @@ for (const lang of process.argv.slice(2).length ? process.argv.slice(2) : ["en",
     // Attendre le chargement du plugin.
     for (let i = 0; i < 30 && !(await c.eval(`return !!app.plugins?.plugins?.hypomnema;`)); i++) await sleep(1000);
   }
+  await look(c, theme);
   await c.eval(`
-    require("electron").remote.getCurrentWindow().setContentSize(1280, 800);
+    app.workspace.leftSplit.collapse();
     const p = app.plugins.plugins.hypomnema;
     p.settings.categories = ${JSON.stringify(L.categories)};
     p.settings.globals = ${JSON.stringify(L.globals)};
-    p.settings.gestes = ${JSON.stringify(L.gestes)};
+    p.settings.actions = ${JSON.stringify(L.gestes)};
     p.settings.display.margin = false;
     await p.saveSettings();
     for (const type of ["markdown", "kanban", "empty"]) app.workspace.getLeavesOfType(type).forEach((l) => l.detach());
@@ -112,7 +118,7 @@ for (const lang of process.argv.slice(2).length ? process.argv.slice(2) : ["en",
     [...el.querySelectorAll(".setting-item-heading")].find((x) => x.textContent === ${JSON.stringify(L.headings)})?.scrollIntoView();
     return true;`);
   await sleep(600);
-  await shot(`12-gestes-settings-${lang}.png`, true);
+  await shot(shotName("12-actions-settings", lang, theme), true);
 
   // 13 : le formulaire d'une extraction nommée, options dépliées.
   await c.eval(`
@@ -125,7 +131,7 @@ for (const lang of process.argv.slice(2).length ? process.argv.slice(2) : ["en",
     doc.querySelector(".ma-geste-modal").closest(".modal").querySelector(".modal-content").scrollTop = 260;
     return true;`);
   await sleep(500);
-  await shot(`13-geste-extraction-${lang}.png`, true);
+  await shot(shotName("13-action-extraction", lang, theme), true);
   await c.eval(`app.setting.modalEl.ownerDocument.querySelector(".ma-geste-modal")?.closest(".modal-container")?.remove(); app.setting.close(); return true;`);
   await sleep(800);
 
@@ -138,15 +144,15 @@ for (const lang of process.argv.slice(2).length ? process.argv.slice(2) : ["en",
     const ed = leaf.view.editor;
     const i = ed.getValue().indexOf(${JSON.stringify(L.word)});
     ed.setSelection(ed.offsetToPos(i), ed.offsetToPos(i + ${L.word.length}));
-    app.commands.executeCommandById("hypomnema:geste-objection");
+    app.commands.executeCommandById("hypomnema:action-objection");
     await new Promise((r) => setTimeout(r, 1200));
     document.querySelector(".ma-composer textarea")?.focus();
     return true;`);
   await sleep(500);
-  await shot(`14-geste-annotation-${lang}.png`);
+  await shot(shotName("14-action-annotation", lang, theme));
   // Annule le brouillon : les marqueurs posés sont retirés.
   await c.eval(`document.querySelector(".ma-composer-bar button:not(.mod-cta)")?.click(); return true;`);
   await sleep(600);
-  await c.eval(`const p = app.plugins.plugins.hypomnema; p.settings.gestes = []; p.settings.globals = []; await p.saveSettings(); return true;`);
+  await c.eval(`const p = app.plugins.plugins.hypomnema; p.settings.actions = []; p.settings.globals = []; await p.saveSettings(); return true;`);
 }
 c.close();
