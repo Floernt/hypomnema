@@ -6,6 +6,8 @@ Les commentaires sont stockés en texte brut dans les notes des utilisateurs. To
 
 ## [Non publié]
 
+## [0.5.0] — 2026-11-01
+
 Deux fonctions facultatives pour reprendre la main sur ses annotations. Aucune ne s'active par défaut, et le format de stockage ne change pas.
 
 ### Ajouté
@@ -185,7 +187,8 @@ Corrections demandées par la relecture du catalogue communautaire d'Obsidian.
 - Passage commenté : `%%[aN%%texte%%aN]%%`.
 - Bloc en fin de note : `%% annotations` … `%%`, une entrée par ligne (`[aN] AAAA-MM-JJ texte`), les réponses étant notées `[aN.k]` et indentées.
 
-[Non publié]: https://github.com/Floernt/hypomnema/compare/0.4.1...HEAD
+[Non publié]: https://github.com/Floernt/hypomnema/compare/0.5.0...HEAD
+[0.5.0]: https://github.com/Floernt/hypomnema/compare/0.4.1...0.5.0
 [0.4.1]: https://github.com/Floernt/hypomnema/compare/0.4.0...0.4.1
 [0.4.0]: https://github.com/Floernt/hypomnema/compare/0.3.1...0.4.0
 [0.3.1]: https://github.com/Floernt/hypomnema/compare/0.3.0...0.3.1
