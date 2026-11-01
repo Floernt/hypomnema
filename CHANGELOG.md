@@ -6,6 +6,41 @@ Les commentaires sont stockés en texte brut dans les notes des utilisateurs. To
 
 ## [Non publié]
 
+Deux fonctions facultatives pour reprendre la main sur ses annotations. Aucune ne s'active par défaut, et le format de stockage ne change pas.
+
+### Ajouté
+
+- **Commentaires en marge.** Le réglage *Commentaires en marge*, et la commande *Afficher ou masquer les commentaires en marge*, affichent chaque commentaire à côté de son passage, dans la couleur de sa catégorie. Survoler une note met le passage en évidence ; un clic ouvre le fil dans le panneau. Quand la place manque, la note passe sous le paragraphe. Le réglage *Contenu de la marge* choisit entre le commentaire seul et le fil entier.
+- **Extraction des commentaires.** La commande *Extraire les commentaires de cette note*, et l'entrée *Extraire les commentaires de ce dossier* du menu des dossiers, recopient les commentaires dans une note à part.
+  - Trois formats : liste par catégorie, tableau, tableau Kanban (colonnes par catégorie et colonne *Fait*).
+  - La note reçoit les propriétés `hypomnema-extract`, `hypomnema-source` et `hypomnema-date`, pour Dataview.
+  - Chaque commentaire porte un lien `obsidian://hypomnema?…` qui rouvre la note source et sélectionne le passage.
+  - Une nouvelle extraction n'ajoute par défaut que les nouveaux commentaires et laisse en place les cartes déplacées ou cochées. Elle peut aussi remplacer la note.
+  - Le dossier, le nom de la note, le gabarit de ligne et l'inclusion des réponses se règlent dans les paramètres.
+- Recettes Dataview, Kanban et QuickAdd ([docs/recipes.md](docs/recipes.md)), tableaux de bord d'exemple dans `demo-vault/`.
+- Visite du README en huit étapes, avec deux GIF. Les captures sont produites par `scripts/capture.mjs`, qui pilote une instance séparée d'Obsidian.
+- **Gestes.** On nomme ses propres manières d'annoter et d'extraire ; chaque geste devient une commande (`hypomnema:geste-<id>`), et la commande *Lancer un geste* les propose tous. Sans geste défini, rien ne change.
+  - *Annotation* : catégorie fixée ou demandée, texte de départ prérempli, curseur placé par `{{cursor}}`.
+  - *Extraction* nommée : portée (note, dossier de la note, dossier donné, coffre), filtre par catégories et par date d'activité, note-gabarit, passage par Templater, présence facultative dans le menu des dossiers. L'extraction par défaut reçoit les mêmes options (*Plus d'options*).
+  - *Enchaînement* et *Groupe*, derrière l'interrupteur *Fonctions avancées* : suite d'étapes (geste, commande Obsidian, script, pause), menu de gestes. Un geste qui se rappellerait lui-même est arrêté.
+  - *Scripts* : un fichier `.js` du coffre, sur le modèle de QuickAdd. Confirmation au premier lancement, et de nouveau quand le script change.
+  - Export et import des gestes en JSON.
+- **Syntaxe des variables** commune : `{{today}}`, `{{date:FORMAT}}`, `{{date-7d}}`, `{{VALUE:question}}` (saisie à l'exécution), `{{GLOBAL:nom}}`, `{{selection}}`. Les gabarits existants donnent le même résultat qu'avant.
+- **Variables globales**, réglables dans la section *Gestes*.
+- **API publique** (`app.plugins.plugins.hypomnema.api`) : lire les fils d'une note ou du coffre, ajouter un commentaire ou une réponse, lancer un geste, appliquer la syntaxe des variables. Événements `hypomnema:comment-added`, `hypomnema:comment-edited` et `hypomnema:extracted`.
+- Lien `obsidian://hypomnema?geste=<id>&…` pour lancer un geste depuis l'extérieur ; les paramètres répondent aux `{{VALUE:…}}`.
+- Liens « Méthode » et « Recettes » dans les réglages, vers le site de documentation [hypomnema.tools](https://hypomnema.tools), bilingue, construit avec Starlight dans `site/` et publié par GitHub Actions. Les suggestions Dataview et QuickAdd n'apparaissent que si ces plugins sont actifs.
+
+### Modifié
+
+- Les réglages sont répartis en sections : catégories, affichage, extraction, gestes, variables globales, fonctions avancées.
+- La position du curseur dans la rédaction est conservée quand le panneau se redessine.
+
+### Format
+
+- Le format de stockage des commentaires ne change pas.
+- Une note d'extraction créée d'après une note-gabarit encadre les commentaires par `%% hypomnema:start %%` et `%% hypomnema:end %%`. Les extractions suivantes n'écrivent qu'entre ces repères ; s'ils sont supprimés, elles ajoutent en fin de note, comme auparavant.
+
 ## [0.4.1] — 2026-10-31
 
 Corrections demandées par la relecture du catalogue communautaire d'Obsidian.

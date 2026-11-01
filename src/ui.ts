@@ -13,13 +13,17 @@ export interface ThreadHandlers {
 export interface ComposeRequest {
   mode: "new" | "edit" | "reply";
   id: string; // fil (new, reply) ou entrée (edit)
+  /** Préremplissage d'un nouveau commentaire (geste d'annotation) : texte, catégorie, position du curseur. */
+  text?: string;
+  tag?: string;
+  cursor?: number;
 }
 
 export interface ComposerOptions {
   request: ComposeRequest;
   categories: Category[];
   withCategory: boolean; // racines uniquement
-  draft: { text: string; tag?: string };
+  draft: { text: string; tag?: string; cursor?: number };
   onSave(): void;
   onCancel(): void;
 }
@@ -85,7 +89,15 @@ export function renderComposer(parent: HTMLElement, o: ComposerOptions): HTMLTex
     attr: { placeholder: o.request.mode === "reply" ? t("placeholderReply") : t("placeholderComment"), rows: "4" },
   });
   area.value = o.draft.text;
-  area.addEventListener("input", () => (o.draft.text = area.value));
+  // Le panneau se redessine pendant la rédaction : la position du curseur est gardée avec le brouillon.
+  if (o.draft.cursor !== undefined) area.setSelectionRange(o.draft.cursor, o.draft.cursor);
+  const keep = () => (o.draft.cursor = area.selectionStart);
+  area.addEventListener("input", () => {
+    o.draft.text = area.value;
+    keep();
+  });
+  area.addEventListener("keyup", keep);
+  area.addEventListener("mouseup", keep);
   area.addEventListener("keydown", (e) => {
     if (e.key === "Enter" && (e.ctrlKey || e.metaKey)) {
       e.preventDefault();
@@ -139,17 +151,28 @@ export function renderThread(parent: HTMLElement, th: Thread, h: ThreadHandlers,
   }
 }
 
+/** Confirmation ; par défaut, celle d'une suppression. */
 export class ConfirmModal extends Modal {
-  constructor(app: App, private message: string, private onConfirm: () => void) {
+  constructor(
+    app: App,
+    private message: string,
+    private onConfirm: () => void,
+    private labels: { title?: string; button?: string; cta?: boolean } = {},
+    private onDismiss: () => void = () => {},
+  ) {
     super(app);
   }
 
+  private confirmed = false;
+
   onOpen() {
-    this.titleEl.setText(t("confirmTitle"));
+    this.titleEl.setText(this.labels.title ?? t("confirmTitle"));
     this.contentEl.createEl("p", { text: this.message });
     const bar = this.contentEl.createDiv({ cls: "modal-button-container" });
     bar.createEl("button", { text: t("cancel") }).addEventListener("click", () => this.close());
-    bar.createEl("button", { cls: "mod-warning", text: t("delete") }).addEventListener("click", () => {
+    const cls = this.labels.cta ? "mod-cta" : "mod-warning";
+    bar.createEl("button", { cls, text: this.labels.button ?? t("delete") }).addEventListener("click", () => {
+      this.confirmed = true;
       this.close();
       this.onConfirm();
     });
@@ -157,5 +180,6 @@ export class ConfirmModal extends Modal {
 
   onClose() {
     this.contentEl.empty();
+    if (!this.confirmed) this.onDismiss();
   }
 }

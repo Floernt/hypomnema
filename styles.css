@@ -261,3 +261,85 @@ body {
   gap: 6px;
   margin-top: 6px;
 }
+
+/* Commentaires en marge : un calque dans la zone de défilement, à droite du texte.
+   Le plugin fixe --ma-top, --ma-left et --ma-width ; le reste est ici. */
+.ma-margin {
+  position: absolute;
+  top: 0;
+  left: 0;
+  width: 0;
+  height: 0;
+  z-index: 1;
+}
+
+.ma-margin-note,
+.ma-below-note {
+  --ma-c: var(--ma-color, var(--ma-accent));
+  font-size: var(--font-ui-smaller);
+  font-style: italic;
+  line-height: 1.4;
+  color: var(--text-muted);
+  border-left: 2px solid color-mix(in srgb, var(--ma-c) 60%, transparent);
+  padding: 2px 0 2px 8px;
+  cursor: pointer;
+  white-space: pre-wrap;
+  word-break: break-word;
+}
+
+.ma-margin-note {
+  position: absolute;
+  top: var(--ma-top);
+  left: var(--ma-left);
+  width: var(--ma-width);
+  transition: top 0.15s;
+}
+
+.ma-margin-note:hover,
+.ma-margin-note.is-active,
+.ma-below-note:hover {
+  color: var(--text-normal);
+  border-left-color: var(--ma-c);
+}
+
+/* Panneau étroit : la note passe sous son paragraphe. */
+.ma-below {
+  padding: 2px 0 10px 1.5em;
+}
+
+.ma-below-note {
+  font-family: var(--font-interface);
+}
+
+.ma-margin-reply {
+  margin-top: 4px;
+  padding-left: 8px;
+  border-left: 1px solid var(--background-modifier-border);
+}
+
+.ma-margin-count {
+  margin-top: 2px;
+  font-style: normal;
+  color: var(--text-faint);
+}
+
+/* Gestes : formulaire et réglages. */
+.ma-setting-indent {
+  padding-left: 1.5em;
+}
+
+.ma-more > summary {
+  cursor: pointer;
+  padding: 0.75em 0;
+  color: var(--text-muted);
+}
+
+.ma-step .setting-item-control {
+  flex-wrap: wrap;
+}
+
+.ma-import {
+  width: 100%;
+  font-family: var(--font-monospace);
+  font-size: var(--font-ui-smaller);
+}

@@ -1,7 +1,10 @@
-import { debounce, MarkdownView, Plugin, TFile, WorkspaceLeaf, WorkspaceSplit } from "obsidian";
+import { debounce, MarkdownView, Plugin, TFile, TFolder, WorkspaceLeaf, WorkspaceSplit } from "obsidian";
 import { Actions } from "./actions";
+import { HypomnemaApi } from "./api";
+import { GesteRunner } from "./runner";
 import { allEditorViews, annotationExtension, refreshEffect } from "./editorExtension";
-import { categoryClass, categoryVars, defaultSettings, Settings, SettingsTab } from "./settings";
+import { marginExtension } from "./margin";
+import { categoryClass, categoryVars, mergeSettings, Settings, SettingsTab } from "./settings";
 import { t } from "./i18n";
 import { CommentsPanel, PANEL_VIEW } from "./sidePanel";
 import type { ComposeRequest } from "./ui";
@@ -9,6 +12,9 @@ import type { ComposeRequest } from "./ui";
 export default class Hypomnema extends Plugin {
   settings!: Settings;
   actions!: Actions;
+  runner!: GesteRunner;
+  /** API publique, pour les scripts : app.plugins.plugins.hypomnema.api. */
+  api!: HypomnemaApi;
   async onload() {
     await this.loadSettings();
     // Couleurs des catégories : des variables CSS sur <body>, lues par les classes .ma-cat-i de styles.css.
@@ -16,10 +22,22 @@ export default class Hypomnema extends Plugin {
     this.register(() => document.body.setCssProps(categoryVars([])));
     this.actions = new Actions(this);
     this.actions.compose = (view, req) => void this.compose(view, req);
+    this.runner = new GesteRunner(this);
+    this.api = new HypomnemaApi(this);
 
     this.registerView(PANEL_VIEW, (leaf) => new CommentsPanel(leaf, this));
-    this.registerEditorExtension(annotationExtension((id) => void this.showThread(id), (tag) => categoryClass(this.settings.categories, tag)));
+    const classOf = (tag?: string) => categoryClass(this.settings.categories, tag);
+    this.registerEditorExtension([
+      annotationExtension((id) => void this.showThread(id), classOf),
+      marginExtension({
+        enabled: () => this.settings.display.margin,
+        content: () => this.settings.display.marginContent,
+        classOf,
+        onOpen: (id) => void this.showThread(id),
+      }),
+    ]);
     this.addSettingTab(new SettingsTab(this.app, this));
+    this.registerObsidianProtocolHandler("hypomnema", (params) => void this.actions.openLink(params));
 
     this.addCommand({
       id: "comment-selection",
@@ -36,7 +54,59 @@ export default class Hypomnema extends Plugin {
       name: t("cmdOpenPanel"),
       callback: () => this.openPanel(),
     });
+    this.addCommand({
+      id: "toggle-margin",
+      name: t("cmdToggleMargin"),
+      icon: "panel-right-dashed",
+      callback: async () => {
+        this.settings.display.margin = !this.settings.display.margin;
+        await this.saveSettings();
+      },
+    });
+    this.addCommand({
+      id: "extract-note",
+      name: t("cmdExtractNote"),
+      icon: "list-checks",
+      checkCallback: (checking) => {
+        const file = this.app.workspace.getActiveFile();
+        if (!file || file.extension !== "md") return false;
+        if (!checking) void this.actions.extractNote(file);
+        return true;
+      },
+    });
+    this.addCommand({
+      id: "run-geste",
+      name: t("cmdRunGeste"),
+      icon: "wand",
+      checkCallback: (checking) => {
+        if (!this.settings.gestes.length) return false;
+        if (!checking) void this.runner.choose();
+        return true;
+      },
+    });
+    this.runner.syncCommands();
     this.addRibbonIcon("message-square", t("ribbon"), () => this.openPanel());
+    this.registerEvent(
+      this.app.workspace.on("file-menu", (menu, file) => {
+        if (!(file instanceof TFolder)) return;
+        menu.addItem((item) =>
+          item
+            .setTitle(t("menuExtractFolder"))
+            .setIcon("list-checks")
+            .onClick(() => void this.actions.extractFolder(file)),
+        );
+        // Extractions nommées proposées dans ce menu : elles portent alors sur le dossier cliqué.
+        for (const g of this.settings.gestes) {
+          if (g.kind !== "extraction" || !g.folderMenu) continue;
+          menu.addItem((item) =>
+            item
+              .setTitle(g.name)
+              .setIcon("list-checks")
+              .onClick(() => void this.runner.run(g.id, { ctx: { folder: file } })),
+          );
+        }
+      }),
+    );
 
     this.registerEvent(
       this.app.workspace.on("editor-menu", (menu, editor, ctx) => {
@@ -81,16 +151,13 @@ export default class Hypomnema extends Plugin {
   }
 
   async loadSettings() {
-    const data = (await this.loadData()) as Partial<Settings> | null;
-    this.settings = {
-      categories: data?.categories ?? defaultSettings().categories,
-      addedTags: data?.addedTags ?? {},
-    };
+    this.settings = mergeSettings((await this.loadData()) as Partial<Settings> | null);
   }
 
   /** Enregistre les réglages et rafraîchit couleurs et panneau dans les notes ouvertes. */
   async saveSettings() {
     await this.saveData(this.settings);
+    this.runner.syncCommands();
     document.body.setCssProps(categoryVars(this.settings.categories));
     for (const view of allEditorViews()) view.dispatch({ effects: refreshEffect.of(null) });
     this.panels().forEach((p) => p.render());
