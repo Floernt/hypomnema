@@ -75,11 +75,11 @@ export default class Hypomnema extends Plugin {
       },
     });
     this.addCommand({
-      id: "run-geste",
+      id: "run-action",
       name: t("cmdRunGeste"),
       icon: "wand",
       checkCallback: (checking) => {
-        if (!this.settings.gestes.length) return false;
+        if (!this.settings.actions.length) return false;
         if (!checking) void this.runner.choose();
         return true;
       },
@@ -96,7 +96,7 @@ export default class Hypomnema extends Plugin {
             .onClick(() => void this.actions.extractFolder(file)),
         );
         // Extractions nommées proposées dans ce menu : elles portent alors sur le dossier cliqué.
-        for (const g of this.settings.gestes) {
+        for (const g of this.settings.actions) {
           if (g.kind !== "extraction" || !g.folderMenu) continue;
           menu.addItem((item) =>
             item

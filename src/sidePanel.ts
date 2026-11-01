@@ -1,4 +1,4 @@
-import { ItemView, MarkdownView, WorkspaceLeaf } from "obsidian";
+import { ItemView, MarkdownView, Scope, WorkspaceLeaf } from "obsidian";
 import { parse } from "./syntax";
 import { ComposeRequest, renderComposer, renderThread, ThreadHandlers } from "./ui";
 import type Hypomnema from "./main";
@@ -15,9 +15,36 @@ export class CommentsPanel extends ItemView {
   private editing: ComposeRequest | null = null;
   private draft: { text: string; tag?: string; cursor?: number } = { text: "" };
   private focusComposer = false; // le focus ne va au compositeur qu'à son ouverture, pas à chaque rafraîchissement
+  // Obsidian capte Ctrl/Cmd+Entrée au niveau de la fenêtre, avant la zone de saisie : tant qu'elle a le focus,
+  // ce raccourci passe par une portée clavier poussée en tête.
+  private keys: Scope;
+  private keysPushed = false;
 
   constructor(leaf: WorkspaceLeaf, private plugin: Hypomnema) {
     super(leaf);
+    this.keys = new Scope(this.app.scope);
+    this.keys.register(["Mod"], "Enter", () => {
+      void this.saveDraft();
+      return false;
+    });
+    this.contentEl.addEventListener("focusin", (e) => {
+      if (e.target instanceof HTMLTextAreaElement) this.pushKeys();
+    });
+    this.contentEl.addEventListener("focusout", (e) => {
+      if (!(e.relatedTarget instanceof HTMLTextAreaElement && this.contentEl.contains(e.relatedTarget))) this.popKeys();
+    });
+  }
+
+  private pushKeys() {
+    if (this.keysPushed) return;
+    this.app.keymap.pushScope(this.keys);
+    this.keysPushed = true;
+  }
+
+  private popKeys() {
+    if (!this.keysPushed) return;
+    this.app.keymap.popScope(this.keys);
+    this.keysPushed = false;
   }
 
   getViewType() {
@@ -37,6 +64,7 @@ export class CommentsPanel extends ItemView {
   }
 
   async onClose() {
+    this.popKeys();
     this.abandonDraft();
   }
 
@@ -113,6 +141,8 @@ export class CommentsPanel extends ItemView {
 
   render() {
     const el = this.contentEl;
+    // Redessiner retire la zone de saisie sans événement « focusout » : on note si elle avait le focus pour le lui rendre.
+    const typing = el.contains(el.doc.activeElement) && el.doc.activeElement instanceof HTMLTextAreaElement;
     el.empty();
     el.addClass("ma-panel");
     const view = this.target;
@@ -175,13 +205,15 @@ export class CommentsPanel extends ItemView {
       }
     }
     const toFocus = area as HTMLTextAreaElement | null;
-    if (toFocus && this.focusComposer) {
+    if (toFocus && (this.focusComposer || typing)) {
       this.focusComposer = false;
       window.setTimeout(() => {
         toFocus.focus();
         const at = Math.min(this.draft.cursor ?? toFocus.value.length, toFocus.value.length);
         toFocus.setSelectionRange(at, at);
       }, 0);
+    } else if (!toFocus) {
+      this.popKeys();
     }
   }
 }

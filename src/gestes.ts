@@ -9,7 +9,7 @@ export interface GesteBase {
   id: string;
   name: string;
   kind: GesteKind;
-  /** Enregistre une commande Obsidian « hypomnema:geste-<id> ». */
+  /** Enregistre une commande Obsidian « hypomnema:action-<id> ». */
   command: boolean;
 }
 
@@ -48,7 +48,7 @@ export interface ExtractionGeste extends GesteBase, ExtractionFields {
 }
 
 export type Step =
-  | { type: "geste"; id: string }
+  | { type: "action"; id: string }
   | { type: "command"; id: string }
   | { type: "script"; path: string; settings?: Record<string, string> }
   | { type: "wait"; ms: number };
@@ -83,7 +83,7 @@ export function isAdvanced(g: Geste): boolean {
 /** Gestes appelés directement par un enchaînement ou un groupe. */
 function children(g: Geste): string[] {
   if (g.kind === "group") return g.children;
-  if (g.kind === "chain") return g.steps.flatMap((s) => (s.type === "geste" ? [s.id] : []));
+  if (g.kind === "chain") return g.steps.flatMap((s) => (s.type === "action" ? [s.id] : []));
   return [];
 }
 
@@ -127,6 +127,18 @@ export function filterSources(sources: Source[], filter: { categories: string[];
   }));
 }
 
+/**
+ * Les actions s'appelaient « gestes » pendant leur développement : un enchaînement enregistré alors
+ * appelle ses étapes « geste ». On les renomme à la lecture (réglages et imports).
+ */
+export function upgradeGestes(list: Geste[]): Geste[] {
+  for (const g of list) {
+    if (g.kind !== "chain") continue;
+    g.steps = g.steps.map((s) => ((s as { type: string }).type === "geste" ? { ...s, type: "action" } : s)) as Step[];
+  }
+  return list;
+}
+
 export interface ImportResult {
   gestes: Geste[];
   /** Tags de catégorie employés par les gestes importés mais absents des réglages. */
@@ -141,21 +153,21 @@ const KINDS: GesteKind[] = ["annotation", "extraction", "chain", "group"];
  */
 export function importGestes(json: string, existing: Geste[], categoryTags: string[]): ImportResult {
   const data: unknown = JSON.parse(json);
-  const list = Array.isArray(data) ? data : (data as { gestes?: unknown })?.gestes;
+  const list = Array.isArray(data) ? data : ((data as { actions?: unknown })?.actions ?? (data as { gestes?: unknown })?.gestes);
   if (!Array.isArray(list)) throw new Error("not-a-list");
   const taken = new Set(existing.map((g) => g.id));
   const rename = new Map<string, string>();
-  const gestes = list.map((raw) => {
+  const gestes = upgradeGestes(list.map((raw) => {
     const g = raw as Geste;
     if (!g || typeof g !== "object" || typeof g.name !== "string" || !KINDS.includes(g.kind)) throw new Error("invalid-geste");
     const id = typeof g.id === "string" && g.id && !taken.has(g.id) && g.id !== DEFAULT_EXTRACTION_ID ? g.id : newId(taken);
     if (g.id) rename.set(g.id, id);
     taken.add(id);
     return { ...g, id, command: g.command !== false } as Geste;
-  });
+  }));
   for (const g of gestes) {
     if (g.kind === "group") g.children = g.children.map((c) => rename.get(c) ?? c);
-    if (g.kind === "chain") g.steps = g.steps.map((s) => (s.type === "geste" ? { ...s, id: rename.get(s.id) ?? s.id } : s));
+    if (g.kind === "chain") g.steps = g.steps.map((s) => (s.type === "action" ? { ...s, id: rename.get(s.id) ?? s.id } : s));
   }
   const known = new Set(categoryTags);
   const missing = new Set<string>();
@@ -167,5 +179,5 @@ export function importGestes(json: string, existing: Geste[], categoryTags: stri
 }
 
 export function exportGestes(gestes: Geste[]): string {
-  return JSON.stringify({ hypomnema: 1, gestes }, null, 2);
+  return JSON.stringify({ hypomnema: 1, actions: gestes }, null, 2);
 }
