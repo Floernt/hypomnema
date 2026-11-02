@@ -340,7 +340,7 @@ export class SettingsTab extends PluginSettingTab {
   async setControlValue(key: string, value: unknown) {
     await this.setValue(key, value);
     // Le contenu de la marge et le gabarit ne s'affichent que selon la valeur d'un autre réglage.
-    if (key === "display.margin" || key === "extract.format" || key === "advanced") this.update();
+    if (key === "display.margin" || key === "extract.format" || key === "advanced") this.refresh();
   }
 
   private async setValue(key: string, value: unknown) {

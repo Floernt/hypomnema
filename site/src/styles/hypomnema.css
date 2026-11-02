@@ -82,7 +82,7 @@ h1#_top { font-variation-settings: "opsz" 48; }
 /* Captures doublées par thème (plugin rehype de astro.config.mjs, composant ThemedImage) : une seule est visible. */
 :root[data-theme="light"] .hy-only-dark,
 :root:not([data-theme="light"]) .hy-only-light {
-  display: none !important;
+  display: none;
 }
 
 .sl-markdown-content kbd {
@@ -120,7 +120,8 @@ h1#_top { font-variation-settings: "opsz" 48; }
   max-width: 100%;
   height: auto;
 }
-[data-has-hero] .sl-markdown-content starlight-tabs .hy-shot {
+/* :where() garde cette règle moins spécifique que le masquage par thème ci-dessus. */
+:where([data-has-hero] .sl-markdown-content [role="tabpanel"]) .hy-shot {
   display: block;
   width: 100%;
   margin-block: var(--space-4) var(--space-6);

@@ -22,6 +22,9 @@ interface RunState {
   ctx: { file?: TFile | null; folder?: TFolder };
 }
 
+/** Point d'entrée d'un script utilisateur : `module.exports = async (params, settings) => {}`. */
+type ScriptEntry = (params: Record<string, unknown>, settings: Record<string, string>) => unknown;
+
 /** Empreinte d'un script : un script modifié depuis son acceptation est de nouveau soumis à confirmation. */
 function digest(s: string): string {
   let h = 0x811c9dc5;
@@ -190,11 +193,12 @@ export class GesteRunner {
     }
     const module: { exports: unknown } = { exports: {} };
     // Exécution voulue par l'utilisateur, après confirmation : c'est le principe même d'un script.
+    // eslint-disable-next-line no-new-func, @typescript-eslint/no-implied-eval
     const factory = new Function("module", "exports", code) as (m: typeof module, e: unknown) => void;
     factory(module, module.exports);
-    const exp = module.exports as { entry?: unknown } | ((...a: unknown[]) => unknown);
-    const entry = typeof exp === "function" ? exp : exp?.entry;
+    const exp = module.exports as { entry?: unknown } | ScriptEntry;
+    const entry: unknown = typeof exp === "function" ? exp : exp?.entry;
     if (typeof entry !== "function") throw new Error(t("scriptInvalid", { path: file.path }));
-    await entry({ app: this.app, api: this.plugin.api, variables: state.values, obsidian }, settings);
+    await (entry as ScriptEntry)({ app: this.app, api: this.plugin.api, variables: state.values, obsidian }, settings);
   }
 }

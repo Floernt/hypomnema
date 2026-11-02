@@ -36,6 +36,9 @@ body {
 .ma-anchor {
   background-color: color-mix(in srgb, var(--ma-c) 12%, transparent);
   border-radius: 2px;
+  -webkit-text-decoration-line: underline;
+  -webkit-text-decoration-style: dotted;
+  -webkit-text-decoration-color: var(--ma-c);
   text-decoration-line: underline;
   text-decoration-style: dotted;
   text-decoration-color: var(--ma-c);

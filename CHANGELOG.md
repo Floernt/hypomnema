@@ -6,6 +6,16 @@ Les commentaires sont stockés en texte brut dans les notes des utilisateurs. To
 
 ## [Non publié]
 
+## [0.5.1] — 2026-11-02
+
+Corrections demandées par la revue du catalogue communautaire d'Obsidian. Le format de stockage ne change pas.
+
+### Corrigé
+
+- Les réglages n'appellent plus une fonction d'Obsidian 1.13 sur les versions antérieures.
+- Le soulignement des passages commentés reçoit les préfixes `-webkit-` pour Safari et iOS.
+- Nettoyage du code signalé par le linter (assertion inutile, typage du point d'entrée des scripts) et des styles du site.
+
 ## [0.5.0] — 2026-11-01
 
 Deux fonctions facultatives pour reprendre la main sur ses annotations. Aucune ne s'active par défaut, et le format de stockage ne change pas.
@@ -187,7 +197,8 @@ Corrections demandées par la relecture du catalogue communautaire d'Obsidian.
 - Passage commenté : `%%[aN%%texte%%aN]%%`.
 - Bloc en fin de note : `%% annotations` … `%%`, une entrée par ligne (`[aN] AAAA-MM-JJ texte`), les réponses étant notées `[aN.k]` et indentées.
 
-[Non publié]: https://github.com/Floernt/hypomnema/compare/0.5.0...HEAD
+[Non publié]: https://github.com/Floernt/hypomnema/compare/0.5.1...HEAD
+[0.5.1]: https://github.com/Floernt/hypomnema/compare/0.5.0...0.5.1
 [0.5.0]: https://github.com/Floernt/hypomnema/compare/0.4.1...0.5.0
 [0.4.1]: https://github.com/Floernt/hypomnema/compare/0.4.0...0.4.1
 [0.4.0]: https://github.com/Floernt/hypomnema/compare/0.3.1...0.4.0

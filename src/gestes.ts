@@ -163,7 +163,7 @@ export function importGestes(json: string, existing: Geste[], categoryTags: stri
     const id = typeof g.id === "string" && g.id && !taken.has(g.id) && g.id !== DEFAULT_EXTRACTION_ID ? g.id : newId(taken);
     if (g.id) rename.set(g.id, id);
     taken.add(id);
-    return { ...g, id, command: g.command !== false } as Geste;
+    return { ...g, id, command: g.command !== false };
   }));
   for (const g of gestes) {
     if (g.kind === "group") g.children = g.children.map((c) => rename.get(c) ?? c);
