@@ -193,7 +193,7 @@ export class GesteRunner {
     }
     const module: { exports: unknown } = { exports: {} };
     // Exécution voulue par l'utilisateur, après confirmation : c'est le principe même d'un script.
-    // eslint-disable-next-line no-new-func, @typescript-eslint/no-implied-eval
+    // eslint-disable-next-line @typescript-eslint/no-implied-eval -- script du coffre, lancé après confirmation
     const factory = new Function("module", "exports", code) as (m: typeof module, e: unknown) => void;
     factory(module, module.exports);
     const exp = module.exports as { entry?: unknown } | ScriptEntry;

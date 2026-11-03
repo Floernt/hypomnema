@@ -6,6 +6,20 @@ Les commentaires sont stockés en texte brut dans les notes des utilisateurs. To
 
 ## [Non publié]
 
+## [0.5.2] — 2026-11-03
+
+Suite de la revue du catalogue communautaire d'Obsidian. Le format de stockage ne change pas.
+
+### Corrigé
+
+- Le soulignement pointillé des passages commentés passe par une bordure inférieure, prise en charge partout, au lieu des propriétés `text-decoration-*`, qu'iOS ne prend en charge qu'en partie. Le rendu reste le même.
+- La directive du linter qui accompagne l'exécution des scripts utilisateur est désormais justifiée.
+- La configuration de contenu du site de documentation passe en JavaScript (`content.config.mjs`), hors du périmètre des règles TypeScript du scan.
+
+### Interne
+
+- `npm run lint` reproduit le scan du catalogue (eslint-plugin-obsidianmd) et tourne avant chaque release.
+
 ## [0.5.1] — 2026-11-02
 
 Corrections demandées par la revue du catalogue communautaire d'Obsidian. Le format de stockage ne change pas.
@@ -197,7 +211,8 @@ Corrections demandées par la relecture du catalogue communautaire d'Obsidian.
 - Passage commenté : `%%[aN%%texte%%aN]%%`.
 - Bloc en fin de note : `%% annotations` … `%%`, une entrée par ligne (`[aN] AAAA-MM-JJ texte`), les réponses étant notées `[aN.k]` et indentées.
 
-[Non publié]: https://github.com/Floernt/hypomnema/compare/0.5.1...HEAD
+[Non publié]: https://github.com/Floernt/hypomnema/compare/0.5.2...HEAD
+[0.5.2]: https://github.com/Floernt/hypomnema/compare/0.5.1...0.5.2
 [0.5.1]: https://github.com/Floernt/hypomnema/compare/0.5.0...0.5.1
 [0.5.0]: https://github.com/Floernt/hypomnema/compare/0.4.1...0.5.0
 [0.4.1]: https://github.com/Floernt/hypomnema/compare/0.4.0...0.4.1

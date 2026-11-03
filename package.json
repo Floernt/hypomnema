@@ -1,13 +1,14 @@
 {
   "name": "hypomnema",
-  "version": "0.5.1",
+  "version": "0.5.2",
   "description": "Lecture augmentée pour Obsidian : commentaires sur des passages, fils de réponse et catégories liées à des tags.",
   "main": "main.js",
   "private": true,
   "scripts": {
     "dev": "node esbuild.config.mjs",
     "build": "tsc --noEmit && node esbuild.config.mjs production",
-    "test": "vitest run"
+    "test": "vitest run",
+    "lint": "npm exec --prefix scripts/lint -- eslint -c scripts/lint/eslint.config.mjs \"**/*.ts\""
   },
   "author": "Florian Ernotte",
   "license": "MIT",
