@@ -21,6 +21,12 @@ Chaque spec comporte une section **« Vérification dans la doc officielle »**.
 - Le plugin n'exécute pas de JavaScript fourni par l'utilisateur. `new Function`, `eval`, `require` dynamique ou import par Blob sont tous signalés, et `obsidianmd/rule-custom-message` (qui regroupe `no-new-func`, `no-console`, etc.) ne peut pas être désactivé. L'étape *Script* a été retirée en 0.6.0 pour cette raison : les scripts passent par QuickAdd ou Templater, qui appellent l'API (`runAction`, `threads`…).
 - Pas de `!important`. Une API récente (par exemple `update()` des réglages, 1.13) se place derrière `requireApiVersion`.
 
+## Branches
+
+- On travaille sur `dev`. `main` ne reçoit que du code qui a passé le scan.
+- Avant de fusionner, on lance `npm run lint`, puis le scan de la branche `dev` sur le catalogue Obsidian.
+- Une fois le scan propre, une PR fusionne `dev` dans `main`. Le tag de version se pose ensuite sur `main` : c'est lui qui publie la release.
+
 ## Avant chaque release
 
 1. `npm ci --prefix scripts/lint` (une fois), puis `npm run lint` : zéro erreur. Le lint vit dans un paquet séparé parce que typescript-eslint exige TypeScript < 6.1, alors que le plugin compile avec TypeScript 7.
