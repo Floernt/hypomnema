@@ -19,7 +19,7 @@ Actions travel as JSON. You can share a reading method with someone else, or mov
 { "hypomnema": 1, "actions": [ … ] }
 ```
 
-The paths of [scripts](/advanced/scripts/) are exported as they are, without the code. To share only some actions, remove the others from the `actions` array before sending the text.
+To share only some actions, remove the others from the `actions` array before sending the text.
 
 ## Import
 
@@ -27,6 +27,5 @@ The paths of [scripts](/advanced/scripts/) are exported as they are, without the
 
 - ids that already exist in your vault are regenerated, so nothing is overwritten;
 - categories the actions use but your vault lacks are reported, not created: add them in the *Categories* section if you want them;
-- scripts referred to by path must be added to your vault separately.
 
-Read an imported chain before running it, and the scripts it calls in particular.
+Read an imported chain before running it: it can call any Obsidian command.

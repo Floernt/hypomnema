@@ -9,7 +9,7 @@ sidebar:
 Disponible à partir de la version 0.5.0.
 :::
 
-L'API est accessible partout où l'objet `app` d'Obsidian l'est : un script Hypomnema, un script QuickAdd, `tp.app` dans Templater, un bloc DataviewJS, un autre plugin.
+L'API est accessible partout où l'objet `app` d'Obsidian l'est : un script QuickAdd, `tp.app` dans Templater, un bloc DataviewJS, un autre plugin.
 
 ```js
 const api = app.plugins.plugins.hypomnema?.api;

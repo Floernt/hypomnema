@@ -1,12 +1,12 @@
 ---
 title: La fin de lecture
-description: Un enchaînement qui extrait, consigne la lecture et lance un script.
+description: Une macro QuickAdd qui extrait les commentaires, consigne la lecture et marque la note comme lue.
 sidebar:
   order: 6
 ---
 
 :::note
-Disponible à partir de la version 0.5.0. Cette note utilise un enchaînement et un script : activez les *Fonctions avancées* dans les réglages.
+Disponible à partir de la version 0.5.0. Depuis la 0.6.0, le script passe par une macro [QuickAdd](/fr/integrations/quickadd/) : Hypomnema n'exécute plus de JavaScript lui-même (voir [Scripts](/fr/advanced/scripts/)).
 :::
 
 :::caution[Brouillon — section à réécrire par l'auteur]
@@ -23,36 +23,39 @@ Le dernier paragraphe de *Pourquoi on oublie ce qu'on lit* est lu. Un raccourci 
 
 ## Le réglage
 
-D'abord le script `Scripts/marquer-lu.js` :
+D'abord le script utilisateur QuickAdd `Scripts/marquer-lu.js` :
 
 ```js
-module.exports = async (params, settings) => {
-  const { app } = params;
+const PROPRIETE = "statut";
+const VALEUR = "lu";
+const JOURNAL = "Journal de lecture.md";
+
+module.exports = async ({ app }) => {
   const file = app.workspace.getActiveFile();
   if (!file) throw new Error("Aucune note active");
   await app.fileManager.processFrontMatter(file, (fm) => {
-    fm[settings.property ?? "statut"] = settings.value ?? "lu";
+    fm[PROPRIETE] = VALEUR;
   });
-  const log = app.vault.getAbstractFileByPath(settings.log ?? "Journal de lecture.md");
+  const log = app.vault.getAbstractFileByPath(JOURNAL);
   const line = `- ${window.moment().format("YYYY-MM-DD")} [[${file.basename}]]\n`;
   if (log) await app.vault.append(log, line);
-  else await app.vault.create(settings.log ?? "Journal de lecture.md", line);
+  else await app.vault.create(JOURNAL, line);
 };
 ```
 
-Puis une action [Enchaînement](/fr/concepts/chain/) nommée « Fin de lecture », option *Commande* activée :
+Puis, dans QuickAdd, un choix *Macro* nommé « Fin de lecture », dont la commande est activée (l'icône éclair) :
 
-| Étape | Type | Valeur |
+| Étape | Type QuickAdd | Valeur |
 |---|---|---|
-| 1 | Commande Obsidian | *Extraire les commentaires de cette note* (`hypomnema:extract-note`), choisie avec *Choisir…* |
-| 2 | Script | `Scripts/marquer-lu.js`, réglages `property = statut`, `value = lu`, `log = Journal de lecture.md` |
+| 1 | *Obsidian command* | **Hypomnema: Extraire les commentaires de cette note** (`hypomnema:extract-note`) |
+| 2 | *User script* | `Scripts/marquer-lu.js` |
 
-Le premier lancement du script demande une confirmation qui nomme le fichier. Si une étape échoue, l'enchaînement s'arrête et une notification en donne la raison. Voir [Scripts](/fr/advanced/scripts/) pour l'avertissement de sécurité.
+Si une étape échoue, QuickAdd arrête la macro et affiche l'erreur. Voir [Scripts](/fr/advanced/scripts/) pour l'avertissement de sécurité.
 
 ## Variantes
 
-**Sans script.** Remplacez l'étape 2 par une *Capture* QuickAdd appelée par sa commande (étape *Commande Obsidian*), comme dans la recette [QuickAdd](/fr/integrations/quickadd/).
+**Sans script.** Remplacez l'étape 2 par une *Capture* QuickAdd vers le journal de lecture, comme dans la recette [QuickAdd](/fr/integrations/quickadd/).
 
-**Partager des valeurs.** `params.variables` contient les valeurs saisies pour les `{{VALUE:…}}` des étapes précédentes. Le script peut les lire, par exemple `params.variables["verdict"]` pour écrire « lu », « à relire » ou « abandonné », et en définir de nouvelles pour les étapes suivantes.
+**Passer des valeurs à Hypomnema.** Un script de la macro peut lancer une action d'Hypomnema en répondant à ses `{{VALUE:…}}` : `api.runAction("<id>", { verdict: "à relire" })`. L'action ne pose alors pas la question. `params.variables` partage les valeurs entre les étapes de la macro.
 
-**Attendre la vue.** Si une étape ouvre une note dont l'étape suivante a besoin, ajoutez entre elles une étape *Pause (ms)* de 300.
+**Attendre la vue.** Si une étape ouvre une note dont l'étape suivante a besoin, ajoutez entre elles une étape *Wait* de QuickAdd, de 300 ms.

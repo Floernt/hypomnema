@@ -19,10 +19,4 @@ export default defineConfig([
       },
     },
   },
-  {
-    // Scripts utilisateur (new Function) : le bot le signale en avertissement, non bloquant, et la règle
-    // ne peut pas être désactivée dans le code (eslint-comments/no-restricted-disable). On s'aligne sur lui.
-    files: ["src/runner.ts"],
-    rules: { "obsidianmd/rule-custom-message": "warn" },
-  },
 ]);

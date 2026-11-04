@@ -1,6 +1,5 @@
-// Exécution des gestes : commandes, saisies {{VALUE:…}}, enchaînements, groupes et scripts.
+// Exécution des gestes : commandes, saisies {{VALUE:…}}, enchaînements et groupes.
 
-import * as obsidian from "obsidian";
 import { MarkdownView, normalizePath, Notice, TFile, TFolder } from "obsidian";
 import { today } from "./actions";
 import { format, promptsIn, takeCursor } from "./format";
@@ -8,28 +7,17 @@ import { AnnotationGeste, ChainGeste, ExtractionGeste, Geste, GroupGeste, Step }
 import { t } from "./i18n";
 import { executeCommand } from "./integrations";
 import { pick, promptValue } from "./modals";
-import { ConfirmModal } from "./ui";
 import type Hypomnema from "./main";
 
 /** L'utilisateur a renoncé (saisie ou choix annulé) : on s'arrête sans message d'erreur. */
 class Cancelled extends Error {}
 
 interface RunState {
-  /** Réponses aux {{VALUE:…}}, partagées par toutes les étapes d'un enchaînement (et lisibles par les scripts). */
+  /** Réponses aux {{VALUE:…}}, partagées par toutes les étapes d'un enchaînement. */
   values: Record<string, string>;
   /** Gestes en cours, pour refuser qu'un geste se relance lui-même. */
   stack: string[];
   ctx: { file?: TFile | null; folder?: TFolder };
-}
-
-/** Point d'entrée d'un script utilisateur : `module.exports = async (params, settings) => {}`. */
-type ScriptEntry = (params: Record<string, unknown>, settings: Record<string, string>) => unknown;
-
-/** Empreinte d'un script : un script modifié depuis son acceptation est de nouveau soumis à confirmation. */
-function digest(s: string): string {
-  let h = 0x811c9dc5;
-  for (let i = 0; i < s.length; i++) h = Math.imul(h ^ s.charCodeAt(i), 0x01000193);
-  return (h >>> 0).toString(16);
 }
 
 const sleep = (ms: number) => new Promise((r) => window.setTimeout(r, ms));
@@ -157,7 +145,8 @@ export class GesteRunner {
     } else if (step.type === "wait") {
       await sleep(step.ms);
     } else {
-      await this.script(step.path, step.settings ?? {}, state);
+      // Étape retirée en 0.6.0 : le JavaScript passe par QuickAdd ou Templater, qui appellent l'API.
+      throw new Error(t("stepScriptRemoved", { path: step.path }));
     }
   }
 
@@ -166,39 +155,5 @@ export class GesteRunner {
     const chosen = await pick(this.app, children, (x) => x.name, g.name);
     if (!chosen) throw new Cancelled();
     await this.exec(chosen, state);
-  }
-
-  /**
-   * Script utilisateur, sur le modèle de QuickAdd : un fichier .js du coffre qui exporte
-   * `module.exports = async (params, settings) => {}` (ou un objet { entry }). `params` vaut
-   * { app, api, variables, obsidian }. Le premier lancement, et tout lancement après modification
-   * du script, demande une confirmation.
-   */
-  private async script(path: string, settings: Record<string, string>, state: RunState) {
-    const vault = this.app.vault;
-    const file = vault.getAbstractFileByPath(normalizePath(path.trim()));
-    if (!(file instanceof TFile)) throw new Error(t("fileMissing", { path }));
-    const code = await vault.read(file);
-    const hash = digest(code);
-    const trusted = this.plugin.settings.trustedScripts;
-    if (trusted[file.path] !== hash) {
-      const ok = await new Promise<boolean>((resolve) =>
-        new ConfirmModal(this.app, t("scriptConfirm", { path: file.path }), () => resolve(true), { title: t("scriptConfirmTitle"), button: t("scriptRun"), cta: true }, () =>
-          resolve(false),
-        ).open(),
-      );
-      if (!ok) throw new Cancelled();
-      trusted[file.path] = hash;
-      await this.plugin.saveSettings();
-    }
-    const module: { exports: unknown } = { exports: {} };
-    // Exécution voulue par l'utilisateur, après confirmation : c'est le principe même d'un script.
-    // eslint-disable-next-line @typescript-eslint/no-implied-eval -- script du coffre, lancé après confirmation
-    const factory = new Function("module", "exports", code) as (m: typeof module, e: unknown) => void;
-    factory(module, module.exports);
-    const exp = module.exports as { entry?: unknown } | ScriptEntry;
-    const entry: unknown = typeof exp === "function" ? exp : exp?.entry;
-    if (typeof entry !== "function") throw new Error(t("scriptInvalid", { path: file.path }));
-    await (entry as ScriptEntry)({ app: this.app, api: this.plugin.api, variables: state.values, obsidian }, settings);
   }
 }

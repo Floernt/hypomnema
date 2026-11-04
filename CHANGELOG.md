@@ -6,14 +6,17 @@ Les commentaires sont stockés en texte brut dans les notes des utilisateurs. To
 
 ## [Non publié]
 
-## [0.5.2] — 2026-11-03
+## [0.6.0] — 2026-11-04
 
-Suite de la revue du catalogue communautaire d'Obsidian. Le format de stockage ne change pas.
+Suite de la revue du catalogue communautaire d'Obsidian. Le format de stockage des commentaires ne change pas.
+
+### Retiré
+
+- **L'étape *Script* des enchaînements.** La revue d'Obsidian décourage un plugin d'exécuter du code, et Hypomnema n'exécute plus de JavaScript lui-même. Les scripts passent désormais par QuickAdd ou Templater, qui appellent l'API d'Hypomnema : `runAction(id, vars)` lance une action en répondant à ses `{{VALUE:…}}`. Une étape *Script* déjà enregistrée reste dans les réglages, signalée comme retirée, pour être supprimée ; à l'exécution, l'enchaînement s'arrête avec un message. La page *Scripts* de la documentation explique comment reprendre un script de la 0.5.
 
 ### Corrigé
 
 - Le soulignement pointillé des passages commentés passe par une bordure inférieure, prise en charge partout, au lieu des propriétés `text-decoration-*`, qu'iOS ne prend en charge qu'en partie. Le rendu reste le même.
-- La directive du linter qui accompagne l'exécution des scripts utilisateur est désormais justifiée.
 - La configuration de contenu du site de documentation passe en JavaScript (`content.config.mjs`), hors du périmètre des règles TypeScript du scan.
 
 ### Interne
@@ -211,8 +214,8 @@ Corrections demandées par la relecture du catalogue communautaire d'Obsidian.
 - Passage commenté : `%%[aN%%texte%%aN]%%`.
 - Bloc en fin de note : `%% annotations` … `%%`, une entrée par ligne (`[aN] AAAA-MM-JJ texte`), les réponses étant notées `[aN.k]` et indentées.
 
-[Non publié]: https://github.com/Floernt/hypomnema/compare/0.5.2...HEAD
-[0.5.2]: https://github.com/Floernt/hypomnema/compare/0.5.1...0.5.2
+[Non publié]: https://github.com/Floernt/hypomnema/compare/0.6.0...HEAD
+[0.6.0]: https://github.com/Floernt/hypomnema/compare/0.5.1...0.6.0
 [0.5.1]: https://github.com/Floernt/hypomnema/compare/0.5.0...0.5.1
 [0.5.0]: https://github.com/Floernt/hypomnema/compare/0.4.1...0.5.0
 [0.4.1]: https://github.com/Floernt/hypomnema/compare/0.4.0...0.4.1

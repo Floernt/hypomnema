@@ -48,8 +48,6 @@ export interface Settings {
   globals: GlobalVariable[];
   /** Affiche enchaînements, groupes, scripts, export et import. */
   advanced: boolean;
-  /** Scripts déjà acceptés, avec l'empreinte du code accepté : un script modifié est redemandé. */
-  trustedScripts: Record<string, string>;
   /** Tags ajoutés par le plugin, par chemin de note : seuls ceux-là peuvent être retirés automatiquement. */
   addedTags: Record<string, string[]>;
 }
@@ -74,7 +72,6 @@ export function defaultSettings(): Settings {
     actions: [],
     globals: [],
     advanced: false,
-    trustedScripts: {},
     addedTags: {},
   };
 }
@@ -90,7 +87,6 @@ export function mergeSettings(data: (Partial<Settings> & { gestes?: Geste[] }) |
     actions: upgradeGestes(data?.actions ?? data?.gestes ?? []),
     globals: data?.globals ?? [],
     advanced: data?.advanced ?? false,
-    trustedScripts: data?.trustedScripts ?? {},
     addedTags: data?.addedTags ?? {},
   };
 }

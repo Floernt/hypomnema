@@ -18,7 +18,7 @@ Chaque spec comporte une section **« Vérification dans la doc officielle »**.
 - Le scan lit tous les `.ts` du dépôt, `site/` et `brand/` compris. Ses `node_modules` ne sont pas installés : un fichier TypeScript qui importe Astro produit des avertissements `no-unsafe-*`. Les fichiers de configuration du site sont donc en `.mjs`.
 - Le lint CSS lit aussi tous les `.css`, `brand/` compris. `text-decoration-*` et le raccourci `text-decoration: underline dotted …` sont jugés partiellement pris en charge, et les préfixes `-webkit-` n'y changent rien. Pour un soulignement, utiliser `border-bottom`.
 - Toute directive `eslint-disable` porte sa raison après ` -- `.
-- On ne peut pas désactiver `obsidianmd/rule-custom-message`, qui regroupe `no-new-func`, `no-console`, etc. Le `new Function` des scripts utilisateur (`src/runner.ts`) reste donc signalé en avertissement : c'est assumé et non bloquant. Un import par Blob est pire, puisque `no-unsanitized/method` le classe en erreur.
+- Le plugin n'exécute pas de JavaScript fourni par l'utilisateur. `new Function`, `eval`, `require` dynamique ou import par Blob sont tous signalés, et `obsidianmd/rule-custom-message` (qui regroupe `no-new-func`, `no-console`, etc.) ne peut pas être désactivé. L'étape *Script* a été retirée en 0.6.0 pour cette raison : les scripts passent par QuickAdd ou Templater, qui appellent l'API (`runAction`, `threads`…).
 - Pas de `!important`. Une API récente (par exemple `update()` des réglages, 1.13) se place derrière `requireApiVersion`.
 
 ## Avant chaque release

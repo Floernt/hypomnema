@@ -20,7 +20,7 @@ An action is a reading operation you define yourself, give a name to, and run as
 |---|---|---|
 | [Annotation](/concepts/annotation/) | 2 | Comments with a preset category and starting text. |
 | [Extraction](/concepts/extraction/) | 2 | Extracts comments according to a scope, a filter, a format and a template. |
-| [Chain](/concepts/chain/) | 3 | Runs a sequence of steps: actions, commands, scripts, pauses. |
+| [Chain](/concepts/chain/) | 3 | Runs a sequence of steps: actions, commands, pauses. |
 | [Group](/concepts/group/) | 3 | Opens a menu that lists other actions. |
 
 Chains and groups only appear in the settings when *Advanced features* is on. Actions of those kinds that already exist keep running when the switch is off.

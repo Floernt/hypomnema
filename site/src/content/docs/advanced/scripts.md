@@ -1,60 +1,53 @@
 ---
 title: Scripts
-description: JavaScript files of your vault run as a step of a chain.
+description: JavaScript with Hypomnema, through QuickAdd or Templater user scripts.
 sidebar:
   order: 4
 ---
 
 :::note
-Available from version 0.5.0. Scripts belong to level 3: they only appear when *Advanced features* is on.
+Hypomnema no longer runs JavaScript itself. The *Script* step of chains, added in 0.5.0, was removed in 0.6.0: Obsidian's directory review discourages a plugin from executing code. Scripts now go through [QuickAdd](/integrations/quickadd/) or [Templater](/integrations/templater/), which are built for it and call Hypomnema through its [public API](/advanced/api/).
 :::
 
-:::danger[A script has the same rights as the plugin]
+:::danger[A script has the same rights as a plugin]
 A script can read, change and delete any file of your vault, and reach the network. Only run scripts you wrote yourself or have read and understood.
 :::
 
-A script is a `.js` file of your vault, run as a *Script* step of a [chain](/concepts/chain/).
+## With QuickAdd
 
-## Signature
+A QuickAdd user script is a `.js` file of your vault, added as a step of a QuickAdd macro:
 
 ```js
-module.exports = async (params, settings) => {
-  const { app, api, variables, obsidian } = params;
+module.exports = async (params) => {
+  const { app, variables } = params;
+  const api = app.plugins.plugins.hypomnema?.api;
+  if (!api) throw new Error("Hypomnema is not enabled");
   // …
 };
 ```
 
-`app` is Obsidian's `App`. `api` is Hypomnema's [public API](/advanced/api/). `obsidian` is the Obsidian module, which gives access to `Notice`, `Modal`, `TFile` and the rest without an import. `variables` holds the answers to `{{VALUE:…}}` prompts; it is shared by every step of the chain, so a script can read the values typed earlier and change or add values that the following steps will see.
-
-`settings` holds the key → value pairs set on the script step, so the same file can serve several chains with different settings.
-
-The signature is compatible with QuickAdd's user scripts: the same file can also be used there.
-
-The export can also be an object with an `entry` function:
-
-```js
-module.exports = { entry: async (params, settings) => { /* … */ } };
-```
-
-## Running
-
-Hypomnema asks for confirmation, naming the file, the first time a script runs, and again whenever the content of the file changes. If the script throws an error, the chain stops and a notice shows the message.
+From the script, the API reads comments (`api.threads`, `api.allThreads`), adds them (`api.addComment`, `api.reply`) and runs a Hypomnema action with `api.runAction(id, vars)`. The values in `vars` answer the action's `{{VALUE:…}}` prompts, which then are not asked. A QuickAdd macro can thus do what a chain with a script used to do: its steps call Hypomnema's commands, and its scripts pass values to it.
 
 ## Example
 
 ```js
 // Scripts/count.js — shows the number of comments in the active note
-module.exports = async ({ app, api, variables, obsidian }, settings) => {
+module.exports = async ({ app }) => {
+  const api = app.plugins.plugins.hypomnema?.api;
   const file = app.workspace.getActiveFile();
-  if (!file) throw new Error("No active note");
+  if (!api || !file) throw new Error("Hypomnema disabled or no active note");
   const threads = await api.threads(file);
-  variables.count = String(threads.length);
-  new obsidian.Notice(`${threads.length} comment(s)`);
+  new Notice(`${threads.length} comment(s)`);
 };
 ```
 
-A later step can use `{{VALUE:count}}` without being asked. A fuller example is in the method note [End of reading](/method/end-of-reading/).
+A fuller example is in the method note [End of reading](/method/end-of-reading/).
 
-## Sharing
+## Moving a script written for 0.5
 
-[Export](/advanced/export-import/) copies the path of a script, never its code. Whoever imports the action must add the file to their own vault.
+Scripts written for 0.5 already had the QuickAdd user script signature. To move one:
+
+1. Replace `params.api` with `params.app.plugins.plugins.hypomnema.api`, and `params.obsidian.Notice` (or anything else from the module) with `Notice`, which QuickAdd makes available.
+2. Step settings (`settings`) no longer exist: write the values at the top of the script, or ask for them with `params.quickAddApi.inputPrompt`.
+3. In a QuickAdd macro, `params.variables` is shared between steps, as the chain's was.
+4. Delete the *Script (removed)* step from the Hypomnema chain. It stays visible in the editor for that purpose, but no longer runs.
