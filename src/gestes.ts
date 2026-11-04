@@ -50,6 +50,7 @@ export interface ExtractionGeste extends GesteBase, ExtractionFields {
 export type Step =
   | { type: "action"; id: string }
   | { type: "command"; id: string }
+  /** Retirée en 0.6.0 : conservée pour charger les réglages existants, signalée dans l'éditeur. */
   | { type: "script"; path: string; settings?: Record<string, string> }
   | { type: "wait"; ms: number };
 

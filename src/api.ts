@@ -1,4 +1,4 @@
-// API publique : app.plugins.plugins.hypomnema.api, pour les scripts (hypomnema, QuickAdd, Templater, dataviewjs).
+// API publique : app.plugins.plugins.hypomnema.api, pour les scripts QuickAdd, Templater ou dataviewjs.
 // Les écritures passent par les mêmes fonctions que l'interface : tags synchronisés, événements émis.
 
 import { normalizePath, TFile, TFolder } from "obsidian";

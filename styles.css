@@ -36,14 +36,8 @@ body {
 .ma-anchor {
   background-color: color-mix(in srgb, var(--ma-c) 12%, transparent);
   border-radius: 2px;
-  -webkit-text-decoration-line: underline;
-  -webkit-text-decoration-style: dotted;
-  -webkit-text-decoration-color: var(--ma-c);
-  text-decoration-line: underline;
-  text-decoration-style: dotted;
-  text-decoration-color: var(--ma-c);
-  text-decoration-thickness: 2px;
-  text-underline-offset: 3px;
+  border-bottom: 2px dotted var(--ma-c);
+  padding-bottom: 1px;
   cursor: pointer;
 }
 

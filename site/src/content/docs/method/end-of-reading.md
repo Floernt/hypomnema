@@ -1,12 +1,12 @@
 ---
 title: End of reading
-description: A chain that extracts, logs the reading and runs a script.
+description: A QuickAdd macro that extracts the comments, logs the reading and marks the note as read.
 sidebar:
   order: 6
 ---
 
 :::note
-Available from version 0.5.0. This note uses a chain and a script: turn on *Advanced features* in the settings.
+Available from version 0.5.0. Since 0.6.0, the script goes through a [QuickAdd](/integrations/quickadd/) macro: Hypomnema no longer runs JavaScript itself (see [Scripts](/advanced/scripts/)).
 :::
 
 :::caution[Draft — the author will rewrite this section]
@@ -23,36 +23,39 @@ The last paragraph of *Why we forget what we read* is read. One hotkey runs *End
 
 ## The setting
 
-First, the script `Scripts/mark-read.js`:
+First, the QuickAdd user script `Scripts/mark-read.js`:
 
 ```js
-module.exports = async (params, settings) => {
-  const { app } = params;
+const PROPERTY = "status";
+const VALUE = "read";
+const LOG = "Reading log.md";
+
+module.exports = async ({ app }) => {
   const file = app.workspace.getActiveFile();
   if (!file) throw new Error("No active note");
   await app.fileManager.processFrontMatter(file, (fm) => {
-    fm[settings.property ?? "status"] = settings.value ?? "read";
+    fm[PROPERTY] = VALUE;
   });
-  const log = app.vault.getAbstractFileByPath(settings.log ?? "Reading log.md");
+  const log = app.vault.getAbstractFileByPath(LOG);
   const line = `- ${window.moment().format("YYYY-MM-DD")} [[${file.basename}]]\n`;
   if (log) await app.vault.append(log, line);
-  else await app.vault.create(settings.log ?? "Reading log.md", line);
+  else await app.vault.create(LOG, line);
 };
 ```
 
-Then a [Chain](/concepts/chain/) action named *End of reading*, with *Command* on:
+Then, in QuickAdd, a *Macro* choice named *End of reading*, with its command on (the lightning icon):
 
-| Step | Type | Value |
+| Step | QuickAdd type | Value |
 |---|---|---|
-| 1 | Obsidian command | *Extract comments from this note* (`hypomnema:extract-note`), picked with *Choose…* |
-| 2 | Script | `Scripts/mark-read.js`, settings `property = status`, `value = read`, `log = Reading log.md` |
+| 1 | *Obsidian command* | **Hypomnema: Extract comments from this note** (`hypomnema:extract-note`) |
+| 2 | *User script* | `Scripts/mark-read.js` |
 
-The first run of the script asks for confirmation and names the file. If a step fails, the chain stops and a notice says why. See [Scripts](/advanced/scripts/) for the security warning.
+If a step fails, QuickAdd stops the macro and shows the error. See [Scripts](/advanced/scripts/) for the security warning.
 
 ## Variants
 
-**Without a script.** Replace step 2 with a QuickAdd *Capture* called through its command (*Obsidian command* step), as in the [QuickAdd](/integrations/quickadd/) recipe.
+**Without a script.** Replace step 2 with a QuickAdd *Capture* to the reading log, as in the [QuickAdd](/integrations/quickadd/) recipe.
 
-**Sharing values.** `params.variables` holds the values typed for `{{VALUE:…}}` in earlier steps. The script can read them, for instance `params.variables["verdict"]` to write *read*, *to reread* or *dropped*, and set new ones for the following steps.
+**Passing values to Hypomnema.** A script of the macro can run a Hypomnema action and answer its `{{VALUE:…}}` prompts: `api.runAction("<id>", { verdict: "to reread" })`. The action then does not ask. `params.variables` shares values between the macro's steps.
 
-**Wait for the view.** If a step opens a note that the next step needs, add a *Pause (ms)* step of 300 between them.
+**Wait for the view.** If a step opens a note that the next step needs, add a QuickAdd *Wait* step of 300 ms between them.

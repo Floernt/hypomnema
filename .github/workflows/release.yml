@@ -25,6 +25,9 @@ jobs:
           cache: npm
 
       - run: npm ci
+      # Même lint que le scan du catalogue Obsidian (paquet séparé : il lui faut TypeScript < 6.1)
+      - run: npm ci --prefix scripts/lint
+      - run: npm run lint
       - run: npm test
       - run: npm run build
 

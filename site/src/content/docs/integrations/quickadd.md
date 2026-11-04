@@ -28,7 +28,7 @@ Available from version 0.5.0.
 
 Each [action](/concepts/actions/) with the *Command* toggle on is the command `hypomnema:action-<id>`, so it appears in QuickAdd's *Obsidian command* step like any other command.
 
-A [script](/advanced/scripts/) written for a Hypomnema chain also works as a QuickAdd user script. A QuickAdd user script can also call the [public API](/advanced/api/):
+A QuickAdd user script can call the [public API](/advanced/api/), and run an action with `api.runAction(id, vars)`. Since 0.6.0 this is the way to use JavaScript: see [Scripts](/advanced/scripts/).
 
 ```js
 module.exports = async (params) => {

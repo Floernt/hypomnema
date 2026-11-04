@@ -1,0 +1,15 @@
+{
+  "name": "hypomnema-lint",
+  "private": true,
+  "description": "Lint qui reproduit le scan du catalogue Obsidian. Paquet séparé : typescript-eslint exige TypeScript < 6.1, le plugin compile avec TypeScript 7.",
+  "type": "module",
+  "devDependencies": {
+    "@eslint/js": "^9.39.5",
+    "@eslint/json": "^0.14.0",
+    "eslint": "^9.39.5",
+    "eslint-plugin-obsidianmd": "^0.4.2",
+    "obsidian": "^1.8.7",
+    "typescript": "5.9",
+    "typescript-eslint": "^8.72.1"
+  }
+}

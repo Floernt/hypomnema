@@ -117,8 +117,8 @@
   --c: var(--rubric);
   background: color-mix(in srgb, var(--c) 12%, transparent);
   border-radius: var(--radius-xs);
-  text-decoration: underline dotted var(--c) 2px;
-  text-underline-offset: 3px;
+  border-bottom: 2px dotted var(--c);
+  padding-bottom: 1px;
   cursor: pointer;
 }
 .hy-point { display: inline-flex; vertical-align: middle; margin: 0 2px; width: 0.9em; height: 0.9em; color: var(--c, var(--rubric)); }

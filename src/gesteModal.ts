@@ -202,25 +202,28 @@ export class GesteModal extends Modal {
     new Setting(el).setName(t("chainSteps")).setHeading();
     if (!g.steps.length) el.createDiv({ cls: "setting-item-description", text: t("chainNoStep") });
     const others = this.others();
-    const types: Record<Step["type"], string> = {
+    const types: Record<Exclude<Step["type"], "script">, string> = {
       action: t("step.action"),
       command: t("step.command"),
-      script: t("step.script"),
       wait: t("step.wait"),
     };
     g.steps.forEach((step, i) => {
       const s = new Setting(el).setClass("ma-step");
-      s.addDropdown((c) =>
-        c
-          .addOptions(types)
-          .setValue(step.type)
-          .onChange((v) => {
-            const type = v as Step["type"];
-            g.steps[i] =
-              type === "action" ? { type, id: others[0]?.id ?? "" } : type === "wait" ? { type, ms: 500 } : type === "script" ? { type, path: "" } : { type, id: "" };
-            this.render();
-          }),
-      );
+      if (step.type === "script") {
+        // Étape retirée en 0.6.0 : affichée pour être supprimée, plus modifiable.
+        s.setName(t("step.script")).setDesc(t("stepScriptRemovedDesc", { path: step.path }));
+      } else {
+        s.addDropdown((c) =>
+          c
+            .addOptions(types)
+            .setValue(step.type)
+            .onChange((v) => {
+              const type = v as keyof typeof types;
+              g.steps[i] = type === "action" ? { type, id: others[0]?.id ?? "" } : type === "wait" ? { type, ms: 500 } : { type, id: "" };
+              this.render();
+            }),
+        );
+      }
       if (step.type === "action") {
         const opts: Record<string, string> = {};
         for (const o of others) opts[o.id] = o.name;
@@ -237,9 +240,7 @@ export class GesteModal extends Modal {
             }
           }),
         );
-      } else if (step.type === "script") {
-        s.addText((c) => c.setPlaceholder(t("stepScriptPath")).setValue(step.path).onChange((v) => (step.path = v)));
-      } else {
+      } else if (step.type === "wait") {
         s.addText((c) => c.setValue(String(step.ms)).onChange((v) => (step.ms = Math.max(0, Number(v) || 0))));
       }
       s.addExtraButton((b) => b.setIcon("arrow-up").setTooltip(t("moveUp")).setDisabled(i === 0).onClick(() => this.move(g.steps, i, -1)));

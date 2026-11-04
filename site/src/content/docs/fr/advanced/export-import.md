@@ -19,7 +19,7 @@ Les actions voyagent en JSON. On peut ainsi partager une méthode de lecture, ou
 { "hypomnema": 1, "actions": [ … ] }
 ```
 
-Les chemins des [scripts](/fr/advanced/scripts/) sont exportés tels quels, sans le code. Pour ne partager que certaines actions, retirez les autres du tableau `actions` avant d'envoyer le texte.
+Pour ne partager que certaines actions, retirez les autres du tableau `actions` avant d'envoyer le texte.
 
 ## Import
 
@@ -27,6 +27,5 @@ Les chemins des [scripts](/fr/advanced/scripts/) sont exportés tels quels, sans
 
 - les identifiants déjà présents dans le coffre sont régénérés, de sorte que rien n'est écrasé ;
 - les catégories utilisées par les actions mais absentes du coffre sont signalées, pas créées : ajoutez-les dans la section *Catégories* si vous les voulez ;
-- les scripts désignés par leur chemin doivent être ajoutés au coffre séparément.
 
-Lisez un enchaînement importé avant de le lancer, et en particulier les scripts qu'il appelle.
+Lisez un enchaînement importé avant de le lancer : il peut appeler n'importe quelle commande Obsidian.

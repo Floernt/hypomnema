@@ -9,7 +9,7 @@ sidebar:
 Available from version 0.5.0.
 :::
 
-The API is reachable from anywhere Obsidian's `app` is: a Hypomnema script, a QuickAdd script, `tp.app` in Templater, a DataviewJS block, another plugin.
+The API is reachable from anywhere Obsidian's `app` is: a QuickAdd script, `tp.app` in Templater, a DataviewJS block, another plugin.
 
 ```js
 const api = app.plugins.plugins.hypomnema?.api;

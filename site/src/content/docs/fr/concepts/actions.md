@@ -20,7 +20,7 @@ Une action est une opération de lecture que l'on définit soi-même, que l'on n
 |---|---|---|
 | [Annotation](/fr/concepts/annotation/) | 2 | Commenter avec une catégorie et un texte de départ préréglés. |
 | [Extraction](/fr/concepts/extraction/) | 2 | Extraire selon une portée, un filtre, un format et un gabarit. |
-| [Enchaînement](/fr/concepts/chain/) | 3 | Exécuter une suite d'étapes : actions, commandes, scripts, pauses. |
+| [Enchaînement](/fr/concepts/chain/) | 3 | Exécuter une suite d'étapes : actions, commandes, pauses. |
 | [Groupe](/fr/concepts/group/) | 3 | Ouvrir un menu qui regroupe d'autres actions. |
 
 Les enchaînements et les groupes n'apparaissent dans les réglages que si les *Fonctions avancées* sont activées. Ceux qui existent déjà restent exécutables quand l'interrupteur est coupé.
